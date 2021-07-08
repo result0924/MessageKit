@@ -124,6 +124,15 @@ open class MessagesCollectionView: UICollectionView {
         }
     }
     
+    
+    // Refer: https://github.com/MessageKit/MessageKit/issues/725#issuecomment-444442685
+    public func newScrollToBottom(animated: Bool = false) {
+        guard numberOfSections > 0 else { return }
+        let lastSection = numberOfSections - 1
+        let indexPath = IndexPath(row: 0, section: lastSection)
+        scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.top, animated: animated)
+    }
+    
     public func reloadDataAndKeepOffset() {
         // stop scrolling
         setContentOffset(contentOffset, animated: false)
