@@ -64,13 +64,17 @@ open class TemplateMessageCell: MessageContentCell {
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-        let touchLocation = gesture.location(in: self)
-        // compute action label touch area, currently action label which is hardly touchable
-        let actionView = actionLabel.frame.size.height > 0 ? actionLabel : messageLabel
-        let actionViewTouchArea = CGRect(actionView.frame.origin.x, actionView.frame.origin.y, actionView.frame.size.width, actionView.frame.size.height)
-        let translateTouchLocation = convert(touchLocation, to: messageContainerView)
-        if actionViewTouchArea.contains(translateTouchLocation) {
-            delegate?.didTapActionView(in: self)
+        if actionLabel.frame.size.height > 0 {
+            let touchLocation = gesture.location(in: self)
+            // compute action label touch area, currently action label which is hardly touchable
+            
+            let actionViewTouchArea = CGRect(actionLabel.frame.origin.x, actionLabel.frame.origin.y, actionLabel.frame.size.width, actionLabel.frame.size.height)
+            let translateTouchLocation = convert(touchLocation, to: messageContainerView)
+            if actionViewTouchArea.contains(translateTouchLocation) {
+                delegate?.didTapActionView(in: self)
+            } else {
+                super.handleTapGesture(gesture)
+            }
         } else {
             super.handleTapGesture(gesture)
         }
@@ -117,6 +121,7 @@ open class TemplateMessageCell: MessageContentCell {
     /// Used to handle the cell's contentView's tap gesture.
     /// Return false when the contentView does not need to handle the gesture.
     open override func cellContentView(canHandle touchPoint: CGPoint) -> Bool {
-        return messageLabel.handleGesture(touchPoint)
+        let newTouchPoint = CGPoint(x: touchPoint.x, y: touchPoint.y - imageView.frame.height)
+        return messageLabel.handleGesture(newTouchPoint)
     }
 }
