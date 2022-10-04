@@ -117,6 +117,7 @@ open class TemplateMessageCell: MessageContentCell {
     /// Used to handle the cell's contentView's tap gesture.
     /// Return false when the contentView does not need to handle the gesture.
     open override func cellContentView(canHandle touchPoint: CGPoint) -> Bool {
-        return messageLabel.handleGesture(touchPoint)
+        let translateTouchLocation = convert(touchPoint, to: messageLabel)
+        return messageLabel.handleGesture(translateTouchLocation)
     }
 }
