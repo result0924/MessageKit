@@ -28,6 +28,8 @@ public protocol ActionItem {
     var bottomTextViewHeight: CGFloat { get }
     /// The bottom text view's content inset
     var bottomTextViewContentInset: UIEdgeInsets { get }
+    /// judge isCanAction
+    var isCanAction: Bool { get }
 }
 
 public protocol TemplateItem: PhotoItem, MessageItem, ActionItem {
