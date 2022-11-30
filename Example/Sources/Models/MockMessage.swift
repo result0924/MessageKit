@@ -166,7 +166,7 @@ struct CustomTemplateItem: TemplateItem {
     var imageHeight: CGFloat
     var textViewHeight: CGFloat
     var bottomTextViewHeight: CGFloat
-    var isCanAction: Bool
+    var onlyHandleTextLink: Bool
 
     init(image: UIImage?, text: String, actionString: String?) {
 
@@ -214,6 +214,6 @@ struct CustomTemplateItem: TemplateItem {
         self.bottomTextViewHeight = bottomHeight.rounded(.up)
 
         self.size = CGSize(width: maxBubbleWidth, height: imageHeight + height.rounded(.up) + bottomHeight.rounded(.up))
-        self.isCanAction = false
+        self.onlyHandleTextLink = true
     }
 }

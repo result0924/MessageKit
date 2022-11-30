@@ -10,7 +10,7 @@
 import UIKit
 
 open class TemplateMessageCell: MessageContentCell {
-    private var isCanAction: Bool = false
+    private var onlyHandleTextLink: Bool = false
     
     /// The `MessageCellDelegate` for the cell.
     open override weak var delegate: MessageCellDelegate? {
@@ -66,7 +66,7 @@ open class TemplateMessageCell: MessageContentCell {
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-        guard isCanAction else {
+        if onlyHandleTextLink {
             super.handleTapGesture(gesture)
             return
         }
@@ -104,7 +104,7 @@ open class TemplateMessageCell: MessageContentCell {
             actionLabel.textContainerInset = item.bottomTextViewContentInset
             actionLabel.textAlignment = .center
             lineView.backgroundColor = item.lineColor
-            isCanAction = item.isCanAction
+            onlyHandleTextLink = item.onlyHandleTextLink
         default:
             break
         }
