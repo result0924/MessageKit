@@ -10,6 +10,8 @@
 import UIKit
 
 open class TemplateMessageCell: MessageContentCell {
+    private var onlyHandleTextLink: Bool = false
+    
     /// The `MessageCellDelegate` for the cell.
     open override weak var delegate: MessageCellDelegate? {
         didSet {
@@ -64,6 +66,11 @@ open class TemplateMessageCell: MessageContentCell {
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
+        if onlyHandleTextLink {
+            super.handleTapGesture(gesture)
+            return
+        }
+        
         let touchLocation = gesture.location(in: self)
         // compute action label touch area, currently action label which is hardly touchable
         let actionView = actionLabel.frame.size.height > 0 ? actionLabel : messageLabel
@@ -97,6 +104,7 @@ open class TemplateMessageCell: MessageContentCell {
             actionLabel.textContainerInset = item.bottomTextViewContentInset
             actionLabel.textAlignment = .center
             lineView.backgroundColor = item.lineColor
+            onlyHandleTextLink = item.onlyHandleTextLink
         default:
             break
         }
