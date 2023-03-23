@@ -92,6 +92,7 @@ open class AudioMessageCell: MessageContentCell {
         let progressView = UIProgressView(progressViewStyle: .default)
         progressView.progress = 0.0
         progressView.layer.cornerRadius = 3
+        progressView.semanticContentAttribute = .forceLeftToRight
         progressView.clipsToBounds = true
         return progressView
     }()
