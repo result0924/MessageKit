@@ -76,7 +76,7 @@ class CustomChatViewController: MessagesViewController {
     func loadFirstMessages() {
         DispatchQueue.global(qos: .userInitiated).async {
             let count = UserDefaults.standard.mockMessagesCount()
-            SampleData.shared.getTemplateAudioMessages(count: count) { messages in
+            SampleData.shared.getDiaryQuoteMessages(count: count) { messages in
                 DispatchQueue.main.async {
                     self.messageList = messages
                     self.messagesCollectionView.reloadData()
@@ -393,6 +393,10 @@ extension CustomChatViewController: MessageCellDelegate {
     func didTapActionView(in cell: TemplateMessageCell) {
         print("Tap action view")
     }
+    
+    func didTapDiaryQuoteActionView(in cell: DiaryQuoteMessageCell) {
+        print("Tap diary quote view")
+    }
 
 }
 
@@ -507,12 +511,21 @@ extension CustomChatViewController: MessagesDisplayDelegate {
     // MARK: - All Messages
 
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? .primaryColor : UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+        switch message.kind {
+        case .diaryQuote:
+            return .white
+        default:
+            return isFromCurrentSender(message: message) ? .primaryColor : UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+        }
     }
 
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
-
-        return .bubble
+        switch message.kind {
+        case .diaryQuote:
+            return .none
+        default:
+            return .bubble
+        }
     }
 
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {

@@ -76,6 +76,7 @@ open class MessagesCollectionView: UICollectionView {
         register(TextMessageCell.self)
         register(PhotoMessageCell.self)
         register(TemplateMessageCell.self)
+        register(DiaryQuoteMessageCell.self)
         register(LocationMessageCell.self)
         register(AudioMessageCell.self)
         register(ContactMessageCell.self)

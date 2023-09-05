@@ -262,6 +262,22 @@ final internal class SampleData {
         completion(messages)
     }
     
+    func getDiaryQuoteMessages(count: Int, completion: ([MockMessage]) -> Void) {
+        var messages: [MockMessage] = []
+        // Enable Template Messages
+        UserDefaults.standard.set(true, forKey: "Diary Quote Messages")
+        for _ in 0..<count {
+            let uniqueID = UUID().uuidString
+            let date = dateAddingRandomTime()
+            let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
+            let image = messageImages[randomNumberImage]
+            let randomSentence = Lorem.sentence()
+            let message = MockMessage(diaryQuote: CustomDiaryQuoteItem(image: image, text: randomSentence, actionString: "send"), user: system, messageId: uniqueID, date: date)
+            messages.append(message)
+        }
+        completion(messages)
+    }
+    
     func getTemplateAudioMessages(count: Int, completion: ([MockMessage]) -> Void) {
         var messages: [MockMessage] = []
         // Enable Template Messages

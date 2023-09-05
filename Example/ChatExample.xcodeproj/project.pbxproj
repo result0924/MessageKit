@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A9CBCBB2AA587B8004E9C11 /* CustomTemplateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9CBCBA2AA587B8004E9C11 /* CustomTemplateItem.swift */; };
+		1A9CBCBD2AA58802004E9C11 /* CustomDiaryQuoteItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9CBCBC2AA58802004E9C11 /* CustomDiaryQuoteItem.swift */; };
 		1C5433DD24C389C300A5383B /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5433DC24C389C300A5383B /* MessagesView.swift */; };
 		1C5433DF24C38DBF00A5383B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C5433DE24C38DBF00A5383B /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		1C5433E224C3A33600A5383B /* SwiftUIExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5433E124C3A33600A5383B /* SwiftUIExampleView.swift */; };
@@ -81,6 +83,8 @@
 
 /* Begin PBXFileReference section */
 		0364943D08CDBE656E6F6DF8 /* Pods-ChatExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatExampleTests/Pods-ChatExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A9CBCBA2AA587B8004E9C11 /* CustomTemplateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTemplateItem.swift; sourceTree = "<group>"; };
+		1A9CBCBC2AA58802004E9C11 /* CustomDiaryQuoteItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDiaryQuoteItem.swift; sourceTree = "<group>"; };
 		1C5433DC24C389C300A5383B /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 		1C5433DE24C38DBF00A5383B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		1C5433E124C3A33600A5383B /* SwiftUIExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIExampleView.swift; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 				385C2926211FF33B0010B4BA /* MockMessage.swift */,
 				385C2925211FF33A0010B4BA /* MockSocket.swift */,
 				383B9EB22172A1C4008AB91A /* MockUser.swift */,
+				1A9CBCBA2AA587B8004E9C11 /* CustomTemplateItem.swift */,
+				1A9CBCBC2AA58802004E9C11 /* CustomDiaryQuoteItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -587,6 +593,7 @@
 				1C5433E224C3A33600A5383B /* SwiftUIExampleView.swift in Sources */,
 				385C2939211FF37B0010B4BA /* Lorem.swift in Sources */,
 				385C2928211FF33B0010B4BA /* MockMessage.swift in Sources */,
+				1A9CBCBB2AA587B8004E9C11 /* CustomTemplateItem.swift in Sources */,
 				385C2923211FF32E0010B4BA /* TableViewCells.swift in Sources */,
 				D044CC302415ED7B00208604 /* CustomChatViewController.swift in Sources */,
 				385C2942211FF38F0010B4BA /* AdvancedExampleViewController.swift in Sources */,
@@ -597,6 +604,7 @@
 				385C2932211FF3630010B4BA /* UIViewController+Extensions.swift in Sources */,
 				385C292B211FF3450010B4BA /* Settings+UserDefaults.swift in Sources */,
 				385C2945211FF38F0010B4BA /* NavigationController.swift in Sources */,
+				1A9CBCBD2AA58802004E9C11 /* CustomDiaryQuoteItem.swift in Sources */,
 				385C2948211FF38F0010B4BA /* ChatViewController.swift in Sources */,
 				385C2944211FF38F0010B4BA /* MessageContainerController.swift in Sources */,
 				383B9EB32172A1C4008AB91A /* MockUser.swift in Sources */,
