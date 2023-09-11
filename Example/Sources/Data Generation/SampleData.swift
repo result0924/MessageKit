@@ -269,10 +269,39 @@ final internal class SampleData {
         for _ in 0..<count {
             let uniqueID = UUID().uuidString
             let date = dateAddingRandomTime()
-            let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
-            let image = messageImages[randomNumberImage]
-            let randomSentence = Lorem.sentence()
-            let message = MockMessage(diaryQuote: CustomDiaryQuoteItem(image: image, text: randomSentence, actionString: "send"), user: system, messageId: uniqueID, date: date)
+            let inputString = "256 mg/dL"
+            let attributedString = NSMutableAttributedString(string: inputString)
+
+            if let range256 = inputString.range(of: "256") {
+                let largeFont = UIFont.systemFont(ofSize: 20)
+                let largeTextColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
+                let nsRange256 = NSRange(range256, in: inputString)
+                
+                attributedString.addAttribute(.font, value: largeFont, range: nsRange256)
+                attributedString.addAttribute(.foregroundColor, value: largeTextColor, range: nsRange256)
+            }
+
+            if let rangemgDL = inputString.range(of: "mg/dL") {
+                let smallFont = UIFont.systemFont(ofSize: 14)
+                let smallTextColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
+                let nsRangemgDL = NSRange(rangemgDL, in: inputString)
+                
+                attributedString.addAttribute(.font, value: smallFont, range: nsRangemgDL)
+                attributedString.addAttribute(.foregroundColor, value: smallTextColor, range: nsRangemgDL)
+            }
+            let randomSentence = "建議減少正餐醣類的份量，肉類和蔬菜幾乎不會影響血糖，可以多點一份肉類、沙拉，幫助穩定飯後血糖！"
+            let type = DiaryQuoteItemType.allCases.randomElement() ?? .photoAndText
+            var diaryQuoteItem: CustomDiaryQuoteItem.DiaryQuoteItem
+            let fakeURL = URL(string: "url")!
+            switch type {
+            case .photoAndText:
+                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL, fakeURL], recordType: "血糖", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
+            case .photoOnly:
+                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL], recordType: nil, recordContent: nil, actionString: "查看日記", replyContent: randomSentence)
+            case .textOnly:
+                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "體重", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
+            }
+            let message = MockMessage(diaryQuote: CustomDiaryQuoteItem(diaryQuoteItem: diaryQuoteItem), user: system, messageId: uniqueID, date: date)
             messages.append(message)
         }
         completion(messages)

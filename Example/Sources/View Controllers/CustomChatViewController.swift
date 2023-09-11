@@ -54,6 +54,7 @@ class CustomChatViewController: MessagesViewController {
         tapTextViewGesture.delegate = self
         tapTextViewGesture.numberOfTouchesRequired = 1
         messageInputBar.inputTextView.addGestureRecognizer(tapTextViewGesture)
+        messagesCollectionView.register(CustomDiaryQuoteMessageCell.self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +72,60 @@ class CustomChatViewController: MessagesViewController {
         super.viewDidDisappear(animated)
         MockSocket.shared.disconnect()
         audioController.stopAnyOngoingPlaying()
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        guard let messagesCollectionView = collectionView as? MessagesCollectionView else {
+            fatalError("MessageKitError.notMessagesCollectionView")
+        }
+
+        guard let messagesDataSource = messagesCollectionView.messagesDataSource else {
+            fatalError("MessageKitError.nilMessagesDataSource")
+        }
+
+        if isSectionReservedForTypingIndicator(indexPath.section) {
+            return messagesDataSource.typingIndicator(at: indexPath, in: messagesCollectionView)
+        }
+
+        let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
+
+        switch message.kind {
+        case .text, .attributedText, .emoji:
+            let cell = messagesCollectionView.dequeueReusableCell(TextMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .media:
+            let cell = messagesCollectionView.dequeueReusableCell(MediaMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .photo, .loading:
+            let cell = messagesCollectionView.dequeueReusableCell(PhotoMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .template:
+            let cell = messagesCollectionView.dequeueReusableCell(TemplateMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .diaryQuote:
+            let cell = messagesCollectionView.dequeueReusableCell(CustomDiaryQuoteMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .location:
+            let cell = messagesCollectionView.dequeueReusableCell(LocationMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .audio:
+            let cell = messagesCollectionView.dequeueReusableCell(AudioMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .contact:
+            let cell = messagesCollectionView.dequeueReusableCell(ContactMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .custom:
+            return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
+        }
     }
 
     func loadFirstMessages() {

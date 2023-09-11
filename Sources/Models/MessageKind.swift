@@ -52,7 +52,7 @@ public enum MessageKind {
     case template(TemplateItem)
     
     /// A diary quote message
-    case diaryQuote(DiaryQuoteItem)
+    case diaryQuote(DiaryQuoteMessageItem)
 
     /// A location message.
     case location(LocationItem)

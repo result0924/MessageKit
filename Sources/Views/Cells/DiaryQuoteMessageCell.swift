@@ -41,7 +41,6 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let label = UILabel()
         label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        label.text = "回覆了你的日記"
         
         return label
     }()
@@ -59,7 +58,6 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let label = UILabel()
         label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.text = "2023年06月13日 上午11:38"
         
         return label
     }()
@@ -68,25 +66,14 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let label = UILabel()
         label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.text = "午餐前"
         
         return label
-    }()
-    
-    open var imageStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 3
-        stackView.distribution = .fillEqually
-        
-        return stackView
     }()
     
     open var diaryOneImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 88, height: 88))
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(imageLiteralResourceName: "img1")
         return imageView
     }()
     
@@ -94,7 +81,6 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 88, height: 88))
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(imageLiteralResourceName: "img2")
         return imageView
     }()
     
@@ -102,39 +88,13 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let label = UILabel()
         label.textColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.text = "血糖"
         
         return label
     }()
     
     open var itemDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
-        let inputString = "256 mg/dL"
-        let attributedString = NSMutableAttributedString(string: inputString)
-        let largeFont = UIFont.systemFont(ofSize: 20, weight: .medium)
-        let largeTextColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
-
-        if let range256 = inputString.range(of: "256") {
-            let largeFont = UIFont.systemFont(ofSize: 20)
-            let largeTextColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
-            let nsRange256 = NSRange(range256, in: inputString)
-            
-            attributedString.addAttribute(.font, value: largeFont, range: nsRange256)
-            attributedString.addAttribute(.foregroundColor, value: largeTextColor, range: nsRange256)
-        }
-
-        if let rangemgDL = inputString.range(of: "mg/dL") {
-            let smallFont = UIFont.systemFont(ofSize: 14)
-            let smallTextColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
-            let nsRangemgDL = NSRange(rangemgDL, in: inputString)
-            
-            attributedString.addAttribute(.font, value: smallFont, range: nsRangemgDL)
-            attributedString.addAttribute(.foregroundColor, value: smallTextColor, range: nsRangemgDL)
-        }
-        
-        label.attributedText = attributedString
-        
+    
         return label
     }()
     
@@ -167,7 +127,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         return textView
     }()
     
-    open var emptyView: UIView = {
+    open var quoteBottomPaddingView: UIView = {
         let emptyView = UIView()
         return emptyView
     }()
@@ -181,23 +141,32 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         containerViewOne.addSubview(quoteLineView)
         containerViewOne.addSubview(recordAtLabel)
         containerViewOne.addSubview(mealTypeLabel)
-        imageStackView.addArrangedSubview(diaryOneImageView)
-        imageStackView.addArrangedSubview(diaryTwoImageView)
-        containerViewOne.addSubview(imageStackView)
+        containerViewOne.addSubview(diaryOneImageView)
+        containerViewOne.addSubview(diaryTwoImageView)
         containerViewOne.addSubview(itemLabel)
         containerViewOne.addSubview(itemDescriptionLabel)
-        containerViewOne.addSubview(lineView)
+        actionLabel.addSubview(lineView)
         containerViewOne.addSubview(actionLabel)
         messageContainerView.addSubview(containerViewOne)
-        messageContainerView.addSubview(emptyView)
+        messageContainerView.addSubview(quoteBottomPaddingView)
         containerViewTwo.addSubview(messageLabel)
         messageContainerView.addSubview(containerViewTwo)
     }
 
     open override func prepareForReuse() {
         super.prepareForReuse()
+        titleLabel.text = nil
+        recordAtLabel.text = nil
+        mealTypeLabel.text = nil
+        
         messageLabel.attributedText = nil
         actionLabel.attributedText = nil
+        itemLabel.text = nil
+        itemDescriptionLabel.attributedText = nil
+        diaryOneImageView.image = nil
+        diaryTwoImageView.image = nil
+        diaryOneImageView.frame = .zero
+        diaryTwoImageView.frame = .zero
     }
 
     /// Handle tap gesture on contentView and its subviews.
@@ -228,40 +197,45 @@ open class DiaryQuoteMessageCell: MessageContentCell {
 
         switch message.kind {
         case .diaryQuote(let item):
+            setupText(item: item)
             let bubbleWidth = messageContainerView.frame.size.width
-            containerViewOne.frame = CGRectMake(0, 0, bubbleWidth, 288)
+            containerViewOne.frame = CGRectMake(0, 0, bubbleWidth, item.quoteHeight)
             replyImageView.frame = CGRectMake(12, 12, 24, 24)
             titleLabel.frame = CGRectMake(40, 12, bubbleWidth - 40 - 12, 24)
-            quoteLineView.frame = CGRectMake(16, 48, 4, 183)
             recordAtLabel.frame = CGRectMake(36, 48, bubbleWidth - 36 - 12, 17)
             mealTypeLabel.frame = CGRectMake(36, 65, bubbleWidth - 36 - 12, 22)
-            imageStackView.frame = CGRectMake(36, 93, 179, 88)
-            imageStackView.addArrangedSubview(diaryOneImageView)
-            imageStackView.addArrangedSubview(diaryTwoImageView)
-            itemLabel.frame = CGRectMake(36, 187, bubbleWidth - 36 - 12, 20)
-            itemDescriptionLabel.frame = CGRectMake(36, 207, bubbleWidth - 36 - 12, 24)
-            lineView.frame = CGRectMake(0, 243, bubbleWidth, 0.5)
-            lineView.backgroundColor = UIColor(red: 204 / 255, green: 204 / 255, blue: 204 / 255, alpha: 1)
-            actionLabel.frame = CGRect(x: 0, y: 243.5, width: bubbleWidth, height: 45)
-            actionLabel.attributedText = NSAttributedString(string: "查看日記", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0.169, green: 0.71, blue: 0.608, alpha: 1) as Any, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)])
-            actionLabel.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+            
+            switch item.type {
+            case .photoAndText:
+                quoteLineView.frame = CGRectMake(16, 48, 4, 183)
+                setupImageView(item: item)
+                itemLabel.frame = CGRectMake(36, 187, bubbleWidth - 36 - 12, 20)
+                itemDescriptionLabel.frame = CGRectMake(36, 207, bubbleWidth - 36 - 12, 24)
+                setupItemText(item: item)
+            case .photoOnly:
+                quoteLineView.frame = CGRectMake(16, 48, 4, 133)
+                setupImageView(item: item)
+            case .textOnly:
+                quoteLineView.frame = CGRectMake(16, 48, 4, 89)
+                itemLabel.frame = CGRectMake(36, 93, bubbleWidth - 36 - 12, 20)
+                itemDescriptionLabel.frame = CGRectMake(36, 113, bubbleWidth - 36 - 12, 24)
+                setupItemText(item: item)
+            }
+            lineView.frame = CGRectMake(0, 0, bubbleWidth, 0.5)
+            lineView.backgroundColor = item.lineColor
+            actionLabel.frame = CGRect(x: 0, y: item.quoteOriginY, width: bubbleWidth, height: item.bottomTextViewHeight)
+            actionLabel.attributedText = item.actionString
+            actionLabel.textContainerInset = item.bottomTextViewContentInset
             actionLabel.textAlignment = .center
-            emptyView.frame = CGRect(x:0, y:288, width: bubbleWidth, height: 8)
-            containerViewTwo.frame = CGRect(x:0, y:296, width: bubbleWidth, height: 132)
-            messageLabel.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: 132)
-            let message = "建議減少正餐醣類的份量，肉類和蔬菜幾乎不會影響血糖，可以多點一份肉類、沙拉，幫助穩定飯後血糖！"
-            let messageAttributedString = NSMutableAttributedString(string: message, attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0.267, green: 0.267, blue: 0.267, alpha: 1) as Any, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)])
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.minimumLineHeight = 24
-            paragraphStyle.maximumLineHeight = 24
-            messageAttributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: message.count))
-            messageLabel.attributedText = messageAttributedString
-            messageLabel.textInsets = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
+            let quoteBottomPaddingViewOriginY = item.quoteOriginY + item.bottomTextViewHeight
+            quoteBottomPaddingView.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY, width: bubbleWidth, height: item.quoteBottomPadding)
+            containerViewTwo.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY + item.quoteBottomPadding, width: bubbleWidth, height: item.messageHeight)
+            messageLabel.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: item.messageHeight)
+            messageLabel.attributedText = item.text
+            messageLabel.textInsets = item.bottomTextViewContentInset
         default:
             break
         }
-
-        displayDelegate.configurePhotoMessageImageView(replyImageView, for: message, at: indexPath, in: messagesCollectionView)
         
         let enabledDetectors = displayDelegate.enabledDetectors(for: message, at: indexPath, in: messagesCollectionView)
 
@@ -279,6 +253,28 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     open override func cellContentView(canHandle touchPoint: CGPoint) -> Bool {
         let translateTouchLocation = CGPoint(x: touchPoint.x, y: touchPoint.y - replyImageView.frame.size.height)
         return messageLabel.handleGesture(translateTouchLocation)
+    }
+    
+    private func setupText(item: DiaryQuoteMessageItem) {
+        titleLabel.text = item.title
+        recordAtLabel.text = item.recordAt
+        mealTypeLabel.text = item.mealTypeAndPeriod
+    }
+    
+    private func setupItemText(item: DiaryQuoteMessageItem) {
+        itemLabel.text = item.recordType
+        itemDescriptionLabel.attributedText = item.recordContent
+    }
+    
+    private func setupImageView(item: DiaryQuoteMessageItem) {
+        guard !item.photoURLs.isEmpty else {
+            return
+        }
+        
+        for index in stride(from: 0, to: item.photoURLs.count, by: 1) {
+            let imageView = (index == 0) ? diaryOneImageView : diaryTwoImageView
+            imageView.frame = CGRect(x: 36 + CGFloat(index) * 91, y: 93, width: 88, height: 88)
+        }
     }
 }
 
