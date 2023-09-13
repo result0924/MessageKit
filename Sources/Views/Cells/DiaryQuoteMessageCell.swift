@@ -8,8 +8,6 @@
 import UIKit
 
 open class DiaryQuoteMessageCell: MessageContentCell {
-    private var onlyHandleTextLink: Bool = false
-    
     /// The `MessageCellDelegate` for the cell.
     open override weak var delegate: MessageCellDelegate? {
         didSet {
@@ -19,6 +17,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var containerViewOne: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(red: 0.957, green: 0.957, blue: 0.957, alpha: 1)
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
@@ -28,6 +27,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var replyImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         let assetBundle = Bundle.messageKitAssetBundle()
@@ -39,6 +39,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var titleLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         
@@ -47,6 +48,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var quoteLineView: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
         view.layer.cornerRadius = 2
         view.layer.masksToBounds = true
@@ -56,6 +58,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var recordAtLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         
@@ -64,6 +67,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var mealTypeLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         
@@ -71,14 +75,16 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     }()
     
     open var diaryOneImageView: UIImageView = {
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 88, height: 88))
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
     
     open var diaryTwoImageView: UIImageView = {
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 88, height: 88))
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
@@ -86,6 +92,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var itemLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         
@@ -94,7 +101,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var itemDescriptionLabel: UILabel = {
         let label = UILabel()
-    
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -131,6 +138,18 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let emptyView = UIView()
         return emptyView
     }()
+    
+    private var onlyHandleTextLink: Bool = false
+    private var containerViewOneHeightLayout: NSLayoutConstraint?
+    private var containerViewOneWidthLayout: NSLayoutConstraint?
+    private var titleLabelWidthLayout: NSLayoutConstraint?
+    private var recordAtLabelWidthLayout: NSLayoutConstraint?
+    private var mealTypeLabelWidthLayout: NSLayoutConstraint?
+    private var quoteLineViewHeightLayout: NSLayoutConstraint?
+    private var itemLabelTopLayout: NSLayoutConstraint?
+    private var itemLabelWidthLayout: NSLayoutConstraint?
+    private var itemDescriptionLabelTopLayout: NSLayoutConstraint?
+    private var itemDescriptionLabelWidthLayout: NSLayoutConstraint?
 
     // MARK: - Methods
 
@@ -151,6 +170,16 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         messageContainerView.addSubview(quoteBottomPaddingView)
         containerViewTwo.addSubview(messageLabel)
         messageContainerView.addSubview(containerViewTwo)
+        setupContainerViewOneConstraints(frame: .zero)
+        setupReplyImageViewConstraints(frame: CGRectMake(12, 12, 24, 24))
+        setupTitleLabelConstraints(frame: CGRectMake(40, 12, 0, 24))
+        setupRecordAtLabelConstraints(frame: CGRectMake(36, 48, 0, 17))
+        setupMealTypeLabelConstraints(frame: CGRectMake(36, 65, 0, 22))
+        setupQuoteLineViewConstraints(frame: CGRectMake(16, 48, 4, 0))
+        setupDiaryOneImageViewConstraints(frame: CGRect(x: 36, y: 93, width: 88, height: 88))
+        setupDiaryTwoImageViewConstraints(frame: CGRect(x: 127, y: 93, width: 88, height: 88))
+        setupItemLabelConstraints(frame: CGRectMake(36, 0, 0, 20))
+        setupItemDescriptionLabelConstraints(frame: CGRectMake(36, 0, 0, 24))
     }
 
     open override func prepareForReuse() {
@@ -158,15 +187,15 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         titleLabel.text = nil
         recordAtLabel.text = nil
         mealTypeLabel.text = nil
-        
         messageLabel.attributedText = nil
         actionLabel.attributedText = nil
         itemLabel.text = nil
         itemDescriptionLabel.attributedText = nil
         diaryOneImageView.image = nil
         diaryTwoImageView.image = nil
-        diaryOneImageView.frame = .zero
-        diaryTwoImageView.frame = .zero
+        diaryOneImageView.isHidden = true
+        diaryTwoImageView.isHidden = true
+        isHiddenItemAndItemDescriptionLabel(isHidden: true)
     }
 
     /// Handle tap gesture on contentView and its subviews.
@@ -199,27 +228,36 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         case .diaryQuote(let item):
             setupText(item: item)
             let bubbleWidth = messageContainerView.frame.size.width
-            containerViewOne.frame = CGRectMake(0, 0, bubbleWidth, item.quoteHeight)
-            replyImageView.frame = CGRectMake(12, 12, 24, 24)
-            titleLabel.frame = CGRectMake(40, 12, bubbleWidth - 40 - 12, 24)
-            recordAtLabel.frame = CGRectMake(36, 48, bubbleWidth - 36 - 12, 17)
-            mealTypeLabel.frame = CGRectMake(36, 65, bubbleWidth - 36 - 12, 22)
+            containerViewOneWidthLayout?.constant = bubbleWidth
+            containerViewOneHeightLayout?.constant = item.quoteHeight
+            let titleLabelWidth = bubbleWidth - 40 - 12
+            let labelWidth = bubbleWidth - 36 - 12
+            titleLabelWidthLayout?.constant = titleLabelWidth
+            recordAtLabelWidthLayout?.constant = labelWidth
+            mealTypeLabelWidthLayout?.constant = labelWidth
             
             switch item.type {
             case .photoAndText:
-                quoteLineView.frame = CGRectMake(16, 48, 4, 183)
+                quoteLineViewHeightLayout?.constant = 183
                 setupImageView(item: item)
-                itemLabel.frame = CGRectMake(36, 187, bubbleWidth - 36 - 12, 20)
-                itemDescriptionLabel.frame = CGRectMake(36, 207, bubbleWidth - 36 - 12, 24)
+                itemLabelTopLayout?.constant = 187
+                itemLabelWidthLayout?.constant = labelWidth
+                itemDescriptionLabelTopLayout?.constant = 207
+                itemDescriptionLabelWidthLayout?.constant = labelWidth
                 setupItemText(item: item)
+                isHiddenItemAndItemDescriptionLabel(isHidden: false)
             case .photoOnly:
-                quoteLineView.frame = CGRectMake(16, 48, 4, 133)
+                quoteLineViewHeightLayout?.constant = 133
                 setupImageView(item: item)
+                isHiddenItemAndItemDescriptionLabel(isHidden: true)
             case .textOnly:
-                quoteLineView.frame = CGRectMake(16, 48, 4, 89)
-                itemLabel.frame = CGRectMake(36, 93, bubbleWidth - 36 - 12, 20)
-                itemDescriptionLabel.frame = CGRectMake(36, 113, bubbleWidth - 36 - 12, 24)
+                quoteLineViewHeightLayout?.constant = 89
+                itemLabelTopLayout?.constant = 93
+                itemLabelWidthLayout?.constant = labelWidth
+                itemDescriptionLabelTopLayout?.constant = 113
+                itemDescriptionLabelWidthLayout?.constant = labelWidth
                 setupItemText(item: item)
+                isHiddenItemAndItemDescriptionLabel(isHidden: false)
             }
             lineView.frame = CGRectMake(0, 0, bubbleWidth, 0.5)
             lineView.backgroundColor = item.lineColor
@@ -273,8 +311,94 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         
         for index in stride(from: 0, to: item.photoURLs.count, by: 1) {
             let imageView = (index == 0) ? diaryOneImageView : diaryTwoImageView
-            imageView.frame = CGRect(x: 36 + CGFloat(index) * 91, y: 93, width: 88, height: 88)
+            imageView.isHidden = false
         }
     }
+    
+    private func setupContainerViewOneConstraints(frame: CGRect) {
+        containerViewOne.topAnchor.constraint(equalTo: messageContainerView.topAnchor, constant: frame.origin.y).isActive = true
+        containerViewOne.leadingAnchor.constraint(equalTo: messageContainerView.leadingAnchor, constant: frame.origin.x).isActive = true
+        containerViewOneWidthLayout = containerViewOne.widthAnchor.constraint(equalToConstant: frame.size.width)
+        containerViewOneWidthLayout?.isActive = true
+        containerViewOneHeightLayout = containerViewOne.heightAnchor.constraint(equalToConstant: frame.size.height)
+        containerViewOneHeightLayout?.isActive = true
+    }
+    
+    private func setupReplyImageViewConstraints(frame: CGRect) {
+        replyImageView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        replyImageView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        replyImageView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
+        replyImageView.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func setupTitleLabelConstraints(frame: CGRect) {
+        titleLabel.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        titleLabelWidthLayout = titleLabel.widthAnchor.constraint(equalToConstant: frame.size.width)
+        titleLabelWidthLayout?.isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func setupRecordAtLabelConstraints(frame: CGRect) {
+        recordAtLabel.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        recordAtLabel.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        recordAtLabelWidthLayout = recordAtLabel.widthAnchor.constraint(equalToConstant: frame.size.width)
+        recordAtLabelWidthLayout?.isActive = true
+        recordAtLabel.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func setupMealTypeLabelConstraints(frame: CGRect) {
+        mealTypeLabel.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        mealTypeLabel.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        mealTypeLabelWidthLayout = mealTypeLabel.widthAnchor.constraint(equalToConstant: frame.size.width)
+        mealTypeLabelWidthLayout?.isActive = true
+        mealTypeLabel.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func setupQuoteLineViewConstraints(frame: CGRect) {
+        quoteLineView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        quoteLineView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        quoteLineView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
+        quoteLineViewHeightLayout = quoteLineView.heightAnchor.constraint(equalToConstant: frame.size.height)
+        quoteLineViewHeightLayout?.isActive = true
+    }
+    
+    private func setupDiaryOneImageViewConstraints(frame: CGRect) {
+        diaryOneImageView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        diaryOneImageView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        diaryOneImageView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
+        diaryOneImageView.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func setupDiaryTwoImageViewConstraints(frame: CGRect) {
+        diaryTwoImageView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        diaryTwoImageView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        diaryTwoImageView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
+        diaryTwoImageView.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func setupItemLabelConstraints(frame: CGRect) {
+        itemLabelTopLayout = itemLabel.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y)
+        itemLabelTopLayout?.isActive = true
+        itemLabel.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        itemLabelWidthLayout = itemLabel.widthAnchor.constraint(equalToConstant: frame.size.width)
+        itemLabelWidthLayout?.isActive = true
+        itemLabel.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func setupItemDescriptionLabelConstraints(frame: CGRect) {
+        itemDescriptionLabelTopLayout = itemDescriptionLabel.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y)
+        itemDescriptionLabelTopLayout?.isActive = true
+        itemDescriptionLabel.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        itemDescriptionLabelWidthLayout = itemDescriptionLabel.widthAnchor.constraint(equalToConstant: frame.size.width)
+        itemDescriptionLabelWidthLayout?.isActive = true
+        itemDescriptionLabel.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+    }
+    
+    private func isHiddenItemAndItemDescriptionLabel(isHidden: Bool) {
+        itemLabel.isHidden = isHidden
+        itemDescriptionLabel.isHidden = isHidden
+    }
+    
 }
 
