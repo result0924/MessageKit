@@ -84,6 +84,7 @@
 
 /* Begin PBXFileReference section */
 		0364943D08CDBE656E6F6DF8 /* Pods-ChatExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatExampleTests/Pods-ChatExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A717F652AB19A6300D41F6F /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1A9CBCBA2AA587B8004E9C11 /* CustomTemplateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTemplateItem.swift; sourceTree = "<group>"; };
 		1A9CBCBC2AA58802004E9C11 /* CustomDiaryQuoteItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDiaryQuoteItem.swift; sourceTree = "<group>"; };
 		1AACF50C2AB0726C0093E53A /* CustomDiaryQuoteMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDiaryQuoteMessageCell.swift; sourceTree = "<group>"; };
@@ -452,6 +453,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = 882B5E2A1CF7D4B900B6E160;
 			productRefGroup = 882B5E341CF7D4B900B6E160 /* Products */;
@@ -660,6 +662,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				882B5E7B1CF7D53600B6E160 /* Base */,
+				1A717F652AB19A6300D41F6F /* ar */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
