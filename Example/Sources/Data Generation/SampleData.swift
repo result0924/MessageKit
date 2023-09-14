@@ -289,7 +289,7 @@ final internal class SampleData {
                 attributedString.addAttribute(.font, value: smallFont, range: nsRangemgDL)
                 attributedString.addAttribute(.foregroundColor, value: smallTextColor, range: nsRangemgDL)
             }
-            let randomSentence = "建議減少正餐醣類的份量，肉類和蔬菜幾乎不會影響血糖，可以多點一份肉類、沙拉，幫助穩定飯後血糖！"
+            let randomSentence = "建議減少正餐醣類的份量，肉類和蔬菜幾乎不會影響血糖，可以多點一份肉類、沙拉，幫助穩定飯後血糖！http://google.com"
             let type = DiaryQuoteItemType.allCases.randomElement() ?? .photoAndText
             var diaryQuoteItem: CustomDiaryQuoteItem.DiaryQuoteItem
             let fakeURL = URL(string: "url")!

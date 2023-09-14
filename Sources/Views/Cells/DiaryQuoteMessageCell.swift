@@ -150,6 +150,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     private var itemLabelWidthLayout: NSLayoutConstraint?
     private var itemDescriptionLabelTopLayout: NSLayoutConstraint?
     private var itemDescriptionLabelWidthLayout: NSLayoutConstraint?
+    private var containerViewTwoOriginY: CGFloat = 0
 
     // MARK: - Methods
 
@@ -267,7 +268,8 @@ open class DiaryQuoteMessageCell: MessageContentCell {
             actionLabel.textAlignment = .center
             let quoteBottomPaddingViewOriginY = item.quoteOriginY + item.bottomTextViewHeight
             quoteBottomPaddingView.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY, width: bubbleWidth, height: item.quoteBottomPadding)
-            containerViewTwo.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY + item.quoteBottomPadding, width: bubbleWidth, height: item.messageHeight)
+            containerViewTwoOriginY = quoteBottomPaddingViewOriginY + item.quoteBottomPadding
+            containerViewTwo.frame = CGRect(x:0, y: containerViewTwoOriginY, width: bubbleWidth, height: item.messageHeight)
             messageLabel.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: item.messageHeight)
             messageLabel.attributedText = item.text
             messageLabel.textInsets = item.bottomTextViewContentInset
@@ -289,7 +291,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     /// Used to handle the cell's contentView's tap gesture.
     /// Return false when the contentView does not need to handle the gesture.
     open override func cellContentView(canHandle touchPoint: CGPoint) -> Bool {
-        let translateTouchLocation = CGPoint(x: touchPoint.x, y: touchPoint.y - replyImageView.frame.size.height)
+        let translateTouchLocation = CGPoint(x: touchPoint.x, y: touchPoint.y - containerViewTwoOriginY)
         return messageLabel.handleGesture(translateTouchLocation)
     }
     
