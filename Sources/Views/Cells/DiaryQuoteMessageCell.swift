@@ -74,7 +74,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         return label
     }()
     
-    open var diaryOneImageView: UIImageView = {
+    open var diaryFirstImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -82,7 +82,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         return imageView
     }()
     
-    open var diaryTwoImageView: UIImageView = {
+    open var diarySecondImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -161,8 +161,8 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         containerViewOne.addSubview(quoteLineView)
         containerViewOne.addSubview(recordAtLabel)
         containerViewOne.addSubview(mealTypeLabel)
-        containerViewOne.addSubview(diaryOneImageView)
-        containerViewOne.addSubview(diaryTwoImageView)
+        containerViewOne.addSubview(diaryFirstImageView)
+        containerViewOne.addSubview(diarySecondImageView)
         containerViewOne.addSubview(itemLabel)
         containerViewOne.addSubview(itemDescriptionLabel)
         actionLabel.addSubview(lineView)
@@ -192,10 +192,10 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         actionLabel.attributedText = nil
         itemLabel.text = nil
         itemDescriptionLabel.attributedText = nil
-        diaryOneImageView.image = nil
-        diaryTwoImageView.image = nil
-        diaryOneImageView.isHidden = true
-        diaryTwoImageView.isHidden = true
+        diaryFirstImageView.image = nil
+        diarySecondImageView.image = nil
+        diaryFirstImageView.isHidden = true
+        diarySecondImageView.isHidden = true
         isHiddenItemAndItemDescriptionLabel(isHidden: true)
     }
 
@@ -312,7 +312,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         }
         
         for index in stride(from: 0, to: item.photoURLs.count, by: 1) {
-            let imageView = (index == 0) ? diaryOneImageView : diaryTwoImageView
+            let imageView = (index == 0) ? diaryFirstImageView : diarySecondImageView
             imageView.isHidden = false
         }
     }
@@ -366,17 +366,17 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     }
     
     private func setupDiaryOneImageViewConstraints(frame: CGRect) {
-        diaryOneImageView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
-        diaryOneImageView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
-        diaryOneImageView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
-        diaryOneImageView.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+        diaryFirstImageView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        diaryFirstImageView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        diaryFirstImageView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
+        diaryFirstImageView.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
     }
     
     private func setupDiaryTwoImageViewConstraints(frame: CGRect) {
-        diaryTwoImageView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
-        diaryTwoImageView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
-        diaryTwoImageView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
-        diaryTwoImageView.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
+        diarySecondImageView.topAnchor.constraint(equalTo: containerViewOne.topAnchor, constant: frame.origin.y).isActive = true
+        diarySecondImageView.leadingAnchor.constraint(equalTo: containerViewOne.leadingAnchor, constant: frame.origin.x).isActive = true
+        diarySecondImageView.widthAnchor.constraint(equalToConstant: frame.size.width).isActive = true
+        diarySecondImageView.heightAnchor.constraint(equalToConstant: frame.size.height).isActive = true
     }
     
     private func setupItemLabelConstraints(frame: CGRect) {

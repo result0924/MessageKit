@@ -16,7 +16,7 @@ class CustomDiaryQuoteMessageCell: DiaryQuoteMessageCell {
         switch message.kind {
         case .diaryQuote(let item):
             for (index, _) in item.photoURLs.enumerated() {
-                let imageView = (index == 0) ? diaryOneImageView : diaryTwoImageView
+                let imageView = (index == 0) ? diaryFirstImageView : diarySecondImageView
                 let image = (index == 0) ? UIImage(imageLiteralResourceName: "img1") : UIImage(imageLiteralResourceName: "img2")
                 imageView.image = image
             }
