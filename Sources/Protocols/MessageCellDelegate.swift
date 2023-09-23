@@ -168,6 +168,12 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     /// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
     /// method `messageForItem(at:indexPath:messagesCollectionView)`.
     func didTapActionView(in cell: TemplateMessageCell)
+    
+    /// Triggered when a tap occurs on the action text view from diary quote cell.
+    ///
+    /// - Parameters:
+    ///   - cell: The diary quote cell where the touch occurred.
+    func didTapDiaryQuoteActionView(in cell: DiaryQuoteMessageCell)
 }
 
 public extension MessageCellDelegate {
@@ -195,6 +201,8 @@ public extension MessageCellDelegate {
     func didStopAudio(in cell: AudioMessageCell) {}
 
     func didTapActionView(in cell: TemplateMessageCell) {}
+    
+    func didTapDiaryQuoteActionView(in cell: DiaryQuoteMessageCell) {}
 
     func didTapMessageBottomLabel(in cell: MessageCollectionViewCell) {}
     
