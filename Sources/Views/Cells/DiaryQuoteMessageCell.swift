@@ -18,7 +18,6 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     open var containerViewOne: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(red: 0.957, green: 0.957, blue: 0.957, alpha: 1)
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         
@@ -40,8 +39,8 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     open var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         
         return label
     }()
@@ -59,7 +58,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     open var recordAtLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
+        label.textColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         
         return label
@@ -68,8 +67,8 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     open var mealTypeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
         return label
     }()
@@ -78,6 +77,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 4
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -86,6 +86,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 4
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -93,7 +94,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     open var itemLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 0.365, green: 0.404, blue: 0.416, alpha: 1)
+        label.textColor = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         
         return label
@@ -107,7 +108,6 @@ open class DiaryQuoteMessageCell: MessageContentCell {
     
     open var containerViewTwo: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0.957, green: 0.957, blue: 0.957, alpha: 1)
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         
@@ -172,15 +172,18 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         containerViewTwo.addSubview(messageLabel)
         messageContainerView.addSubview(containerViewTwo)
         setupContainerViewOneConstraints(frame: .zero)
+        let itemOriginX: CGFloat = 32
+        let photoOriginY: CGFloat = 88
+        let photoLength: CGFloat = 88
         setupReplyImageViewConstraints(frame: CGRectMake(12, 12, 24, 24))
         setupTitleLabelConstraints(frame: CGRectMake(40, 12, 0, 24))
-        setupRecordAtLabelConstraints(frame: CGRectMake(36, 48, 0, 17))
-        setupMealTypeLabelConstraints(frame: CGRectMake(36, 65, 0, 22))
+        setupRecordAtLabelConstraints(frame: CGRectMake(itemOriginX, 48, 0, 16))
+        setupMealTypeLabelConstraints(frame: CGRectMake(itemOriginX, 62, 0, 18))
         setupQuoteLineViewConstraints(frame: CGRectMake(16, 48, 4, 0))
-        setupDiaryOneImageViewConstraints(frame: CGRect(x: 36, y: 93, width: 88, height: 88))
-        setupDiaryTwoImageViewConstraints(frame: CGRect(x: 127, y: 93, width: 88, height: 88))
-        setupItemLabelConstraints(frame: CGRectMake(36, 0, 0, 20))
-        setupItemDescriptionLabelConstraints(frame: CGRectMake(36, 0, 0, 24))
+        setupDiaryOneImageViewConstraints(frame: CGRect(x: itemOriginX, y: photoOriginY, width: photoLength, height: photoLength))
+        setupDiaryTwoImageViewConstraints(frame: CGRect(x: 127, y: photoOriginY, width: photoLength, height: photoLength))
+        setupItemLabelConstraints(frame: CGRectMake(itemOriginX, 0, 0, 16))
+        setupItemDescriptionLabelConstraints(frame: CGRectMake(itemOriginX, 0, 0, 23))
     }
 
     open override func prepareForReuse() {
@@ -231,34 +234,39 @@ open class DiaryQuoteMessageCell: MessageContentCell {
             let bubbleWidth = messageContainerView.frame.size.width
             containerViewOneWidthLayout?.constant = bubbleWidth
             containerViewOneHeightLayout?.constant = item.quoteHeight
-            let titleLabelWidth = bubbleWidth - 40 - 12
-            let labelWidth = bubbleWidth - 36 - 12
+            let titleLabelWidth = bubbleWidth - 36 - 12
+            let labelWidth = bubbleWidth - 32 - 12
             titleLabelWidthLayout?.constant = titleLabelWidth
             recordAtLabelWidthLayout?.constant = labelWidth
             mealTypeLabelWidthLayout?.constant = labelWidth
+            containerViewOne.backgroundColor = item.containerViewBackgroundColor
+            containerViewTwo.backgroundColor = item.containerViewBackgroundColor
             
             switch item.type {
             case .photoAndText:
-                quoteLineViewHeightLayout?.constant = 183
+                quoteLineViewHeightLayout?.constant = 173
                 setupImageView(item: item)
-                itemLabelTopLayout?.constant = 187
+                itemLabelTopLayout?.constant = 182
                 itemLabelWidthLayout?.constant = labelWidth
-                itemDescriptionLabelTopLayout?.constant = 207
+                itemDescriptionLabelTopLayout?.constant = 198
                 itemDescriptionLabelWidthLayout?.constant = labelWidth
                 setupItemText(item: item)
                 isHiddenItemAndItemDescriptionLabel(isHidden: false)
             case .photoOnly:
-                quoteLineViewHeightLayout?.constant = 133
+                quoteLineViewHeightLayout?.constant = 128
                 setupImageView(item: item)
                 isHiddenItemAndItemDescriptionLabel(isHidden: true)
             case .textOnly:
-                quoteLineViewHeightLayout?.constant = 89
-                itemLabelTopLayout?.constant = 93
+                quoteLineViewHeightLayout?.constant = 79
+                itemLabelTopLayout?.constant = 88
                 itemLabelWidthLayout?.constant = labelWidth
-                itemDescriptionLabelTopLayout?.constant = 113
+                itemDescriptionLabelTopLayout?.constant = 104
                 itemDescriptionLabelWidthLayout?.constant = labelWidth
                 setupItemText(item: item)
                 isHiddenItemAndItemDescriptionLabel(isHidden: false)
+            case .unKnown:
+                quoteLineViewHeightLayout?.constant = 34
+                isHiddenItemAndItemDescriptionLabel(isHidden: true)
             }
             lineView.frame = CGRectMake(0, 0, bubbleWidth, 0.5)
             lineView.backgroundColor = item.lineColor
