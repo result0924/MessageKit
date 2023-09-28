@@ -89,7 +89,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
             diaryQuoteHeight = 139
         case .photoOnly:
             diaryQuoteHeight = 188
-        case .unKnown:
+        case .unknown:
             diaryQuoteHeight = 94
         }
         

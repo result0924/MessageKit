@@ -264,7 +264,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
                 itemDescriptionLabelWidthLayout?.constant = labelWidth
                 setupItemText(item: item)
                 isHiddenItemAndItemDescriptionLabel(isHidden: false)
-            case .unKnown:
+            case .unknown:
                 quoteLineViewHeightLayout?.constant = 34
                 isHiddenItemAndItemDescriptionLabel(isHidden: true)
             }

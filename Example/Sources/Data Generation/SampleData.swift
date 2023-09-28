@@ -300,7 +300,7 @@ final internal class SampleData {
                 diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL], recordType: nil, recordContent: nil, actionString: "查看日記", replyContent: randomSentence)
             case .textOnly:
                 diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "體重", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
-            case .unKnown:
+            case .unknown:
                 diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
             }
             let message = MockMessage(diaryQuote: CustomDiaryQuoteItem(diaryQuoteItem: diaryQuoteItem), user: system, messageId: uniqueID, date: date)

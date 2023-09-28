@@ -24,7 +24,7 @@ public enum DiaryQuoteItemType: CaseIterable {
     case photoOnly
     
     /// A situation that should not occur.
-    case unKnown
+    case unknown
 }
 
 public protocol DiaryQuoteMessageItem: MessageItem, ActionItem {
