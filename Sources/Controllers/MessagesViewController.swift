@@ -419,7 +419,10 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
         case .photo(let mediaItem):
             pasteBoard.image = mediaItem.image ?? mediaItem.placeholderImage
         case .template(let templateItem):
+            pasteBoard.string = templateItem.text.string
             pasteBoard.image = templateItem.image ?? templateItem.placeholderImage
+        case .diaryQuote(let diaryQuoteItem):
+            pasteBoard.string = diaryQuoteItem.text.string
         default:
             break
         }
