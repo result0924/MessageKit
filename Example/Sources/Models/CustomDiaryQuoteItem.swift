@@ -10,6 +10,7 @@ import Foundation
 import MessageKit
 
 struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
+    
     struct DiaryQuoteItem {
         let type: DiaryQuoteItemType
         let title: String
@@ -42,6 +43,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
     let quoteBottomPadding: CGFloat
     let messageHeight: CGFloat
     let size: CGSize
+    let containerViewBackgroundColor: UIColor
 
     init(diaryQuoteItem: CustomDiaryQuoteItem.DiaryQuoteItem) {
         self.type = diaryQuoteItem.type
@@ -55,6 +57,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         self.onlyHandleTextLink = true
         self.textViewContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
         self.bottomTextViewContentInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
+        self.containerViewBackgroundColor = UIColor(red: 244 / 255, green: 244 / 255, blue: 244 / 255, alpha: 1)
         let attributedTextString = NSAttributedString.init(string: diaryQuoteItem.replyContent, attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .regular)])
         self.text = attributedTextString
         
@@ -81,11 +84,13 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         
         switch type {
         case .photoAndText:
-            diaryQuoteHeight = 243
+            diaryQuoteHeight = 233
         case .textOnly:
-            diaryQuoteHeight = 149
+            diaryQuoteHeight = 139
         case .photoOnly:
-            diaryQuoteHeight = 193
+            diaryQuoteHeight = 188
+        case .unknown:
+            diaryQuoteHeight = 94
         }
         
         self.quoteOriginY = diaryQuoteHeight

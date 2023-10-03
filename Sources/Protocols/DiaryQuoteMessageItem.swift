@@ -22,6 +22,9 @@ public enum DiaryQuoteItemType: CaseIterable {
 
     /// An item that includes a photo only.
     case photoOnly
+    
+    /// A situation that should not occur.
+    case unknown
 }
 
 public protocol DiaryQuoteMessageItem: MessageItem, ActionItem {
@@ -37,4 +40,5 @@ public protocol DiaryQuoteMessageItem: MessageItem, ActionItem {
     var quoteBottomPadding: CGFloat { get }
     var messageHeight: CGFloat { get }
     var size: CGSize { get }
+    var containerViewBackgroundColor: UIColor { get }
 }
