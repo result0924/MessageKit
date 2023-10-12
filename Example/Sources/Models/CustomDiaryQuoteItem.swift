@@ -43,6 +43,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
     let quoteBottomPadding: CGFloat
     let messageHeight: CGFloat
     let size: CGSize
+    let replyTextWidth: CGFloat
     let containerViewBackgroundColor: UIColor
 
     init(diaryQuoteItem: CustomDiaryQuoteItem.DiaryQuoteItem) {
@@ -99,7 +100,10 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         self.quoteBottomPadding = 8
         self.quoteHeight = diaryQuoteHeight + self.bottomTextViewHeight
         self.messageHeight = self.textViewHeight
+        let boundingRect = attributedTextString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.zero), options: [NSStringDrawingOptions.usesLineFragmentOrigin], context: nil)
+        self.replyTextWidth = ceil(boundingRect.width) + self.textViewContentInset.left + self.textViewContentInset.right
         self.size = CGSize(width: maxBubbleWidth, height: self.quoteHeight + self.quoteBottomPadding + self.messageHeight)
     }
+    
 }
 

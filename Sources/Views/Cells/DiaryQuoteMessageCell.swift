@@ -279,8 +279,9 @@ open class DiaryQuoteMessageCell: MessageContentCell {
             let quoteBottomPaddingViewOriginY = item.quoteOriginY + item.bottomTextViewHeight
             quoteBottomPaddingView.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY, width: bubbleWidth, height: item.quoteBottomPadding)
             containerViewTwoOriginY = quoteBottomPaddingViewOriginY + item.quoteBottomPadding
-            containerViewTwo.frame = CGRect(x:0, y: containerViewTwoOriginY, width: bubbleWidth, height: item.messageHeight)
-            messageLabel.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: item.messageHeight)
+            let messageLabelWidth = item.replyTextWidth < bubbleWidth ? item.replyTextWidth : bubbleWidth
+            containerViewTwo.frame = CGRect(x:0, y: containerViewTwoOriginY, width: messageLabelWidth, height: item.messageHeight)
+            messageLabel.frame = CGRect(x: 0, y: 0, width: messageLabelWidth, height: item.messageHeight)
             messageLabel.attributedText = item.text
             messageLabel.textInsets = item.textViewContentInset
         default:
