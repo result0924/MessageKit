@@ -293,11 +293,12 @@ final internal class SampleData {
             let type = DiaryQuoteItemType.allCases.randomElement() ?? .photoAndText
             var diaryQuoteItem: CustomDiaryQuoteItem.DiaryQuoteItem
             let fakeURL = URL(string: "url")!
+            let fakeRecordAtText = "2023年06月13日 上午11:38"
             switch type {
             case .photoAndText:
-                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL, fakeURL], recordType: "血糖", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
+                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: fakeRecordAtText, mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL, fakeURL], recordType: "血糖", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
             case .photoOnly:
-                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL], recordType: nil, recordContent: nil, actionString: "查看日記", replyContent: randomSentence)
+                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: fakeRecordAtText, mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL], recordType: nil, recordContent: nil, actionString: "查看日記", replyContent: randomSentence)
             case .textOnly:
                 diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "體重", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
             case .unknown:

@@ -60,6 +60,8 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         
         return label
     }()
