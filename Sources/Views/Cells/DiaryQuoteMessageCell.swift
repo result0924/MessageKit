@@ -283,7 +283,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
             containerViewTwo.frame = CGRect(x:0, y: containerViewTwoOriginY, width: messageLabelWidth, height: item.messageHeight)
             messageLabel.frame = CGRect(x: 0, y: 0, width: messageLabelWidth, height: item.messageHeight)
             messageLabel.attributedText = item.text
-            messageLabel.textInsets = item.textViewContentInset
+            messageLabel.textInsets = item.replyTextContentInset
         default:
             break
         }
