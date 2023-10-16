@@ -35,6 +35,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
     let text: NSAttributedString
     let textViewContentInset: UIEdgeInsets
     let bottomTextViewContentInset: UIEdgeInsets
+    let replyTextContentInset: UIEdgeInsets
     let textViewHeight: CGFloat
     let bottomTextViewHeight: CGFloat
     let onlyHandleTextLink: Bool
@@ -43,6 +44,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
     let quoteBottomPadding: CGFloat
     let messageHeight: CGFloat
     let size: CGSize
+    let replyTextWidth: CGFloat
     let containerViewBackgroundColor: UIColor
 
     init(diaryQuoteItem: CustomDiaryQuoteItem.DiaryQuoteItem) {
@@ -56,6 +58,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         self.lineColor = UIColor(red: 204 / 255, green: 204 / 255, blue: 204 / 255, alpha: 1)
         self.onlyHandleTextLink = true
         self.textViewContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
+        self.replyTextContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
         self.bottomTextViewContentInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
         self.containerViewBackgroundColor = UIColor(red: 244 / 255, green: 244 / 255, blue: 244 / 255, alpha: 1)
         let attributedTextString = NSAttributedString.init(string: diaryQuoteItem.replyContent, attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .regular)])
@@ -99,7 +102,9 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         self.quoteBottomPadding = 8
         self.quoteHeight = diaryQuoteHeight + self.bottomTextViewHeight
         self.messageHeight = self.textViewHeight
+        let boundingRect = attributedTextString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.zero), options: [NSStringDrawingOptions.usesLineFragmentOrigin], context: nil)
+        self.replyTextWidth = ceil(boundingRect.width) + self.textViewContentInset.left + self.textViewContentInset.right
         self.size = CGSize(width: maxBubbleWidth, height: self.quoteHeight + self.quoteBottomPadding + self.messageHeight)
     }
+    
 }
-

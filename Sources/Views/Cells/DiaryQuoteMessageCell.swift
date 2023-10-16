@@ -59,7 +59,9 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         
         return label
     }()
@@ -68,7 +70,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         
         return label
     }()
@@ -177,8 +179,8 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         let photoLength: CGFloat = 88
         setupReplyImageViewConstraints(frame: CGRectMake(12, 12, 24, 24))
         setupTitleLabelConstraints(frame: CGRectMake(40, 12, 0, 24))
-        setupRecordAtLabelConstraints(frame: CGRectMake(itemOriginX, 48, 0, 16))
-        setupMealTypeLabelConstraints(frame: CGRectMake(itemOriginX, 62, 0, 18))
+        setupRecordAtLabelConstraints(frame: CGRectMake(itemOriginX, 48, 0, 17))
+        setupMealTypeLabelConstraints(frame: CGRectMake(itemOriginX, 66, 0, 17))
         setupQuoteLineViewConstraints(frame: CGRectMake(16, 48, 4, 0))
         setupDiaryOneImageViewConstraints(frame: CGRect(x: itemOriginX, y: photoOriginY, width: photoLength, height: photoLength))
         setupDiaryTwoImageViewConstraints(frame: CGRect(x: 127, y: photoOriginY, width: photoLength, height: photoLength))
@@ -277,10 +279,11 @@ open class DiaryQuoteMessageCell: MessageContentCell {
             let quoteBottomPaddingViewOriginY = item.quoteOriginY + item.bottomTextViewHeight
             quoteBottomPaddingView.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY, width: bubbleWidth, height: item.quoteBottomPadding)
             containerViewTwoOriginY = quoteBottomPaddingViewOriginY + item.quoteBottomPadding
-            containerViewTwo.frame = CGRect(x:0, y: containerViewTwoOriginY, width: bubbleWidth, height: item.messageHeight)
-            messageLabel.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: item.messageHeight)
+            let messageLabelWidth = item.replyTextWidth < bubbleWidth ? item.replyTextWidth : bubbleWidth
+            containerViewTwo.frame = CGRect(x:0, y: containerViewTwoOriginY, width: messageLabelWidth, height: item.messageHeight)
+            messageLabel.frame = CGRect(x: 0, y: 0, width: messageLabelWidth, height: item.messageHeight)
             messageLabel.attributedText = item.text
-            messageLabel.textInsets = item.textViewContentInset
+            messageLabel.textInsets = item.replyTextContentInset
         default:
             break
         }
