@@ -6,7 +6,7 @@
 //  Copyright © 2023 MessageKit. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import MessageKit
 
 struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
@@ -45,7 +45,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
     let messageHeight: CGFloat
     let size: CGSize
     let replyTextWidth: CGFloat
-    let containerViewBackgroundColor: UIColor
+    let quoteViewBackgroundColor: UIColor
 
     init(diaryQuoteItem: CustomDiaryQuoteItem.DiaryQuoteItem) {
         self.type = diaryQuoteItem.type
@@ -60,7 +60,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         self.textViewContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
         self.replyTextContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
         self.bottomTextViewContentInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
-        self.containerViewBackgroundColor = UIColor(red: 244 / 255, green: 244 / 255, blue: 244 / 255, alpha: 1)
+        self.quoteViewBackgroundColor = UIColor(red: 244 / 255, green: 244 / 255, blue: 244 / 255, alpha: 1)
         let attributedTextString = NSAttributedString.init(string: diaryQuoteItem.replyContent, attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .regular)])
         self.text = attributedTextString
         

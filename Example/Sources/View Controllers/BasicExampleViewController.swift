@@ -25,12 +25,17 @@
 import UIKit
 import MapKit
 import MessageKit
+import Kingfisher
 
-final class BasicExampleViewController: ChatViewController {
+class BasicExampleViewController: ChatViewController {
     override func configureMessageCollectionView() {
         super.configureMessageCollectionView()
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+    }
+    
+    func textCellSizeCalculator(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator? {
+        return nil
     }
 }
 
@@ -72,6 +77,14 @@ extension BasicExampleViewController: MessagesDisplayDelegate {
         avatarView.set(avatar: avatar)
     }
     
+    func configurePhotoMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        if case MessageKind.photo(let media) = message.kind, let imageURL = media.photoURL {
+            imageView.kf.setImage(with: imageURL)
+        } else {
+            imageView.kf.cancelDownloadTask()
+        }
+    }
+    
     // MARK: - Location Messages
     
     func annotationViewForLocation(message: MessageType, at indexPath: IndexPath, in messageCollectionView: MessagesCollectionView) -> MKAnnotationView? {
@@ -97,13 +110,13 @@ extension BasicExampleViewController: MessagesDisplayDelegate {
     }
 
     // MARK: - Audio Messages
-
-    func audioTintColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+    
+    func audioTrackTintColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         return isFromCurrentSender(message: message) ? .white : UIColor(red: 15/255, green: 135/255, blue: 255/255, alpha: 1.0)
     }
     
     func configureAudioCell(_ cell: AudioMessageCell, message: MessageType) {
-        audioController.configureAudioCell(cell, message: message) // this is needed especily when the cell is reconfigure while is playing sound
+        audioController.configureAudioCell(cell, message: message) // this is needed especially when the cell is reconfigure while is playing sound
     }
 
 }
@@ -127,5 +140,4 @@ extension BasicExampleViewController: MessagesLayoutDelegate {
     func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 16
     }
-    
 }

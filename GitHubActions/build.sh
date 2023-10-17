@@ -35,25 +35,20 @@ MODE="$1"
 
 if [ "$MODE" = "tests" -o "$MODE" = "all" ]; then
   echo "Running MessageKit tests."
-  carthage bootstrap --platform ios
-  set -o pipefail && xcodebuild test -project MessageKit.xcodeproj -scheme MessageKitTests -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGNING_REQUIRED=NO | xcpretty -c
+  set -o pipefail && xcodebuild test -scheme MessageKit -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty -c
   success="1"
 fi
 
 if [ "$MODE" = "framework" -o "$MODE" = "all" ]; then
   echo "Building MessageKit Framework."
-  carthage bootstrap --platform ios
-  set -o pipefail && xcodebuild build -project MessageKit.xcodeproj -scheme MessageKit -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGNING_REQUIRED=NO | xcpretty -c
+  set -o pipefail && xcodebuild build -scheme MessageKit -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty -c
   success="1"
 fi
 
 if [ "$MODE" = "example" -o "$MODE" = "all" ]; then
   echo "Building & testing MessageKit Example app."
   cd Example
-  gem install bundler
-  bundle check || bundle install
-  bundle exec pod install
-  set -o pipefail && xcodebuild build analyze -workspace ChatExample.xcworkspace -scheme ChatExample -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGNING_REQUIRED=NO | xcpretty -c
+  set -o pipefail && xcodebuild build analyze -scheme ChatExample -destination "platform=iOS Simulator,name=iPhone 11" CODE_SIGNING_REQUIRED=NO | xcpretty -c
   success="1"
 fi
 

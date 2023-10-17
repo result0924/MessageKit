@@ -1,7 +1,7 @@
 /*
  MIT License
  
- Copyright (c) 2017-2019 MessageKit
+ Copyright (c) 2017-2020 MessageKit
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ import UIKit
 import MapKit
 import MessageKit
 import InputBarAccessoryView
+import Kingfisher
 
 final class AdvancedExampleViewController: ChatViewController {
         
@@ -59,7 +60,10 @@ final class AdvancedExampleViewController: ChatViewController {
                 DispatchQueue.main.async {
                     self.messageList = messages
                     self.messagesCollectionView.reloadData()
-                    self.messagesCollectionView.scrollToBottom()
+                    self.messagesCollectionView.scrollToLastItem(animated: false)
+                    UIView.animate(withDuration: 0.2) {
+                        self.messagesCollectionView.alpha = 1
+                    }
                 }
             }
         }
@@ -104,7 +108,16 @@ final class AdvancedExampleViewController: ChatViewController {
     }
     
     override func configureMessageInputBar() {
-        super.configureMessageInputBar()
+        //super.configureMessageInputBar()
+        
+        messageInputBar = CameraInputBarAccessoryView()
+        messageInputBar.delegate = self
+        messageInputBar.inputTextView.tintColor = .primaryColor
+        messageInputBar.sendButton.setTitleColor(.primaryColor, for: .normal)
+        messageInputBar.sendButton.setTitleColor(
+            UIColor.primaryColor.withAlphaComponent(0.3),
+            for: .highlighted)
+        
         
         messageInputBar.isTranslucent = true
         messageInputBar.separatorLine.isHidden = true
@@ -165,7 +178,7 @@ final class AdvancedExampleViewController: ChatViewController {
         }
     }
     
-    /// The input bar will autosize based on the contained text, but we can add padding to adjust the height or width if neccesary
+    /// The input bar will autosize based on the contained text, but we can add padding to adjust the height or width if necessary
     /// See the InputBar diagram here to visualize how each of these would take effect:
     /// https://raw.githubusercontent.com/MessageKit/MessageKit/master/Assets/InputBarAccessoryViewLayout.png
     private func configureInputBarPadding() {
@@ -201,7 +214,7 @@ final class AdvancedExampleViewController: ChatViewController {
         updateTitleView(title: "MessageKit", subtitle: isHidden ? "2 Online" : "Typing...")
         setTypingIndicatorViewHidden(isHidden, animated: true, whilePerforming: updates) { [weak self] success in
             if success, self?.isLastSectionVisible() == true {
-                self?.messagesCollectionView.scrollToBottom(animated: true)
+                self?.messagesCollectionView.scrollToLastItem(animated: true)
             }
         }
     }
@@ -277,7 +290,6 @@ final class AdvancedExampleViewController: ChatViewController {
         }
         return nil
     }
-
 }
 
 // MARK: - MessagesDisplayDelegate
@@ -370,6 +382,14 @@ extension AdvancedExampleViewController: MessagesDisplayDelegate {
         accessoryView.layer.cornerRadius = accessoryView.frame.height / 2
         accessoryView.backgroundColor = UIColor.primaryColor.withAlphaComponent(0.3)
     }
+
+    func configurePhotoMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        if case MessageKind.photo(let media) = message.kind, let imageURL = media.photoURL {
+            imageView.kf.setImage(with: imageURL)
+        } else {
+            imageView.kf.cancelDownloadTask()
+        }
+    }
     
     // MARK: - Location Messages
     
@@ -397,12 +417,12 @@ extension AdvancedExampleViewController: MessagesDisplayDelegate {
 
     // MARK: - Audio Messages
 
-    func audioTintColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+    func audioTrackTintColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         return self.isFromCurrentSender(message: message) ? .white : .primaryColor
     }
 
     func configureAudioCell(_ cell: AudioMessageCell, message: MessageType) {
-        audioController.configureAudioCell(cell, message: message) // this is needed especily when the cell is reconfigure while is playing sound
+        audioController.configureAudioCell(cell, message: message) // this is needed especially when the cell is reconfigure while is playing sound
     }
     
 }
@@ -431,3 +451,28 @@ extension AdvancedExampleViewController: MessagesLayoutDelegate {
     }
 
 }
+
+
+extension AdvancedExampleViewController: CameraInputBarAccessoryViewDelegate {
+
+    func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith attachments: [AttachmentManager.Attachment]) {
+        
+        
+        for item in attachments {
+            if  case .image(let image) = item {
+              
+                self.sendImageMessage(photo: image)
+            }
+        }
+        inputBar.invalidatePlugins()
+    }
+    
+    
+    func sendImageMessage( photo  : UIImage)  {
+       
+        let photoMessage = MockMessage(image: photo, user: self.currentSender() as! MockUser, messageId: UUID().uuidString, date: Date())
+        self.insertMessage(photoMessage)
+    }
+    
+}
+

@@ -98,7 +98,7 @@ open class AudioMessageCell: MessageContentCell {
     }()
     
     // MARK: - Methods
-    
+
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         playButton.constraint(equalTo: CGSize(width: 24, height: 24))
@@ -185,7 +185,6 @@ open class AudioMessageCell: MessageContentCell {
                 messageLabel.setAttributes(attributes, detector: detector)
             }
         }
-
     }
     
     /// Used to handle the cell's contentView's tap gesture.

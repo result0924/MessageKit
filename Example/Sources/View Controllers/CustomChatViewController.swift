@@ -40,13 +40,13 @@ class CustomChatViewController: MessagesViewController {
     }()
 
     private var keyboardManager: KeyboardManager?
+    private var isFirstLoad = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureMessageCollectionView()
         configureMessageInputBar()
-        loadFirstMessages()
         title = "MessageKit"
 
         // refer: https://stackoverflow.com/questions/28858908/add-uitapgesturerecognizer-to-uitextview-without-blocking-textview-touches
@@ -55,11 +55,20 @@ class CustomChatViewController: MessagesViewController {
         tapTextViewGesture.numberOfTouchesRequired = 1
         messageInputBar.inputTextView.addGestureRecognizer(tapTextViewGesture)
         messagesCollectionView.register(CustomDiaryQuoteMessageCell.self)
+        messagesCollectionView.alpha = 0
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         observeKeyboardHeight()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if isFirstLoad {
+            isFirstLoad = false
+            loadFirstMessages()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -125,17 +134,25 @@ class CustomChatViewController: MessagesViewController {
             return cell
         case .custom:
             return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
+        case .linkPreview:
+            let cell = messagesCollectionView.dequeueReusableCell(LinkPreviewMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
         }
     }
 
     func loadFirstMessages() {
         DispatchQueue.global(qos: .userInitiated).async {
             let count = UserDefaults.standard.mockMessagesCount()
+            // diary quote
             SampleData.shared.getDiaryQuoteMessages(count: count) { messages in
                 DispatchQueue.main.async {
                     self.messageList = messages
                     self.messagesCollectionView.reloadData()
-                    self.messagesCollectionView.scrollToBottom()
+                    self.messagesCollectionView.scrollToLastItem()
+                    UIView.animate(withDuration: 0.2) {
+                        self.messagesCollectionView.alpha = 1
+                    }
                 }
             }
         }
@@ -152,7 +169,7 @@ class CustomChatViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
 
-        scrollsToBottomOnKeyboardBeginsEditing = true // default false
+        scrollsToLastItemOnKeyboardBeginsEditing = true // default false
         maintainPositionOnKeyboardFrameChanged = true // default false
     }
 
@@ -224,7 +241,7 @@ class CustomChatViewController: MessagesViewController {
             }
         }, completion: { [weak self] _ in
             if self?.isLastSectionVisible() == true {
-                self?.messagesCollectionView.scrollToBottom(animated: true)
+                self?.messagesCollectionView.scrollToLastItem()
             }
         })
     }
@@ -523,7 +540,7 @@ extension CustomChatViewController: InputBarAccessoryViewDelegate {
                 self?.messageInputBar.sendButton.stopAnimating()
                 self?.messageInputBar.inputTextView.placeholder = "New Message"
                 self?.insertMessages(components)
-                self?.messagesCollectionView.scrollToBottom(animated: true)
+                self?.messagesCollectionView.scrollToLastItem()
             }
         }
     }
@@ -614,12 +631,6 @@ extension CustomChatViewController: MessagesDisplayDelegate {
         return LocationMessageSnapshotOptions(showsBuildings: true, showsPointsOfInterest: true, span: MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10))
     }
 
-    // MARK: - Audio Messages
-
-    func audioTintColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? .white : UIColor(red: 15/255, green: 135/255, blue: 255/255, alpha: 1.0)
-    }
-
     func configureAudioCell(_ cell: AudioMessageCell, message: MessageType) {
         audioController.configureAudioCell(cell, message: message) // this is needed especily when the cell is reconfigure while is playing sound
     }
@@ -638,15 +649,6 @@ extension CustomChatViewController: MessagesLayoutDelegate {
         return 16
     }
 
-}
-
-extension CustomChatViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let textView = otherGestureRecognizer.view, textView is InputTextView {
-            return true
-        }
-        return false
-    }
 }
 
 extension CustomChatViewController: ExtraActionViewControllerDelegate {

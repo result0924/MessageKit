@@ -1,25 +1,30 @@
 PODS:
-  - InputBarAccessoryView (4.3.2):
-    - InputBarAccessoryView/Core (= 4.3.2)
-  - InputBarAccessoryView/Core (4.3.2)
-  - MessageKit (3.1.0):
-    - InputBarAccessoryView (~> 4.3.0)
+  - InputBarAccessoryView (5.5.0):
+    - InputBarAccessoryView/Core (= 5.5.0)
+  - InputBarAccessoryView/Core (5.5.0)
+  - Kingfisher (7.5.0)
+  - MessageKit (3.8.0):
+    - InputBarAccessoryView (~> 5.5.0)
 
 DEPENDENCIES:
+  - InputBarAccessoryView (~> 5.5.0)
+  - Kingfisher (~> 7.0)
   - MessageKit (from `../`)
 
 SPEC REPOS:
   trunk:
     - InputBarAccessoryView
+    - Kingfisher
 
 EXTERNAL SOURCES:
   MessageKit:
     :path: "../"
 
 SPEC CHECKSUMS:
-  InputBarAccessoryView: 7985d418040a05fe894bd4b8328dd43ab35517c3
-  MessageKit: 3beb578737a5aa2bba25cc27c7b6d6faa09af5a7
+  InputBarAccessoryView: 1d7b0a672b36e370f01f264b3907ef39d03328e3
+  Kingfisher: b9c2a4a4af2990a768445c277359b27bde287d71
+  MessageKit: 2055d94cf33dce3031e93c5921474a117758c6de
 
-PODFILE CHECKSUM: 90bd12ca685503630d7fe716609f4974660ed5ee
+PODFILE CHECKSUM: 016d913d92900fdfb6cdd67317fb7ba1cbbc2f6a
 
 COCOAPODS: 1.11.3

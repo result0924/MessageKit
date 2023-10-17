@@ -6,6 +6,7 @@
 ## Build generated
 build/
 DerivedData
+.build/
 
 ## Various settings
 *.pbxuser
@@ -34,3 +35,7 @@ Example/Pods/*
 
 # Carthage
 Carthage
+
+# SPM
+.swiftpm
+Package.resolved

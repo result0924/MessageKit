@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ExtraActionViewControllerDelegate: class {
+protocol ExtraActionViewControllerDelegate: AnyObject {
     func tapLeft()
     func tapCenter()
     func tapRight()
