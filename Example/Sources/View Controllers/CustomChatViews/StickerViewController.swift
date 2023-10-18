@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol StickerViewControllerDelegate: class {
+protocol StickerViewControllerDelegate: AnyObject {
     func didSelectStickerWithName(_ stickerNam: String)
 }
 

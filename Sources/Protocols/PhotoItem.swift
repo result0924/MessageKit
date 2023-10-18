@@ -23,6 +23,7 @@
  */
 
 import Foundation
+import UIKit
 
 /// A protocol used to represent the data for a photo message.
 public protocol PhotoItem {
@@ -35,7 +36,7 @@ public protocol PhotoItem {
     /// The image.
     var image: UIImage? { get }
 
-    /// A placeholder image for when the image is obtained asychronously.
+    /// A placeholder image for when the image is obtained asynchronously.
     var placeholderImage: UIImage { get }
 
     /// The size of the media item.

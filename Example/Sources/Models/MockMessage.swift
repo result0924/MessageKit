@@ -23,6 +23,7 @@
  */
 
 import Foundation
+import UIKit
 import CoreLocation
 import MessageKit
 import AVFoundation
@@ -52,10 +53,15 @@ private struct ImageMediaItem: PhotoItem {
         self.size = CGSize(width: 240, height: 240)
         self.placeholderImage = UIImage()
     }
-
+    
+    init(imageURL: URL) {
+        self.photoURL = imageURL
+        self.size = CGSize(width: 240, height: 240)
+        self.placeholderImage = UIImage(imageLiteralResourceName: "image_message_placeholder")
+    }
 }
 
-struct MockAudiotem: AudioItem {
+struct MockAudioItem: AudioItem {
 
     var size: CGSize
     var audioURL: URL
@@ -88,6 +94,15 @@ struct MockContactItem: ContactItem {
         self.emails = emails
     }
     
+}
+
+struct MockLinkItem: LinkItem {
+    let text: String?
+    let attributedText: NSAttributedString?
+    let url: URL
+    let title: String?
+    let teaser: String
+    let thumbnailImage: UIImage
 }
 
 internal struct MockMessage: MessageType {
@@ -125,6 +140,11 @@ internal struct MockMessage: MessageType {
         self.init(kind: .photo(mediaItem), user: user, messageId: messageId, date: date)
     }
 
+    init(imageURL: URL, user: MockUser, messageId: String, date: Date) {
+        let mediaItem = ImageMediaItem(imageURL: imageURL)
+        self.init(kind: .photo(mediaItem), user: user, messageId: messageId, date: date)
+    }
+
     init(thumbnail: UIImage, user: MockUser, messageId: String, date: Date) {
         let mediaItem = ImageMediaItem(image: thumbnail)
         self.init(kind: .photo(mediaItem), user: user, messageId: messageId, date: date)
@@ -139,7 +159,7 @@ internal struct MockMessage: MessageType {
         self.init(kind: .emoji(emoji), user: user, messageId: messageId, date: date)
     }
 
-    init(audioItem: MockAudiotem, user: MockUser, messageId: String, date: Date) {
+    init(audioItem: MockAudioItem, user: MockUser, messageId: String, date: Date) {
         self.init(kind: .audio(audioItem), user: user, messageId: messageId, date: date)
     }
 
@@ -147,6 +167,10 @@ internal struct MockMessage: MessageType {
         self.init(kind: .contact(contact), user: user, messageId: messageId, date: date)
     }
 
+    init(linkItem: LinkItem, user: MockUser, messageId: String, date: Date) {
+        self.init(kind: .linkPreview(linkItem), user: user, messageId: messageId, date: date)
+    }
+    
     init(template: CustomTemplateItem, user: MockUser, messageId: String, date: Date) {
         self.init(kind: .template(template), user: user, messageId: messageId, date: date)
     }

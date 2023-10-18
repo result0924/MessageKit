@@ -6,7 +6,7 @@
 //  Copyright © 2023 MessageKit. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import MessageKit
 
 struct CustomTemplateItem: TemplateItem {

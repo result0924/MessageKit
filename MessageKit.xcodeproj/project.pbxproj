@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0EE91E661FDEC888005420A2 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE91E651FDEC887005420A2 /* CGRect+Extensions.swift */; };
 		0EF0888C206F7E83007F2F58 /* CellSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF0888B206F7E83007F2F58 /* CellSizeCalculator.swift */; };
+		1AEC67BF2AD69FDD00F49BAE /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC67BE2AD69FDD00F49BAE /* UIImage+Extensions.swift */; };
 		1F066E131FD90BB600E11013 /* MessagesViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7FC8CB1FD2700B006CC979 /* MessagesViewControllerSpec.swift */; };
 		1F066E141FD90BB700E11013 /* MessageLabelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F066E101FD90A0600E11013 /* MessageLabelSpec.swift */; };
 		1F066E1D1FDA3C1700E11013 /* SenderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F066E1C1FDA3C1700E11013 /* SenderSpec.swift */; };
@@ -50,7 +51,6 @@
 		5073C11D2175BEC60040EAD5 /* AudioMessageSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5073C11C2175BEC60040EAD5 /* AudioMessageSizeCalculator.swift */; };
 		5073C1232175C1980040EAD5 /* sound1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5073C1222175C1980040EAD5 /* sound1.m4a */; };
 		50FF34552237FE4C0004DCD7 /* ContactItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF34542237FE4C0004DCD7 /* ContactItem.swift */; };
-		50FF34572237FE6A0004DCD7 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF34562237FE6A0004DCD7 /* UIImage+Extension.swift */; };
 		50FF34592237FE850004DCD7 /* ContactMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF34582237FE840004DCD7 /* ContactMessageCell.swift */; };
 		50FF345B2237FE9C0004DCD7 /* ContactMessageSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF345A2237FE9C0004DCD7 /* ContactMessageSizeCalculator.swift */; };
 		88916B2D1CF0DF2F00469F91 /* MessageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88916B221CF0DF2F00469F91 /* MessageKit.framework */; };
@@ -127,6 +127,7 @@
 /* Begin PBXFileReference section */
 		0EE91E651FDEC887005420A2 /* CGRect+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
 		0EF0888B206F7E83007F2F58 /* CellSizeCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellSizeCalculator.swift; sourceTree = "<group>"; };
+		1AEC67BE2AD69FDD00F49BAE /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		1F066E101FD90A0600E11013 /* MessageLabelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLabelSpec.swift; sourceTree = "<group>"; };
 		1F066E1C1FDA3C1700E11013 /* SenderSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderSpec.swift; sourceTree = "<group>"; };
 		1F066E201FDA3DEA00E11013 /* AvatarSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSpec.swift; sourceTree = "<group>"; };
@@ -166,7 +167,6 @@
 		5073C11C2175BEC60040EAD5 /* AudioMessageSizeCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioMessageSizeCalculator.swift; sourceTree = "<group>"; };
 		5073C1222175C1980040EAD5 /* sound1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound1.m4a; sourceTree = "<group>"; };
 		50FF34542237FE4C0004DCD7 /* ContactItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactItem.swift; sourceTree = "<group>"; };
-		50FF34562237FE6A0004DCD7 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		50FF34582237FE840004DCD7 /* ContactMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactMessageCell.swift; sourceTree = "<group>"; };
 		50FF345A2237FE9C0004DCD7 /* ContactMessageSizeCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactMessageSizeCalculator.swift; sourceTree = "<group>"; };
 		88916B221CF0DF2F00469F91 /* MessageKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -407,7 +407,7 @@
 		B09643981F295D43004D0129 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				50FF34562237FE6A0004DCD7 /* UIImage+Extension.swift */,
+				1AEC67BE2AD69FDD00F49BAE /* UIImage+Extensions.swift */,
 				0EE91E651FDEC887005420A2 /* CGRect+Extensions.swift */,
 				B7A03F671F8669EB006AEF79 /* Bundle+Extensions.swift */,
 				B7A03F681F8669EB006AEF79 /* NSAttributedString+Extensions.swift */,
@@ -649,6 +649,7 @@
 				F9FC56302575EA4E0090626A /* MediaMessageCell.swift in Sources */,
 				B7A03F5B1F8669CA006AEF79 /* MessageType.swift in Sources */,
 				B7A03F601F8669CA006AEF79 /* MessagesDisplayDelegate.swift in Sources */,
+				1AEC67BF2AD69FDD00F49BAE /* UIImage+Extensions.swift in Sources */,
 				1FE783A8206633C0007FA024 /* InsetLabel.swift in Sources */,
 				38F8063321740D9E00CDB9DB /* BubbleCircle.swift in Sources */,
 				B7A03F5C1F8669CA006AEF79 /* MessageCellDelegate.swift in Sources */,
@@ -706,7 +707,6 @@
 				1F6C040C206A2891007BDE44 /* MessageContentCell.swift in Sources */,
 				B7A03F2C1F866895006AEF79 /* DetectorType.swift in Sources */,
 				B7A03F271F866895006AEF79 /* Avatar.swift in Sources */,
-				50FF34572237FE6A0004DCD7 /* UIImage+Extension.swift in Sources */,
 				D0C1A8E9244FE8A700177317 /* TemplateMessageCell.swift in Sources */,
 				1F82D1431FB1B75B00B81A88 /* AvatarPosition.swift in Sources */,
 				1FF377AC20087DA2004FD648 /* MessagesViewController+Keyboard.swift in Sources */,

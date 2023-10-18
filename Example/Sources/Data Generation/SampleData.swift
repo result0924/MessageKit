@@ -22,6 +22,7 @@
  SOFTWARE.
  */
 
+import UIKit
 import MessageKit
 import CoreLocation
 import AVFoundation
@@ -36,6 +37,7 @@ final internal class SampleData {
         case Text
         case AttributedText
         case Photo
+        case PhotoFromURL = "Photo from URL"
         case Video
         case Audio
         case Emoji
@@ -70,6 +72,11 @@ final internal class SampleData {
     var now = Date()
     
     let messageImages: [UIImage] = [#imageLiteral(resourceName: "img1"), #imageLiteral(resourceName: "img2")]
+    let messageImageURLs: [URL] = [URL(string: "https://placekitten.com/g/200/300")!,
+                                   URL(string: "https://placekitten.com/g/300/300")!,
+                                   URL(string: "https://placekitten.com/g/300/400")!,
+                                   URL(string: "https://placekitten.com/g/400/400")!]
+
     let emojis = [
         "👍",
         "😂😂😂",
@@ -93,6 +100,17 @@ final internal class SampleData {
     let sounds: [URL] = [Bundle.main.url(forResource: "sound1", withExtension: "m4a")!,
                          Bundle.main.url(forResource: "sound2", withExtension: "m4a")!
     ]
+
+    let linkItem: (() -> MockLinkItem) = {
+        MockLinkItem(
+            text: "\(Lorem.sentence()) https://github.com/MessageKit",
+            attributedText: nil,
+            url: URL(string: "https://github.com/MessageKit")!,
+            title: "MessageKit",
+            teaser: "A community-driven replacement for JSQMessagesViewController - MessageKit",
+            thumbnailImage: UIImage(named: "mkorglogo")!
+        )
+    }
 
     func attributedString(with text: String) -> NSAttributedString {
         let nsString = NSString(string: text)
@@ -144,21 +162,16 @@ final internal class SampleData {
     }
     
     func randomMessageType() -> MessageTypes {
-        var messageTypes = [MessageTypes]()
-        for type in MessageTypes.allCases {
-            if UserDefaults.standard.bool(forKey: "\(type.rawValue)" + " Messages") {
-                messageTypes.append(type)
-            }
-        }
-        return messageTypes.random()!
+        return MessageTypes.allCases.compactMap {
+            guard UserDefaults.standard.bool(forKey: "\($0.rawValue)" + " Messages") else { return nil }
+            return $0
+        }.random()!
     }
 
     // swiftlint:disable cyclomatic_complexity
     func randomMessage(allowedSenders: [MockUser]) -> MockMessage {
-        let randomNumberSender = Int(arc4random_uniform(UInt32(allowedSenders.count)))
-        
         let uniqueID = UUID().uuidString
-        let user = allowedSenders[randomNumberSender]
+        let user = allowedSenders.random()!
         let date = dateAddingRandomTime()
 
         switch randomMessageType() {
@@ -170,32 +183,30 @@ final internal class SampleData {
             let attributedText = attributedString(with: randomSentence)
             return MockMessage(attributedText: attributedText, user: user, messageId: uniqueID, date: date)
         case .Photo:
-            let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
-            let image = messageImages[randomNumberImage]
+            let image = messageImages.random()!
             return MockMessage(image: image, user: user, messageId: uniqueID, date: date)
+        case .PhotoFromURL:
+            let imageURL: URL = messageImageURLs.random()!
+            return MockMessage(imageURL: imageURL, user: user, messageId: uniqueID, date: date)
         case .Video:
-            let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
-            let image = messageImages[randomNumberImage]
+            let image = messageImages.random()!
             return MockMessage(thumbnail: image, user: user, messageId: uniqueID, date: date)
         case .Audio:
             let randomNumberSound = Int(arc4random_uniform(UInt32(sounds.count)))
             let soundURL = sounds[randomNumberSound]
-            return MockMessage(audioItem: MockAudiotem(image: nil, text: "", audioURL: soundURL), user: user, messageId: uniqueID, date: date)
+            return MockMessage(audioItem: MockAudioItem(image: nil, text: "", audioURL: soundURL), user: user, messageId: uniqueID, date: date)
         case .Emoji:
-            let randomNumberEmoji = Int(arc4random_uniform(UInt32(emojis.count)))
-            return MockMessage(emoji: emojis[randomNumberEmoji], user: user, messageId: uniqueID, date: date)
+            return MockMessage(emoji: emojis.random()!, user: user, messageId: uniqueID, date: date)
         case .Location:
-            let randomNumberLocation = Int(arc4random_uniform(UInt32(locations.count)))
-            return MockMessage(location: locations[randomNumberLocation], user: user, messageId: uniqueID, date: date)
+            return MockMessage(location: locations.random()!, user: user, messageId: uniqueID, date: date)
         case .Url:
-            return MockMessage(text: "https://github.com/MessageKit", user: user, messageId: uniqueID, date: date)
+            return MockMessage(linkItem: linkItem(), user: user, messageId: uniqueID, date: date)
         case .Phone:
             return MockMessage(text: "123-456-7890", user: user, messageId: uniqueID, date: date)
         case .Custom:
             return MockMessage(custom: "Someone left the conversation", user: system, messageId: uniqueID, date: date)
         case .ShareContact:
-            let randomContact = Int(arc4random_uniform(UInt32(contactsToShare.count)))
-            return MockMessage(contact: contactsToShare[randomContact], user: user, messageId: uniqueID, date: date)
+            return MockMessage(contact: contactsToShare.random()!, user: user, messageId: uniqueID, date: date)
         case .Template:
             let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
             let image = messageImages[randomNumberImage]
@@ -300,9 +311,9 @@ final internal class SampleData {
             case .photoOnly:
                 diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: fakeRecordAtText, mealTypeAndPeriod: "午餐前", photoURLs: [fakeURL], recordType: nil, recordContent: nil, actionString: "查看日記", replyContent: randomSentence)
             case .textOnly:
-                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "體重", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
+                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: fakeRecordAtText, mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "體重", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
             case .unknown:
-                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: "2023年06月13日 上午11:38", mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
+                diaryQuoteItem = CustomDiaryQuoteItem.DiaryQuoteItem(type: type, title: "回覆了你的日記", recordAt: fakeRecordAtText, mealTypeAndPeriod: "午餐前", photoURLs: [], recordType: "", recordContent: attributedString, actionString: "查看日記", replyContent: randomSentence)
             }
             let message = MockMessage(diaryQuote: CustomDiaryQuoteItem(diaryQuoteItem: diaryQuoteItem), user: system, messageId: uniqueID, date: date)
             messages.append(message)
@@ -322,7 +333,7 @@ final internal class SampleData {
             let randomSentence = i % 3 == 0 ? "https://tw.yahoo.com" : Lorem.sentence()
             let randomNumberSound = Int(arc4random_uniform(UInt32(sounds.count)))
             let soundURL = sounds[randomNumberSound]
-            let message = MockMessage(audioItem: MockAudiotem(image: image, text: randomSentence, audioURL: soundURL), user: system, messageId: uniqueID, date: date)
+            let message = MockMessage(audioItem: MockAudioItem(image: image, text: randomSentence, audioURL: soundURL), user: system, messageId: uniqueID, date: date)
             messages.append(message)
         }
         completion(messages)

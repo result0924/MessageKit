@@ -241,8 +241,9 @@ open class DiaryQuoteMessageCell: MessageContentCell {
             titleLabelWidthLayout?.constant = titleLabelWidth
             recordAtLabelWidthLayout?.constant = labelWidth
             mealTypeLabelWidthLayout?.constant = labelWidth
-            containerViewOne.backgroundColor = item.containerViewBackgroundColor
-            containerViewTwo.backgroundColor = item.containerViewBackgroundColor
+            print("item:\(item)")
+            containerViewOne.backgroundColor = item.quoteViewBackgroundColor
+            containerViewTwo.backgroundColor = item.quoteViewBackgroundColor
             
             switch item.type {
             case .photoAndText:

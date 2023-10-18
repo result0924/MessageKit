@@ -42,5 +42,5 @@ public protocol DiaryQuoteMessageItem: MessageItem, ActionItem {
     var size: CGSize { get }
     var replyTextWidth: CGFloat { get }
     var replyTextContentInset: UIEdgeInsets { get }
-    var containerViewBackgroundColor: UIColor { get }
+    var quoteViewBackgroundColor: UIColor { get }
 }
