@@ -28,23 +28,24 @@ open class TemplateMessageCell: MessageContentCell {
 
     open var messageLabel = MessageLabel()
 
-    open var lineView: UIView = {
-        let lineView = UIView()
-        return lineView
+    open var actionButton: UIButton = {
+        let button = UIButton()
+        button.isUserInteractionEnabled = false
+        button.titleLabel?.numberOfLines = 2
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.layer.borderColor = UIColor(red: 45 / 255, green: 181 / 255, blue: 155 / 255, alpha: 1).cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        return button
     }()
 
-    open var actionLabel: UITextView = {
-        let textView = UITextView()
-        textView.backgroundColor = .clear
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.contentInset = .zero
-        textView.textContainer.lineFragmentPadding = 0
-        if #available(iOS 11.0, *) {
-            textView.adjustsFontForContentSizeCategory = true
-        }
-
-        return textView
+    open var actionBackgroundView: UIView = {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .clear
+        return backgroundView
     }()
 
     // MARK: - Methods
@@ -53,14 +54,15 @@ open class TemplateMessageCell: MessageContentCell {
         super.setupSubviews()
         messageContainerView.addSubview(imageView)
         messageContainerView.addSubview(messageLabel)
-        messageContainerView.addSubview(actionLabel)
+        messageContainerView.addSubview(actionBackgroundView)
+        messageContainerView.addSubview(actionButton)
     }
 
     open override func prepareForReuse() {
         super.prepareForReuse()
         messageLabel.attributedText = nil
         imageView.image = nil
-        actionLabel.attributedText = nil
+        actionButton.setAttributedTitle(nil, for: .normal)
     }
 
     /// Handle tap gesture on contentView and its subviews.
@@ -71,8 +73,7 @@ open class TemplateMessageCell: MessageContentCell {
         }
         
         let touchLocation = gesture.location(in: self)
-        // compute action label touch area, currently action label which is hardly touchable
-        let actionView = actionLabel.frame.size.height > 0 ? actionLabel : messageLabel
+        let actionView = actionBackgroundView.frame.size.height > 0 ? actionBackgroundView : messageLabel
         let actionViewTouchArea = CGRect(actionView.frame.origin.x, actionView.frame.origin.y, actionView.frame.size.width, actionView.frame.size.height)
         let translateTouchLocation = convert(touchLocation, to: messageContainerView)
         if actionViewTouchArea.contains(translateTouchLocation) {
@@ -93,20 +94,24 @@ open class TemplateMessageCell: MessageContentCell {
         case .template(let item), .media(let item as TemplateItem):
             let bubbleWidth = messageContainerView.frame.size.width
             imageView.image = item.image ?? item.placeholderImage
-            imageView.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: item.imageHeight)
-            messageLabel.frame = CGRect(x: 0, y: item.imageHeight, width: bubbleWidth, height: item.textViewHeight)
-            actionLabel.frame = CGRect(x: 0, y: item.imageHeight + item.textViewHeight, width: bubbleWidth, height: item.bottomTextViewHeight)
+            let imageHeight = item.imageHeight
+            let textViewHeight = item.textViewHeight
+            let bottomTextViewHeight = item.bottomTextViewHeight
+            imageView.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: imageHeight)
+            messageLabel.frame = CGRect(x: 0, y: imageHeight, width: bubbleWidth, height: textViewHeight)
+            actionBackgroundView.frame = CGRect(x: 0, y: imageHeight + textViewHeight, width: bubbleWidth, height: bottomTextViewHeight)
+            actionButton.frame = CGRect(x: 12, y: imageHeight + textViewHeight, width: bubbleWidth - 24, height: bottomTextViewHeight - 14)
+            actionButton.isHidden = item.actionString == nil
             messageLabel.attributedText = item.text
             messageLabel.textInsets = item.textViewContentInset
-            actionLabel.attributedText = item.actionString
-            actionLabel.textContainerInset = item.bottomTextViewContentInset
-            actionLabel.textAlignment = .center
+            actionButton.setAttributedTitle(item.actionString, for: .normal)
+            actionButton.contentEdgeInsets = item.bottomTextViewContentInset
             onlyHandleTextLink = item.onlyHandleTextLink
         default:
             break
         }
 
-        displayDelegate.configurePhotoMessageImageView(imageView, for: message, at: indexPath, in: messagesCollectionView)
+            displayDelegate.configurePhotoMessageImageView(imageView, for: message, at: indexPath, in: messagesCollectionView)
         
         let enabledDetectors = displayDelegate.enabledDetectors(for: message, at: indexPath, in: messagesCollectionView)
 
