@@ -49,7 +49,6 @@ open class MediaMessageCell: TemplateMessageCell {
         playButton.addConstraints(widthConstant: 48, heightConstant: 48)
         imageMaskView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         messageContainerView.addSubview(messageLabel)
-        actionLabel.addSubview(lineView)
         messageContainerView.addSubview(actionLabel)
         imageView.addSubview(timeDurationButton)
     }

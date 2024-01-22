@@ -53,7 +53,6 @@ open class TemplateMessageCell: MessageContentCell {
         super.setupSubviews()
         messageContainerView.addSubview(imageView)
         messageContainerView.addSubview(messageLabel)
-        actionLabel.addSubview(lineView)
         messageContainerView.addSubview(actionLabel)
     }
 
@@ -96,14 +95,12 @@ open class TemplateMessageCell: MessageContentCell {
             imageView.image = item.image ?? item.placeholderImage
             imageView.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: item.imageHeight)
             messageLabel.frame = CGRect(x: 0, y: item.imageHeight, width: bubbleWidth, height: item.textViewHeight)
-            lineView.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: 0.5)
             actionLabel.frame = CGRect(x: 0, y: item.imageHeight + item.textViewHeight, width: bubbleWidth, height: item.bottomTextViewHeight)
             messageLabel.attributedText = item.text
             messageLabel.textInsets = item.textViewContentInset
             actionLabel.attributedText = item.actionString
             actionLabel.textContainerInset = item.bottomTextViewContentInset
             actionLabel.textAlignment = .center
-            lineView.backgroundColor = item.lineColor
             onlyHandleTextLink = item.onlyHandleTextLink
         default:
             break
