@@ -118,22 +118,24 @@ open class DiaryQuoteMessageCell: MessageContentCell {
 
     open var messageLabel = MessageLabel()
 
-    open var lineView: UIView = {
-        let lineView = UIView()
-        return lineView
+    open var actionButton: UIButton = {
+        let button = UIButton()
+        button.isUserInteractionEnabled = false
+        button.titleLabel?.numberOfLines = 2
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.layer.borderColor = UIColor(red: 45 / 255, green: 181 / 255, blue: 155 / 255, alpha: 1).cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        return button
     }()
 
-    open var actionLabel: UITextView = {
-        let textView = UITextView()
-        textView.backgroundColor = .clear
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.contentInset = .zero
-        textView.textContainer.lineFragmentPadding = 0
-        if #available(iOS 11.0, *) {
-            textView.adjustsFontForContentSizeCategory = true
-        }
-        return textView
+    open var actionBackgroundView: UIView = {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .clear
+        return backgroundView
     }()
     
     open var quoteBottomPaddingView: UIView = {
@@ -167,8 +169,8 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         containerViewOne.addSubview(diarySecondImageView)
         containerViewOne.addSubview(itemLabel)
         containerViewOne.addSubview(itemDescriptionLabel)
-        actionLabel.addSubview(lineView)
-        containerViewOne.addSubview(actionLabel)
+        containerViewOne.addSubview(actionBackgroundView)
+        containerViewOne.addSubview(actionButton)
         messageContainerView.addSubview(containerViewOne)
         messageContainerView.addSubview(quoteBottomPaddingView)
         containerViewTwo.addSubview(messageLabel)
@@ -194,7 +196,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         recordAtLabel.text = nil
         mealTypeLabel.text = nil
         messageLabel.attributedText = nil
-        actionLabel.attributedText = nil
+        actionButton.setAttributedTitle(nil, for: .normal)
         itemLabel.text = nil
         itemDescriptionLabel.attributedText = nil
         diaryFirstImageView.image = nil
@@ -213,7 +215,7 @@ open class DiaryQuoteMessageCell: MessageContentCell {
         
         let touchLocation = gesture.location(in: self)
         // compute action label touch area, currently action label which is hardly touchable
-        let actionView = actionLabel.frame.size.height > 0 ? actionLabel : messageLabel
+        let actionView = actionBackgroundView.frame.size.height > 0 ? actionBackgroundView : messageLabel
         let actionViewTouchArea = CGRect(actionView.frame.origin.x, actionView.frame.origin.y, actionView.frame.size.width, actionView.frame.size.height)
         let translateTouchLocation = convert(touchLocation, to: messageContainerView)
         if actionViewTouchArea.contains(translateTouchLocation) {
@@ -241,7 +243,6 @@ open class DiaryQuoteMessageCell: MessageContentCell {
             titleLabelWidthLayout?.constant = titleLabelWidth
             recordAtLabelWidthLayout?.constant = labelWidth
             mealTypeLabelWidthLayout?.constant = labelWidth
-            print("item:\(item)")
             containerViewOne.backgroundColor = item.quoteViewBackgroundColor
             containerViewTwo.backgroundColor = item.quoteViewBackgroundColor
             
@@ -271,12 +272,11 @@ open class DiaryQuoteMessageCell: MessageContentCell {
                 quoteLineViewHeightLayout?.constant = 34
                 isHiddenItemAndItemDescriptionLabel(isHidden: true)
             }
-            lineView.frame = CGRectMake(0, 0, bubbleWidth, 0.5)
-            lineView.backgroundColor = item.lineColor
-            actionLabel.frame = CGRect(x: 0, y: item.quoteOriginY, width: bubbleWidth, height: item.bottomTextViewHeight)
-            actionLabel.attributedText = item.actionString
-            actionLabel.textContainerInset = item.bottomTextViewContentInset
-            actionLabel.textAlignment = .center
+            actionBackgroundView.frame = CGRect(x: 0, y: item.quoteOriginY, width: bubbleWidth, height: item.bottomTextViewHeight)
+            actionButton.frame = CGRect(x: 12, y: item.quoteOriginY, width: bubbleWidth - 24, height: item.bottomTextViewHeight - 14)
+            actionButton.setAttributedTitle(item.actionString, for: .normal)
+            actionButton.contentEdgeInsets = item.bottomTextViewContentInset
+            actionButton.titleLabel?.textAlignment = .center
             let quoteBottomPaddingViewOriginY = item.quoteOriginY + item.bottomTextViewHeight
             quoteBottomPaddingView.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY, width: bubbleWidth, height: item.quoteBottomPadding)
             containerViewTwoOriginY = quoteBottomPaddingViewOriginY + item.quoteBottomPadding
