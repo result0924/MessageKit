@@ -49,8 +49,8 @@ open class MediaMessageCell: TemplateMessageCell {
         playButton.addConstraints(widthConstant: 48, heightConstant: 48)
         imageMaskView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         messageContainerView.addSubview(messageLabel)
-        actionLabel.addSubview(lineView)
-        messageContainerView.addSubview(actionLabel)
+        messageContainerView.addSubview(actionBackgroundView)
+        messageContainerView.addSubview(actionButton)
         imageView.addSubview(timeDurationButton)
     }
 
@@ -58,13 +58,13 @@ open class MediaMessageCell: TemplateMessageCell {
         super.prepareForReuse()
         messageLabel.attributedText = nil
         imageView.image = nil
-        actionLabel.attributedText = nil
+        actionButton.setAttributedTitle(nil, for: .normal)
     }
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
         let touchLocation = gesture.location(in: self)
-        let actionViewTouchArea = actionLabel.frame
+        let actionViewTouchArea = actionBackgroundView.frame
         let translateTouchLocation = convert(touchLocation, to: messageContainerView)
         
         if actionViewTouchArea.contains(translateTouchLocation) || imageMaskView.frame.contains(translateTouchLocation) {
