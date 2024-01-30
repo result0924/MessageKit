@@ -28,6 +28,8 @@ public protocol ActionItem {
     var bottomTextViewHeight: CGFloat { get }
     /// The bottom text view's content inset
     var bottomTextViewContentInset: UIEdgeInsets { get }
+    /// The bottom button's content inset
+    var bottomButtonContentInset: UIEdgeInsets { get }
     /// judge isCanAction
     var onlyHandleTextLink: Bool { get }
 }

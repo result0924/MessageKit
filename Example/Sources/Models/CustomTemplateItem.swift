@@ -19,6 +19,7 @@ struct CustomTemplateItem: TemplateItem {
     var text: NSAttributedString
     var textViewContentInset: UIEdgeInsets
     var bottomTextViewContentInset: UIEdgeInsets
+    var bottomButtonContentInset: UIEdgeInsets
     var lineColor: UIColor
     var imageHeight: CGFloat
     var textViewHeight: CGFloat
@@ -29,7 +30,8 @@ struct CustomTemplateItem: TemplateItem {
 
         // if change must change SDK's template cell
         self.textViewContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
-        self.bottomTextViewContentInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
+        self.bottomTextViewContentInset = UIEdgeInsets(top: 4, left: 12, bottom: 12, right: 14)
+        self.bottomButtonContentInset = UIEdgeInsets(top: 12, left: 10, bottom: 12, right: 10)
         self.lineColor = UIColor(red: 204 / 255, green: 204 / 255, blue: 204 / 255, alpha: 1)
 
         self.placeholderImage = UIImage(named: "Wu-Zhong") ?? UIImage()
@@ -63,7 +65,7 @@ struct CustomTemplateItem: TemplateItem {
 
         if let actionString = actionString, actionString.isEmpty == false {
             let bottomContentRect = attributedActionString.boundingRect(with: textSize, options: [NSStringDrawingOptions.usesLineFragmentOrigin, NSStringDrawingOptions.usesFontLeading], context: nil)
-            bottomHeight = bottomContentRect.size.height + self.bottomTextViewContentInset.top + self.bottomTextViewContentInset.bottom
+            bottomHeight = bottomContentRect.size.height + bottomTextViewContentInset.top + bottomTextViewContentInset.bottom + bottomButtonContentInset.top + bottomButtonContentInset.bottom
         }
         
         self.imageHeight = imageHeight

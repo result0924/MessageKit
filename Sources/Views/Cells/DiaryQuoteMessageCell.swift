@@ -273,9 +273,10 @@ open class DiaryQuoteMessageCell: MessageContentCell {
                 isHiddenItemAndItemDescriptionLabel(isHidden: true)
             }
             actionBackgroundView.frame = CGRect(x: 0, y: item.quoteOriginY, width: bubbleWidth, height: item.bottomTextViewHeight)
-            actionButton.frame = CGRect(x: 12, y: item.quoteOriginY, width: bubbleWidth - 24, height: item.bottomTextViewHeight - 14)
+            let contentInset = item.bottomTextViewContentInset
+            actionButton.frame = CGRect(x: contentInset.left, y: item.quoteOriginY + contentInset.top, width: bubbleWidth - (contentInset.left + contentInset.right), height: item.bottomTextViewHeight - (contentInset.top + contentInset.bottom))
             actionButton.setAttributedTitle(item.actionString, for: .normal)
-            actionButton.contentEdgeInsets = item.bottomTextViewContentInset
+            actionButton.contentEdgeInsets = item.bottomButtonContentInset
             actionButton.titleLabel?.textAlignment = .center
             let quoteBottomPaddingViewOriginY = item.quoteOriginY + item.bottomTextViewHeight
             quoteBottomPaddingView.frame = CGRect(x:0, y:quoteBottomPaddingViewOriginY, width: bubbleWidth, height: item.quoteBottomPadding)
