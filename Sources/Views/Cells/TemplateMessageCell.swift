@@ -100,12 +100,14 @@ open class TemplateMessageCell: MessageContentCell {
             imageView.frame = CGRect(x: 0, y: 0, width: bubbleWidth, height: imageHeight)
             messageLabel.frame = CGRect(x: 0, y: imageHeight, width: bubbleWidth, height: textViewHeight)
             actionBackgroundView.frame = CGRect(x: 0, y: imageHeight + textViewHeight, width: bubbleWidth, height: bottomTextViewHeight)
-            actionButton.frame = CGRect(x: 12, y: imageHeight + textViewHeight, width: bubbleWidth - 24, height: bottomTextViewHeight - 14)
+            let contentInset = item.bottomTextViewContentInset
+            let buttonInset = item.bottomButtonContentInset
+            actionButton.contentEdgeInsets = buttonInset
+            actionButton.frame = CGRect(x: contentInset.left, y: imageHeight + textViewHeight + contentInset.top, width: bubbleWidth - (contentInset.left + contentInset.right), height: bottomTextViewHeight - (contentInset.top + contentInset.bottom))
             actionButton.isHidden = item.actionString == nil
             messageLabel.attributedText = item.text
             messageLabel.textInsets = item.textViewContentInset
             actionButton.setAttributedTitle(item.actionString, for: .normal)
-            actionButton.contentEdgeInsets = item.bottomTextViewContentInset
             onlyHandleTextLink = item.onlyHandleTextLink
         default:
             break

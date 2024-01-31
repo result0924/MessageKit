@@ -35,6 +35,7 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
     let text: NSAttributedString
     let textViewContentInset: UIEdgeInsets
     let bottomTextViewContentInset: UIEdgeInsets
+    let bottomButtonContentInset: UIEdgeInsets
     let replyTextContentInset: UIEdgeInsets
     let textViewHeight: CGFloat
     let bottomTextViewHeight: CGFloat
@@ -59,7 +60,8 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         self.onlyHandleTextLink = true
         self.textViewContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
         self.replyTextContentInset = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
-        self.bottomTextViewContentInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
+        self.bottomTextViewContentInset = UIEdgeInsets(top: 4, left: 12, bottom: 12, right: 14)
+        self.bottomButtonContentInset = UIEdgeInsets(top: 12, left: 10, bottom: 12, right: 10)
         self.quoteViewBackgroundColor = UIColor(red: 244 / 255, green: 244 / 255, blue: 244 / 255, alpha: 1)
         let attributedTextString = NSAttributedString.init(string: diaryQuoteItem.replyContent, attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .regular)])
         self.text = attributedTextString
@@ -81,8 +83,8 @@ struct CustomDiaryQuoteItem: DiaryQuoteMessageItem {
         var actionHeight: CGFloat = 0
 
         let bottomContentRect = attributedActionString.boundingRect(with: textSize, options: [NSStringDrawingOptions.usesLineFragmentOrigin, NSStringDrawingOptions.usesFontLeading], context: nil)
-        actionHeight = bottomContentRect.size.height + self.bottomTextViewContentInset.top + self.bottomTextViewContentInset.bottom
-        
+        actionHeight = bottomContentRect.size.height + bottomTextViewContentInset.top + bottomTextViewContentInset.bottom + bottomButtonContentInset.top + bottomButtonContentInset.bottom
+
         var diaryQuoteHeight: CGFloat
         
         switch type {
