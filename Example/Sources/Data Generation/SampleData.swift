@@ -320,7 +320,32 @@ final internal class SampleData {
         }
         completion(messages)
     }
-    
+
+    func getReplyMessages(count: Int, completion: ([MockMessage]) -> Void) {
+        var messages: [MockMessage] = []
+        for _ in 0..<count {
+            let uniqueID = UUID().uuidString
+            let date = dateAddingRandomTime()
+
+            let type = ReplyQuoteItemType.allCases.dropLast().randomElement() ?? .photoAndText
+            var replyItem: CustomReplyMessageItem.ReplyItem
+
+            switch type {
+            case .photoAndText:
+                replyItem = CustomReplyMessageItem.ReplyItem(quoteType: .photoAndText, title: "回覆", quoteImage: UIImage(imageLiteralResourceName: "image_message_placeholder"), quoteContent: "Title.pdf", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoAndText", replyViewBackgroundColor: CustomReplyMessageItem.grayBackgroundColor)
+            case .photoOnly:
+                replyItem = CustomReplyMessageItem.ReplyItem(quoteType: .photoOnly, title: "回覆", quoteImage: nil, quoteContent: nil, quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoOnly", replyViewBackgroundColor: CustomReplyMessageItem.grayBackgroundColor)
+            case .textOnly:
+                replyItem = CustomReplyMessageItem.ReplyItem(quoteType: .textOnly, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .sticker, replyContent: "https://dev.health2sync.com/images/stickers/1/s_014.png", replyViewBackgroundColor: .clear)
+            case .unknown:
+                replyItem = CustomReplyMessageItem.ReplyItem(quoteType: .unknown, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息unknown", replyViewBackgroundColor: CustomReplyMessageItem.grayBackgroundColor)
+            }
+            let message = MockMessage(reply: CustomReplyMessageItem(replyItem: replyItem), user: system, messageId: uniqueID, date: date)
+            messages.append(message)
+        }
+        completion(messages)
+    }
+
     func getTemplateAudioMessages(count: Int, completion: ([MockMessage]) -> Void) {
         var messages: [MockMessage] = []
         // Enable Template Messages
