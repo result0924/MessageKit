@@ -54,6 +54,9 @@ public enum MessageKind {
     /// A diary quote message
     case diaryQuote(DiaryQuoteMessageItem)
 
+    /// A reply message
+    case reply(ReplyMessageItem)
+
     /// A location message.
     case location(LocationItem)
 

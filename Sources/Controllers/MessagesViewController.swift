@@ -380,6 +380,10 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
             let cell = messagesCollectionView.dequeueReusableCell(DiaryQuoteMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
+        case .reply:
+            let cell = messagesCollectionView.dequeueReusableCell(ReplyMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
         case .location:
             if let cell = messagesDataSource.locationCell(for: message, at: indexPath, in: messagesCollectionView) {
                 return cell
