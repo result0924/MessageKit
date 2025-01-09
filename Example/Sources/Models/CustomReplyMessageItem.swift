@@ -95,13 +95,13 @@ struct CustomReplyMessageItem: ReplyMessageItem {
         var quoteContentHeight: CGFloat
 
         switch quoteType {
-        case .photoAndText:
+        case .smallIcon:
             quoteContentHeight = 84
-        case .textOnly:
+        case .text:
             let attributedMessageTypeContent = NSAttributedString.init(string: replyItem.quoteContent ?? "", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .regular)])
             let messageTypeContentRect = attributedMessageTypeContent.boundingRect(with: textSize, options: [NSStringDrawingOptions.usesLineFragmentOrigin, NSStringDrawingOptions.usesFontLeading], context: nil)
             quoteContentHeight = min(60 + messageTypeContentRect.size.height, 106)
-        case .photoOnly:
+        case .photo:
             quoteContentHeight = 112
         case .unknown:
             quoteContentHeight = 102

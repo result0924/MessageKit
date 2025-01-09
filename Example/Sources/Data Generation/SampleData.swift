@@ -327,19 +327,19 @@ final internal class SampleData {
             let uniqueID = UUID().uuidString
             let date = dateAddingRandomTime()
 
-            let type = ReplyQuoteItemType.allCases.dropLast().randomElement() ?? .photoAndText
+            let type = ReplyQuoteItemType.allCases.dropLast().randomElement() ?? .text
             var replyItem: CustomReplyMessageItem.ReplyItem
 
             let sender = senders.random() ?? currentSender
             let isFromOtherSenders = sender != currentSender
             let replyViewBackgroundColor = isFromOtherSenders ? CustomReplyMessageItem.grayBackgroundColor : .systemGreen
             switch type {
-            case .photoAndText:
-                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .photoAndText, title: "回覆", quoteImage: UIImage(imageLiteralResourceName: "image_message_placeholder"), quoteContent: "Title.pdf", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoAndText", replyViewBackgroundColor: replyViewBackgroundColor)
-            case .photoOnly:
-                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .photoOnly, title: "回覆", quoteImage: nil, quoteContent: nil, quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoOnly", replyViewBackgroundColor: replyViewBackgroundColor)
-            case .textOnly:
-                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .textOnly, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .sticker, replyContent: "https://dev.health2sync.com/images/stickers/1/s_014.png", replyViewBackgroundColor: .clear)
+            case .smallIcon:
+                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .smallIcon, title: "回覆", quoteImage: UIImage(imageLiteralResourceName: "image_message_placeholder"), quoteContent: "Title.pdf", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoAndText", replyViewBackgroundColor: replyViewBackgroundColor)
+            case .photo:
+                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .photo, title: "回覆", quoteImage: nil, quoteContent: "回覆訊息photoOnly", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoOnly", replyViewBackgroundColor: replyViewBackgroundColor)
+            case .text:
+                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .text, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .sticker, replyContent: "https://dev.health2sync.com/images/stickers/1/s_014.png", replyViewBackgroundColor: .clear)
             case .unknown:
                 replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .unknown, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息unknown", replyViewBackgroundColor: replyViewBackgroundColor)
             }

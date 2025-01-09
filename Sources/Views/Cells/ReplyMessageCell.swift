@@ -166,17 +166,27 @@ open class ReplyMessageCell: MessageContentCell {
             containerViewTwo.backgroundColor = item.replyViewBackgroundColor
 
             switch item.quoteType {
-            case .photoAndText:
+            case .smallIcon:
+                quoteIconView.isHidden = false
+                quoteImageView.isHidden = true
                 quoteContentLabel.numberOfLines = 1
                 setupQuoteIconView(item: item)
-                quoteLineViewHeightLayout?.constant = 24
+                quoteLineViewHeightLayout?.constant = item.quoteHeight - 56
                 quoteLabelTopLayout?.constant = 53
                 quoteLabelOriginXLayout?.constant = 72
                 quoteLabelWidthLayout?.constant = labelWidth - 30
-            case .photoOnly:
+            case .photo:
+                quoteIconView.isHidden = true
+                quoteImageView.isHidden = false
+                quoteContentLabel.numberOfLines = 3
                 setupQuoteImageView(item: item)
+                quoteLabelTopLayout?.constant = 52
+                quoteLabelOriginXLayout?.constant = 96
                 quoteLineViewHeightLayout?.constant =  48
-            case .textOnly:
+                quoteLabelWidthLayout?.constant = labelWidth - 54
+            case .text:
+                quoteIconView.isHidden = true
+                quoteImageView.isHidden = true
                 quoteContentLabel.numberOfLines = 3
                 quoteLineViewHeightLayout?.constant = item.quoteHeight - 56
                 quoteLabelTopLayout?.constant = 46
@@ -216,12 +226,10 @@ open class ReplyMessageCell: MessageContentCell {
     }
 
     private func setupQuoteIconView(item: ReplyMessageItem) {
-        quoteIconView.isHidden = false
         quoteIconView.image = item.quoteImage
     }
 
     private func setupQuoteImageView(item: ReplyMessageItem) {
-        quoteImageView.isHidden = false
 //        quoteImageView.image = UIImage(imageLiteralResourceName: "image_message_placeholder")
     }
 

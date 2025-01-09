@@ -9,14 +9,15 @@ import Foundation
 
 /// Different types of rely item
 public enum ReplyQuoteItemType: CaseIterable {
-    /// An item that includes both a photo and text.
-    case photoAndText
 
     /// An item that includes text only.
-    case textOnly
+    case text
+
+    /// An item that includes a small icon and text.
+    case smallIcon
 
     /// An item that includes a photo only.
-    case photoOnly
+    case photo
 
     /// A situation that should not occur.
     case unknown
