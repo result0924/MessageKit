@@ -14,6 +14,7 @@ struct CustomReplyMessageItem: ReplyMessageItem {
     static let grayBackgroundColor = UIColor(red: 244 / 255, green: 244 / 255, blue: 244 / 255, alpha: 1)
 
     struct ReplyItem {
+        let isFromOtherSenders: Bool
         let quoteType: ReplyQuoteItemType
         let title: String
         let quoteImage: UIImage?
@@ -24,6 +25,8 @@ struct CustomReplyMessageItem: ReplyMessageItem {
         let quoteViewBackgroundColor: UIColor = grayBackgroundColor
         let replyViewBackgroundColor: UIColor
     }
+
+    let isFromOtherSenders: Bool
 
     // quote message content
     var quoteType: MessageKit.ReplyQuoteItemType
@@ -50,6 +53,7 @@ struct CustomReplyMessageItem: ReplyMessageItem {
     var replyViewBackgroundColor: UIColor
 
     init(replyItem: Self.ReplyItem) {
+        self.isFromOtherSenders = replyItem.isFromOtherSenders
         self.quoteType = replyItem.quoteType
         self.title = replyItem.title
         self.quoteImage = replyItem.quoteImage
