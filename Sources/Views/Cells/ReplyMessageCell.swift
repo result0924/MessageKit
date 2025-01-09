@@ -188,9 +188,11 @@ open class ReplyMessageCell: MessageContentCell {
 
             let quoteBottomPaddingViewOriginY = item.quoteOriginY
             quoteBottomPaddingView.frame = CGRect(x: 0, y: quoteBottomPaddingViewOriginY, width: bubbleWidth, height: item.quoteBottomPadding)
+
             containerViewTwoOriginY = quoteBottomPaddingViewOriginY + item.quoteBottomPadding
             let messageLabelWidth = item.replyTextWidth < bubbleWidth ? item.replyTextWidth : bubbleWidth
-            containerViewTwo.frame = CGRect(x:0, y: containerViewTwoOriginY, width: messageLabelWidth, height: item.messageHeight)
+            let containerViewTwoOriginX = item.isFromOtherSenders ? 0 : messageContainerView.bounds.width - messageLabelWidth
+            containerViewTwo.frame = CGRect(x: containerViewTwoOriginX, y: containerViewTwoOriginY, width: messageLabelWidth, height: item.messageHeight)
 
             messageLabel.frame = CGRect(x: 0, y: 0, width: messageLabelWidth, height: item.messageHeight)
             mediaImageView.frame = CGRect(x: 0, y: 0, width: messageLabelWidth, height: item.messageHeight)

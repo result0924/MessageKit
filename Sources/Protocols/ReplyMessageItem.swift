@@ -28,6 +28,7 @@ public enum ReplyMessageType {
 }
 
 public protocol ReplyMessageItem: MessageItem {
+    var isFromOtherSenders: Bool { get }
     var quoteType: ReplyQuoteItemType { get }
     var title: String { get }
     var quoteImage: UIImage? { get }
