@@ -130,7 +130,7 @@ open class ReplyMessageCell: MessageContentCell {
         setupReplyIconViewConstraints(frame: CGRectMake(12, 12, 24, 24))
         setupTitleLabelConstraints(frame: CGRectMake(40, 12, 0, 24))
         setupQuoteLineViewConstraints(frame: CGRectMake(16, 48, 4, 0))
-        setupQuoteIconViewConstrains(frame: CGRectMake(itemOriginX, photoOriginY, 24, 24))
+        setupQuoteIconViewConstrains(frame: CGRectMake(itemOriginX, photoOriginY + 1, 24, 24))
         setupQuoteImageViewConstrains(frame: CGRectMake(itemOriginX, photoOriginY, 48, 48))
         setupQuoteContentLabelConstraints(frame: CGRectMake(itemOriginX + 36, photoOriginY, 0, 16))
     }
@@ -157,8 +157,8 @@ open class ReplyMessageCell: MessageContentCell {
             let bubbleWidth = messageContainerView.frame.size.width
             containerViewWidthLayout?.constant = bubbleWidth
             containerViewOneHeightLayout?.constant = item.quoteHeight
-            let titleLabelWidth = bubbleWidth - 36 - 16
-            let labelWidth = bubbleWidth - 32 - 16
+            let titleLabelWidth = bubbleWidth - 24 - 4 - 12 * 2 // -replyImageWidth - spacing - edgeInset
+            let labelWidth = bubbleWidth - 32 - 4 - 16 // -imageWidth - spacing - edgeInset
             titleLabelWidthLayout?.constant = titleLabelWidth
             quoteLabelWidthLayout?.constant = labelWidth
 
@@ -172,23 +172,23 @@ open class ReplyMessageCell: MessageContentCell {
                 quoteContentLabel.numberOfLines = 1
                 setupQuoteIconView(item: item)
                 quoteLineViewHeightLayout?.constant = item.quoteHeight - 56
-                quoteLabelTopLayout?.constant = 53
+                quoteLabelTopLayout?.constant = 52
                 quoteLabelOriginXLayout?.constant = 72
-                quoteLabelWidthLayout?.constant = labelWidth - 30
+                quoteLabelWidthLayout?.constant = labelWidth - 24 - 4 * 2 // -imageWidth - spacing
             case .photo:
                 quoteIconView.isHidden = true
                 quoteImageView.isHidden = false
                 quoteContentLabel.numberOfLines = 3
                 setupQuoteImageView(item: item)
-                quoteLabelTopLayout?.constant = 52
+                quoteLabelTopLayout?.constant = 50
                 quoteLabelOriginXLayout?.constant = 96
                 quoteLineViewHeightLayout?.constant =  48
-                quoteLabelWidthLayout?.constant = labelWidth - 54
+                quoteLabelWidthLayout?.constant = labelWidth - 48 - 8 * 2 // -imageWidth - spacing
             case .text:
                 quoteIconView.isHidden = true
                 quoteImageView.isHidden = true
                 quoteContentLabel.numberOfLines = 3
-                quoteLineViewHeightLayout?.constant = item.quoteHeight - 56
+                quoteLineViewHeightLayout?.constant = item.quoteHeight - 58
                 quoteLabelTopLayout?.constant = 46
                 quoteLabelOriginXLayout?.constant = 36
                 quoteLabelWidthLayout?.constant = labelWidth
