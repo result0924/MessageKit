@@ -53,6 +53,8 @@
 		50FF34552237FE4C0004DCD7 /* ContactItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF34542237FE4C0004DCD7 /* ContactItem.swift */; };
 		50FF34592237FE850004DCD7 /* ContactMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF34582237FE840004DCD7 /* ContactMessageCell.swift */; };
 		50FF345B2237FE9C0004DCD7 /* ContactMessageSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF345A2237FE9C0004DCD7 /* ContactMessageSizeCalculator.swift */; };
+		74D3168C2D2F973700FAE541 /* ReplyMessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D3168B2D2F973700FAE541 /* ReplyMessageItem.swift */; };
+		74D3168E2D2F976500FAE541 /* ReplyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D3168D2D2F976500FAE541 /* ReplyMessageCell.swift */; };
 		88916B2D1CF0DF2F00469F91 /* MessageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88916B221CF0DF2F00469F91 /* MessageKit.framework */; };
 		8962AC8A1F87AB7D0030B058 /* MessagesCollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8962AC831F87AB230030B058 /* MessagesCollectionViewTests.swift */; };
 		8962AC8C1F87AB7D0030B058 /* AvatarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8962AC851F87AB230030B058 /* AvatarViewTests.swift */; };
@@ -169,6 +171,8 @@
 		50FF34542237FE4C0004DCD7 /* ContactItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactItem.swift; sourceTree = "<group>"; };
 		50FF34582237FE840004DCD7 /* ContactMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactMessageCell.swift; sourceTree = "<group>"; };
 		50FF345A2237FE9C0004DCD7 /* ContactMessageSizeCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactMessageSizeCalculator.swift; sourceTree = "<group>"; };
+		74D3168B2D2F973700FAE541 /* ReplyMessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyMessageItem.swift; sourceTree = "<group>"; };
+		74D3168D2D2F976500FAE541 /* ReplyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyMessageCell.swift; sourceTree = "<group>"; };
 		74DB39A02BD7983100218112 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		88916B221CF0DF2F00469F91 /* MessageKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88916B2C1CF0DF2F00469F91 /* MessageKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessageKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -269,6 +273,7 @@
 				38F8063621740DD500CDB9DB /* TypingIndicatorCell.swift */,
 				D0C1A8E8244FE8A700177317 /* TemplateMessageCell.swift */,
 				F9FC562F2575EA4E0090626A /* MediaMessageCell.swift */,
+				74D3168D2D2F976500FAE541 /* ReplyMessageCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -473,6 +478,7 @@
 				1FD5896320660C1C004B5081 /* LocationItem.swift */,
 				5073C1142175BE750040EAD5 /* AudioItem.swift */,
 				D0C1A8E6244FE58100177317 /* TemplateItem.swift */,
+				74D3168B2D2F973700FAE541 /* ReplyMessageItem.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -682,10 +688,12 @@
 				5073C1192175BE960040EAD5 /* AudioMessageCell.swift in Sources */,
 				50FF34592237FE850004DCD7 /* ContactMessageCell.swift in Sources */,
 				1FD589602064E08A004B5081 /* PhotoItem.swift in Sources */,
+				74D3168E2D2F976500FAE541 /* ReplyMessageCell.swift in Sources */,
 				B7A03F611F8669CA006AEF79 /* MessagesDataSource.swift in Sources */,
 				B7A03F6E1F8669EB006AEF79 /* NSAttributedString+Extensions.swift in Sources */,
 				B7A03F471F86694F006AEF79 /* MessageLabel.swift in Sources */,
 				50FF345B2237FE9C0004DCD7 /* ContactMessageSizeCalculator.swift in Sources */,
+				74D3168C2D2F973700FAE541 /* ReplyMessageItem.swift in Sources */,
 				B7A03F5F1F8669CA006AEF79 /* MessageLabelDelegate.swift in Sources */,
 				B7A03F4C1F86694F006AEF79 /* PlayButtonView.swift in Sources */,
 				1FD5896420660C1C004B5081 /* LocationItem.swift in Sources */,

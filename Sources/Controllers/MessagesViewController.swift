@@ -51,7 +51,7 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     /// NOTE: This is related to `scrollToBottom` whereas the above flag is related to `scrollToLastItem` - check each function for differences
     @available(*, deprecated, message: "Control scrolling to bottom on keyboardBeginEditing by using scrollsToLastItemOnKeyboardBeginsEditing instead", renamed: "scrollsToLastItemOnKeyboardBeginsEditing")
     open var scrollsToBottomOnKeyboardBeginsEditing: Bool = false
-    
+
     /// A Boolean value that determines whether the `MessagesCollectionView`
     /// maintains it's current position when the height of the `MessageInputBar` changes.
     ///
@@ -70,6 +70,8 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
             }
         }
     }
+
+    open var longPressMenuIsEnable: Bool = true
 
     /// Pan gesture for display the date of message by swiping left.
     private var panGesture: UIPanGestureRecognizer?
@@ -104,7 +106,7 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     public var selectedIndexPathForMenu: IndexPath?
 
     private var isFirstLayout: Bool = true
-    
+
     internal var isMessagesControllerBeingDismissed: Bool = false
 
     internal var messageCollectionViewBottomInset: CGFloat = 0 {
@@ -124,31 +126,33 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
         setupDelegates()
         addMenuControllerObservers()
         addObservers()
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        messagesCollectionView.addGestureRecognizer(longPress)
     }
-    
+
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if !isFirstLayout {
             addKeyboardObservers()
         }
     }
-    
+
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         isMessagesControllerBeingDismissed = false
     }
-    
+
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         isMessagesControllerBeingDismissed = true
         removeKeyboardObservers()
     }
-    
+
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         isMessagesControllerBeingDismissed = false
     }
-    
+
     open override func viewDidLayoutSubviews() {
         // Hack to prevent animation of the contentInset after viewDidAppear
         if isFirstLayout {
@@ -242,7 +246,7 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
 
     private func setupConstraints() {
         messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let top = messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor)
         let bottom = messagesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         let leading = messagesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
@@ -376,6 +380,10 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
             let cell = messagesCollectionView.dequeueReusableCell(DiaryQuoteMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
+        case .reply:
+            let cell = messagesCollectionView.dequeueReusableCell(ReplyMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
         case .location:
             if let cell = messagesDataSource.locationCell(for: message, at: indexPath, in: messagesCollectionView) {
                 return cell
@@ -486,13 +494,6 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
         }
     }
 
-    open func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        if isSectionReservedForTypingIndicator(indexPath.section) {
-            return false
-        }
-        return (action == NSSelectorFromString("copy:"))
-    }
-
     open func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
         guard let messagesDataSource = messagesCollectionView.messagesDataSource else {
             fatalError(MessageKitError.nilMessagesDataSource)
@@ -518,22 +519,26 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     }
 
     // MARK: - Helpers
-    
+
     private func addObservers() {
         NotificationCenter.default.addObserver(
             self, selector: #selector(clearMemoryCache), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
     }
-    
+
     private func removeObservers() {
         NotificationCenter.default.removeObserver(self, name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
     }
-    
+
     @objc private func clearMemoryCache() {
         MessageStyle.bubbleImageCache.removeAllObjects()
     }
 
+    @objc open func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        guard longPressMenuIsEnable, gesture.state == .began else { return }
+    }
+
     // MARK: - UIGestureRecognizerDelegate
-           
+
     /// Check Pan Gesture Direction:
     open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else {
@@ -547,22 +552,22 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
         // MARK: - UIScrollViewDelegate
 
 extension MessagesViewController: UIScrollViewDelegate{
-    
+
     open func scrollViewDidScroll(_ scrollView: UIScrollView) { }
-    
+
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView){ }
-    
+
     open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>){ }
-    
+
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool){ }
-    
+
     open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView){ }
-    
+
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) { }
-    
+
     open func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) { }
-    
+
     open func scrollViewDidScrollToTop(_ scrollView: UIScrollView){ }
-    
+
     open func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) { }
 }

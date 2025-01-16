@@ -48,6 +48,8 @@ open class MediaMessageSizeCalculator: MessageSizeCalculator {
             return item.size
         case .diaryQuote(let item):
             return item.size
+        case .reply(let item):
+            return item.size
         default:
             fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
         }

@@ -55,6 +55,7 @@ class CustomChatViewController: MessagesViewController {
         tapTextViewGesture.numberOfTouchesRequired = 1
         messageInputBar.inputTextView.addGestureRecognizer(tapTextViewGesture)
         messagesCollectionView.register(CustomDiaryQuoteMessageCell.self)
+        messagesCollectionView.register(ReplyMessageCell.self)
         messagesCollectionView.alpha = 0
     }
 
@@ -120,6 +121,10 @@ class CustomChatViewController: MessagesViewController {
             let cell = messagesCollectionView.dequeueReusableCell(CustomDiaryQuoteMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
+        case .reply:
+            let cell = messagesCollectionView.dequeueReusableCell(ReplyMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
         case .location:
             let cell = messagesCollectionView.dequeueReusableCell(LocationMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
@@ -145,7 +150,7 @@ class CustomChatViewController: MessagesViewController {
         DispatchQueue.global(qos: .userInitiated).async {
             let count = UserDefaults.standard.mockMessagesCount()
             // diary quote
-            SampleData.shared.getDiaryQuoteMessages(count: count) { messages in
+            SampleData.shared.getReplyMessages(count: count) { messages in
                 DispatchQueue.main.async {
                     self.messageList = messages
                     self.messagesCollectionView.reloadData()

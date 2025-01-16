@@ -178,4 +178,8 @@ internal struct MockMessage: MessageType {
     init(diaryQuote: CustomDiaryQuoteItem, user: MockUser, messageId: String, date: Date) {
         self.init(kind: .diaryQuote(diaryQuote), user: user, messageId: messageId, date: date)
     }
+
+    init(reply: CustomReplyMessageItem, user: MockUser, messageId: String, date: Date) {
+        self.init(kind: .reply(reply), user: user, messageId: messageId, date: date)
+    }
 }
