@@ -88,6 +88,8 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
         return false
     }
 
+    open var collectionViewTopConstraint = NSLayoutConstraint()
+
     /// A CGFloat value that adds to (or, if negative, subtracts from) the automatically
     /// computed value of `messagesCollectionView.contentInset.bottom`. Meant to be used
     /// as a measure of last resort when the built-in algorithm does not produce the right
@@ -247,11 +249,11 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     private func setupConstraints() {
         messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
-        let top = messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor)
+        collectionViewTopConstraint = messagesCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         let bottom = messagesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         let leading = messagesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
         let trailing = messagesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-        NSLayoutConstraint.activate([top, bottom, trailing, leading])
+        NSLayoutConstraint.activate([collectionViewTopConstraint, bottom, trailing, leading])
     }
 
     // MARK: - Typing Indicator API
@@ -284,6 +286,19 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
             performUpdatesForTypingIndicatorVisability(at: section)
             updates?()
             completion?(true)
+        }
+    }
+
+    open func updateCollectionViewTopSpacing(_ spacing: CGFloat, _ animated: Bool = true) {
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseIn, animations: {
+                self.collectionViewTopConstraint.constant = spacing
+            }, completion: { _ in
+                self.view.layoutIfNeeded()
+            })
+        } else {
+            collectionViewTopConstraint.constant = spacing
+            view.layoutIfNeeded()
         }
     }
 
