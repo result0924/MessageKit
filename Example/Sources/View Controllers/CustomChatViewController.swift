@@ -56,6 +56,7 @@ class CustomChatViewController: MessagesViewController {
         messageInputBar.inputTextView.addGestureRecognizer(tapTextViewGesture)
         messagesCollectionView.register(CustomDiaryQuoteMessageCell.self)
         messagesCollectionView.register(ReplyMessageCell.self)
+        messagesCollectionView.register(ChartViewCell.self)
         messagesCollectionView.alpha = 0
     }
 
@@ -141,6 +142,10 @@ class CustomChatViewController: MessagesViewController {
             return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
         case .linkPreview:
             let cell = messagesCollectionView.dequeueReusableCell(LinkPreviewMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .chartView:
+            let cell = messagesCollectionView.dequeueReusableCell(ChartViewCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
         }

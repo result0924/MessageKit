@@ -71,6 +71,9 @@ public enum MessageKind {
 
     /// A link preview message.
     case linkPreview(LinkItem)
+    
+    /// A customView message.
+    case chartView(ChartViewItem)
 
     /// A custom message.
     /// - Note: Using this case requires that you implement the following methods and handle this case:

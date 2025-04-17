@@ -182,4 +182,8 @@ internal struct MockMessage: MessageType {
     init(reply: CustomReplyMessageItem, user: MockUser, messageId: String, date: Date) {
         self.init(kind: .reply(reply), user: user, messageId: messageId, date: date)
     }
+    
+    init(chartView: ChartViewItem, user: MockUser, messageId: String, date: Date) {
+        self.init(kind: .chartView(chartView), user: user, messageId: messageId, date: date)
+    }
 }

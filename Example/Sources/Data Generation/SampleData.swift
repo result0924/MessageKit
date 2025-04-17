@@ -326,24 +326,9 @@ final internal class SampleData {
         for _ in 0..<count {
             let uniqueID = UUID().uuidString
             let date = dateAddingRandomTime()
-
-            let type = ReplyQuoteItemType.allCases.dropLast().randomElement() ?? .text
-            var replyItem: CustomReplyMessageItem.ReplyItem
-
             let sender = senders.random() ?? currentSender
-            let isFromOtherSenders = sender != currentSender
-            let replyViewBackgroundColor = isFromOtherSenders ? CustomReplyMessageItem.grayBackgroundColor : .systemGreen
-            switch type {
-            case .smallIcon:
-                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .smallIcon, title: "回覆", quoteImage: UIImage(imageLiteralResourceName: "image_message_placeholder"), quoteContent: "Title.pdf", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoAndText", replyViewBackgroundColor: replyViewBackgroundColor)
-            case .photo:
-                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .photo, title: "回覆", quoteImage: nil, quoteContent: "回覆訊息photoOnly", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoOnly", replyViewBackgroundColor: replyViewBackgroundColor)
-            case .text:
-                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .text, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .sticker, replyContent: "https://dev.health2sync.com/images/stickers/1/s_014.png", replyViewBackgroundColor: .clear)
-            case .unknown:
-                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .unknown, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息unknown", replyViewBackgroundColor: replyViewBackgroundColor)
-            }
-            let message = MockMessage(reply: CustomReplyMessageItem(replyItem: replyItem), user: sender, messageId: uniqueID, date: date)
+            let chartViewItem = CustomChartViewItem(title: "1/13 午餐 血糖波動 1/13 午餐 血糖波動")
+            let message = MockMessage(chartView: chartViewItem, user: sender, messageId: uniqueID, date: date)
             messages.append(message)
         }
         completion(messages)

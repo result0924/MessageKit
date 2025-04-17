@@ -43,6 +43,7 @@
 		5168957624F7AD560058C643 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5168957224F7AD560058C643 /* LaunchScreen.storyboard */; };
 		63ECDABE24182A470016C349 /* MessageSubviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ECDABD24182A470016C349 /* MessageSubviewViewController.swift */; };
 		63ECDAC2241889630016C349 /* MessageSubviewContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ECDAC1241889630016C349 /* MessageSubviewContainerViewController.swift */; };
+		6C5C75292DB0D8B60030C3E4 /* CustomChartViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */; };
 		744686D72D1BA5590020782C /* CustomReplyMessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */; };
 		882B5E811CF7D53600B6E160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E781CF7D53600B6E160 /* AppDelegate.swift */; };
 		882B5E901CF7D56000B6E160 /* ChatExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E8E1CF7D56000B6E160 /* ChatExampleUITests.swift */; };
@@ -121,6 +122,7 @@
 		5168957424F7AD560058C643 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63ECDABD24182A470016C349 /* MessageSubviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSubviewViewController.swift; sourceTree = "<group>"; };
 		63ECDAC1241889630016C349 /* MessageSubviewContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSubviewContainerViewController.swift; sourceTree = "<group>"; };
+		6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChartViewItem.swift; sourceTree = "<group>"; };
 		744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReplyMessageItem.swift; sourceTree = "<group>"; };
 		882B5E331CF7D4B900B6E160 /* ChatExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		882B5E491CF7D4B900B6E160 /* ChatExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,6 +223,7 @@
 				1A9CBCBA2AA587B8004E9C11 /* CustomTemplateItem.swift */,
 				1A9CBCBC2AA58802004E9C11 /* CustomDiaryQuoteItem.swift */,
 				744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */,
+				6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -647,6 +650,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C5C75292DB0D8B60030C3E4 /* CustomChartViewItem.swift in Sources */,
 				9B49D53A263D9606008804B5 /* CustomLayoutSizeCalculator.swift in Sources */,
 				385C2922211FF32E0010B4BA /* CustomCell.swift in Sources */,
 				9B49D542263DA6F9008804B5 /* CustomMessageContentCell.swift in Sources */,
