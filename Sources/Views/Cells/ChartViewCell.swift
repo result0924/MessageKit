@@ -13,6 +13,8 @@ open class ChartViewCell: MessageContentCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 0.267, green: 0.267, blue: 0.267, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         
         return label
     }()

@@ -22,8 +22,20 @@ struct CustomChartViewItem: ChartViewItem {
         let textViewContentInset = UIEdgeInsets(top: 12, left: 12, bottom: 10, right: 36)
         let maxTextWidth = maxBubbleWidth - textViewContentInset.left - textViewContentInset.right
         let textSize = CGSize(width: maxTextWidth, height: CGFloat(Float.greatestFiniteMagnitude))
-        let attributedTextString = NSAttributedString.init(string: title, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium)])
-        let contentRect = attributedTextString.boundingRect(with: textSize, options: [NSStringDrawingOptions.usesLineFragmentOrigin, NSStringDrawingOptions.usesFontLeading], context: nil)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        let attributedTextString = NSAttributedString(
+            string: title,
+            attributes: [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium),
+                NSAttributedString.Key.paragraphStyle: paragraphStyle
+            ]
+        )
+        let contentRect = attributedTextString.boundingRect(
+            with: textSize,
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            context: nil
+        )
         let titleHeight = contentRect.size.height + textViewContentInset.top + textViewContentInset.bottom
         let lineHeight: CGFloat = 0.5
         self.titleViewSize = CGSize(width: maxTextWidth, height: contentRect.size.height)
