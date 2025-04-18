@@ -320,14 +320,72 @@ final internal class SampleData {
         }
         completion(messages)
     }
-
+    
     func getReplyMessages(count: Int, completion: ([MockMessage]) -> Void) {
         var messages: [MockMessage] = []
         for _ in 0..<count {
             let uniqueID = UUID().uuidString
             let date = dateAddingRandomTime()
+
+            let type = ReplyQuoteItemType.allCases.dropLast().randomElement() ?? .text
+            var replyItem: CustomReplyMessageItem.ReplyItem
+
             let sender = senders.random() ?? currentSender
-            let chartViewItem = CustomChartViewItem(title: "1/13 午餐 血糖波動 1/13 午餐 血糖波動")
+            let isFromOtherSenders = sender != currentSender
+            let replyViewBackgroundColor = isFromOtherSenders ? CustomReplyMessageItem.grayBackgroundColor : .systemGreen
+            switch type {
+            case .smallIcon:
+                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .smallIcon, title: "回覆", quoteImage: UIImage(imageLiteralResourceName: "image_message_placeholder"), quoteContent: "Title.pdf", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoAndText", replyViewBackgroundColor: replyViewBackgroundColor)
+            case .photo:
+                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .photo, title: "回覆", quoteImage: nil, quoteContent: "回覆訊息photoOnly", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息photoOnly", replyViewBackgroundColor: replyViewBackgroundColor)
+            case .text:
+                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .text, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .sticker, replyContent: "https://dev.health2sync.com/images/stickers/1/s_014.png", replyViewBackgroundColor: .clear)
+            case .unknown:
+                replyItem = CustomReplyMessageItem.ReplyItem(isFromOtherSenders: isFromOtherSenders, quoteType: .unknown, title: "回覆", quoteImage: nil, quoteContent: "textOnly", quotePhotoURL: nil, replyMessageType: .text, replyContent: "回覆訊息unknown", replyViewBackgroundColor: replyViewBackgroundColor)
+            }
+            let message = MockMessage(reply: CustomReplyMessageItem(replyItem: replyItem), user: sender, messageId: uniqueID, date: date)
+            messages.append(message)
+        }
+        completion(messages)
+    }
+
+    func getChartMessages(count: Int, completion: ([MockMessage]) -> Void) {
+        var messages: [MockMessage] = []
+        let titles = ["1/13 午餐 血糖波動", "1/14 晚餐 血糖波動", "1/15 早餐 血糖波動"]
+        let metricsLabels = ["Total Weight Change", "Last Weight", "BMI", "Body Fat"]
+        let units = ["kg", "kg", "", "%"]
+        
+        for _ in 0..<count {
+            let uniqueID = UUID().uuidString
+            let date = dateAddingRandomTime()
+            let sender = senders.random() ?? currentSender
+            let title = titles.randomElement() ?? titles[0]
+            
+            // 隨機生成 0-4 個 metrics
+            let metricsCount = Int.random(in: 0...4)
+            var metrics: [ChartViewMetric] = []
+            
+            for i in 0..<metricsCount {
+                let label = metricsLabels[i]
+                let unit = units[i]
+                let value = String(format: "%.1f", Double.random(in: 50...100))
+                let colors: [UIColor] = [
+                    UIColor(red: 0.267, green: 0.267, blue: 0.267, alpha: 1),  // normal
+                    UIColor(red: 150.0/255.0, green: 118.0/255.0, blue: 214.0/255.0, alpha: 1),  // low
+                    UIColor(red: 252.0/255.0, green: 180.0/255.0, blue: 93.0/255.0, alpha: 1)  // high
+                ]
+                let valueColor = colors.randomElement() ?? colors[0]
+                
+                let metric = ChartViewMetric(
+                    label: label,
+                    value: value,
+                    unit: unit,
+                    valueColor: valueColor
+                )
+                metrics.append(metric)
+            }
+            
+            let chartViewItem = CustomChartViewItem(title: title, metrics: metrics)
             let message = MockMessage(chartView: chartViewItem, user: sender, messageId: uniqueID, date: date)
             messages.append(message)
         }

@@ -155,7 +155,7 @@ class CustomChatViewController: MessagesViewController {
         DispatchQueue.global(qos: .userInitiated).async {
             let count = UserDefaults.standard.mockMessagesCount()
             // diary quote
-            SampleData.shared.getReplyMessages(count: count) { messages in
+            SampleData.shared.getChartMessages(count: count) { messages in
                 DispatchQueue.main.async {
                     self.messageList = messages
                     self.messagesCollectionView.reloadData()

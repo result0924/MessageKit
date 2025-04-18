@@ -10,35 +10,127 @@ import UIKit
 import MessageKit
 
 struct CustomChartViewItem: ChartViewItem {
+    // MARK: - Properties
     var title: String
     var titleViewSize: CGSize
+    var metricsViewSize: CGSize
     var size: CGSize
+    var metrics: [ChartViewMetric]
     
-    init(title: String) {
+    // MARK: - Initialization
+    init(title: String, metrics: [ChartViewMetric]) {
         self.title = title
-        let screenWidth: CGFloat = UIScreen.main.bounds.width
-        let collectionViewLeftRightPadding: CGFloat = 95
-        let maxBubbleWidth = screenWidth - collectionViewLeftRightPadding
-        let textViewContentInset = UIEdgeInsets(top: 12, left: 12, bottom: 10, right: 36)
-        let maxTextWidth = maxBubbleWidth - textViewContentInset.left - textViewContentInset.right
-        let textSize = CGSize(width: maxTextWidth, height: CGFloat(Float.greatestFiniteMagnitude))
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .byWordWrapping
-        let attributedTextString = NSAttributedString(
+        self.metrics = metrics
+        let (titleSize, metricsSize, bubbleSize) = Self.calculateSizes(for: title, metrics: metrics)
+        self.titleViewSize = titleSize
+        self.metricsViewSize = metricsSize
+        self.size = bubbleSize
+    }
+    
+    // MARK: - ChartViewItem
+    var titleAttributedString: NSAttributedString {
+        NSAttributedString(
             string: title,
             attributes: [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium),
-                NSAttributedString.Key.paragraphStyle: paragraphStyle
+                NSAttributedString.Key.font: ChartViewConstants.titleFont,
+                NSAttributedString.Key.foregroundColor: ChartViewConstants.normalColor
             ]
         )
-        let contentRect = attributedTextString.boundingRect(
+    }
+    
+    var metricsStackViewLeadingPadding: CGFloat {
+        ChartViewConstants.metricsStackViewLeadingPadding
+    }
+    
+    var metricsStackViewTrailingPadding: CGFloat {
+        ChartViewConstants.metricsStackViewTrailingPadding
+    }
+    
+    // MARK: - Private Methods
+    private static func calculateSizes(for title: String, metrics: [ChartViewMetric]) -> (titleSize: CGSize, metricsSize: CGSize, bubbleSize: CGSize) {
+        let screenWidth = UIScreen.main.bounds.width
+        let maxBubbleWidth = screenWidth - ChartViewConstants.collectionViewLeftRightPadding
+        let maxTextWidth = maxBubbleWidth - ChartViewConstants.textViewContentInset.left - ChartViewConstants.textViewContentInset.right
+        
+        let titleAttributedString = NSAttributedString(
+            string: title,
+            attributes: [
+                NSAttributedString.Key.font: ChartViewConstants.titleFont,
+                NSAttributedString.Key.foregroundColor: ChartViewConstants.normalColor
+            ]
+        )
+        let titleSize = calculateAttributedStringSize(for: titleAttributedString, maxWidth: maxTextWidth)
+        
+        let metricsSize = calculateMetricsSize(for: metrics, maxWidth: maxBubbleWidth)
+        let bubbleSize = calculateBubbleSize(titleHeight: titleSize.height, metricsHeight: metricsSize.height)
+        
+        return (titleSize, metricsSize, bubbleSize)
+    }
+    
+    private static func calculateMetricsSize(for metrics: [ChartViewMetric], maxWidth: CGFloat) -> CGSize {
+        guard !metrics.isEmpty else { return .zero }
+        let metricsStackViewPadding = ChartViewConstants.metricsStackViewLeadingPadding + ChartViewConstants.metricsStackViewTrailingPadding
+        
+        // 計算每個 metric 的高度
+        var metricHeights: [CGFloat] = []
+        for (index, metric) in metrics.enumerated() {
+            // 如果是奇數個 metrics 且是最後一個，使用整行寬度
+            let isLastOddMetric = index == metrics.count - 1 && metrics.count % 2 == 1
+            let metricWidth = isLastOddMetric ? 
+                (maxWidth - metricsStackViewPadding) : 
+                (maxWidth - metricsStackViewPadding - ChartViewConstants.metricsStackViewSpacing) / 2
+            
+            let labelSize = calculateAttributedStringSize(for: metric.labelAttributedString, maxWidth: metricWidth)
+            let valueUnitSize = calculateAttributedStringSize(for: metric.valueUnitAttributedString, maxWidth: metricWidth)
+            let totalHeight = labelSize.height + ChartViewConstants.metricsLabelSpacing + valueUnitSize.height
+            metricHeights.append(totalHeight)
+        }
+        
+        // 計算每一行的高度
+        var totalMetricsHeight: CGFloat = 0
+        for i in stride(from: 0, to: metricHeights.count, by: 2) {
+            let leftHeight = metricHeights[i]
+            let rightHeight = i + 1 < metricHeights.count ? metricHeights[i + 1] : 0
+            let rowHeight = max(leftHeight, rightHeight)
+            totalMetricsHeight += rowHeight
+            
+            totalMetricsHeight += ChartViewConstants.metricsStackViewSpacing
+        }
+        
+        return CGSize(width: maxWidth, height: totalMetricsHeight)
+    }
+    
+    private static func calculateAttributedStringSize(for attributedString: NSAttributedString, maxWidth: CGFloat) -> CGSize {
+        let textSize = CGSize(width: maxWidth, height: CGFloat(Float.greatestFiniteMagnitude))
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        
+        let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        mutableAttributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: mutableAttributedString.length)
+        )
+        
+        let contentRect = mutableAttributedString.boundingRect(
             with: textSize,
             options: [.usesLineFragmentOrigin, .usesFontLeading],
             context: nil
         )
-        let titleHeight = contentRect.size.height + textViewContentInset.top + textViewContentInset.bottom
-        let lineHeight: CGFloat = 0.5
-        self.titleViewSize = CGSize(width: maxTextWidth, height: contentRect.size.height)
-        self.size = CGSize(width: maxBubbleWidth, height:titleHeight + lineHeight + 200)
+        
+        return contentRect.size
+    }
+    
+    private static func calculateBubbleSize(titleHeight: CGFloat, metricsHeight: CGFloat) -> CGSize {
+        let screenWidth = UIScreen.main.bounds.width
+        let maxBubbleWidth = screenWidth - ChartViewConstants.collectionViewLeftRightPadding
+        
+        let totalHeight = titleHeight + 
+            ChartViewConstants.textViewContentInset.top + 
+            ChartViewConstants.textViewContentInset.bottom + 
+            ChartViewConstants.lineHeight + 
+            (metricsHeight > 0 ? metricsHeight + 4 : 0)
+        
+        return CGSize(width: maxBubbleWidth, height: totalHeight)
     }
 }
