@@ -351,8 +351,8 @@ final internal class SampleData {
 
     func getChartMessages(count: Int, completion: ([MockMessage]) -> Void) {
         var messages: [MockMessage] = []
-        let titles = ["1/13 午餐 血糖波動", "1/14 晚餐 血糖波動", "1/15 早餐 血糖波動"]
-        let metricsLabels = ["Total Weight Change", "Last Weight", "BMI", "Body Fat"]
+        let titles = ["1/13 午餐 血糖波動", "1/14 晚餐 血糖波動", "1/15 早餐 血糖波動早餐 血糖波動"]
+        let metricsLabels = ["Total Weight Change Total Weight Change", "Last Weight", "BMI", "Body Fat"]
         let units = ["kg", "kg", "", "%"]
         
         for _ in 0..<count {
@@ -385,7 +385,7 @@ final internal class SampleData {
                 metrics.append(metric)
             }
             
-            let chartViewItem = CustomChartViewItem(title: title, metrics: metrics)
+            let chartViewItem = CustomChartViewItem(title: title, metrics: metrics, shouldShowChartInfo: Bool.random())
             let message = MockMessage(chartView: chartViewItem, user: sender, messageId: uniqueID, date: date)
             messages.append(message)
         }

@@ -5,7 +5,6 @@
 //  Created by Justin Lai on 2025/4/21.
 //
 
-
 class ChartView: UIView {
     // MARK: - Properties
     let titleLabel: UILabel = {
@@ -39,9 +38,26 @@ class ChartView: UIView {
         return stackView
     }()
     
+    private let chartView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let chartInfoView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .purple
+        return view
+    }()
+    
     private var titleLabelWidthLayout: NSLayoutConstraint?
     private var titleLabelHeightLayout: NSLayoutConstraint?
     private var metricsStackViewHeightLayout: NSLayoutConstraint?
+    private var chartInfoViewHeightLayout: NSLayoutConstraint?
+    private var chartViewTopAnchorConstraint: NSLayoutConstraint?
+    private var metricsStackViewTopAnchorConstraint: NSLayoutConstraint?
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -80,9 +96,22 @@ class ChartView: UIView {
                 }
             }
             
+            metricsStackViewTopAnchorConstraint?.constant = 8
             metricsStackViewHeightLayout?.constant = item.metricsViewSize.height
+            chartViewTopAnchorConstraint?.constant = -4
         } else {
+            metricsStackViewTopAnchorConstraint?.constant = 0
             metricsStackViewHeightLayout?.constant = 0
+            chartViewTopAnchorConstraint?.constant = 0
+        }
+        
+        // Configure chart info view
+        if item.shouldShowChartInfo {
+            chartInfoViewHeightLayout?.constant = 52
+            chartInfoView.isHidden = false
+        } else {
+            chartInfoViewHeightLayout?.constant = 0
+            chartInfoView.isHidden = true
         }
     }
     
@@ -97,6 +126,8 @@ class ChartView: UIView {
         addSubview(arrowImageView)
         addSubview(separatorView)
         addSubview(metricsStackView)
+        addSubview(chartView)
+        addSubview(chartInfoView)
         
         setupConstraints()
     }
@@ -119,13 +150,29 @@ class ChartView: UIView {
             separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: 0.5),
-            
-            metricsStackView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 8),
+
             metricsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             metricsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            
+            chartView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            chartView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            chartView.heightAnchor.constraint(equalToConstant: 216),
+            
+            chartInfoView.topAnchor.constraint(equalTo: chartView.bottomAnchor),
+            chartInfoView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            chartInfoView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            chartInfoView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        metricsStackViewHeightLayout = metricsStackView.heightAnchor.constraint(equalToConstant: 4)
+        metricsStackViewTopAnchorConstraint = metricsStackView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 0)
+        metricsStackViewTopAnchorConstraint?.isActive = true
+        metricsStackViewHeightLayout = metricsStackView.heightAnchor.constraint(equalToConstant: 0)
         metricsStackViewHeightLayout?.isActive = true
+        
+        chartViewTopAnchorConstraint = chartView.topAnchor.constraint(equalTo: metricsStackView.bottomAnchor, constant: 0)
+        chartViewTopAnchorConstraint?.isActive = true
+        
+        chartInfoViewHeightLayout = chartInfoView.heightAnchor.constraint(equalToConstant: 0)
+        chartInfoViewHeightLayout?.isActive = true
     }
     
     private func createMetricsRowStackView() -> UIStackView {

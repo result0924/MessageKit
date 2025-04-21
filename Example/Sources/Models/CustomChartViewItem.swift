@@ -55,16 +55,18 @@ struct CustomChartViewItem: ChartViewItem {
     var title: String
     var titleViewSize: CGSize
     var metricsViewSize: CGSize
-    var size: CGSize
     var metrics: [ChartViewMetric]
+    var shouldShowChartInfo: Bool
+    var size: CGSize
     
     // MARK: - Initialization
-    init(title: String, metrics: [ChartViewMetric]) {
+    init(title: String, metrics: [ChartViewMetric], shouldShowChartInfo: Bool) {
         self.title = title
         self.metrics = metrics
-        let (titleSize, metricsSize, bubbleSize) = Self.calculateSizes(for: title, metrics: metrics)
+        let (titleSize, metricsSize, bubbleSize) = Self.calculateSizes(for: title, metrics: metrics, shouldShowChartInfo: shouldShowChartInfo)
         self.titleViewSize = titleSize
         self.metricsViewSize = metricsSize
+        self.shouldShowChartInfo = shouldShowChartInfo
         self.size = bubbleSize
     }
     
@@ -88,7 +90,7 @@ struct CustomChartViewItem: ChartViewItem {
     }
     
     // MARK: - Private Methods
-    private static func calculateSizes(for title: String, metrics: [ChartViewMetric]) -> (titleSize: CGSize, metricsSize: CGSize, bubbleSize: CGSize) {
+    private static func calculateSizes(for title: String, metrics: [ChartViewMetric], shouldShowChartInfo: Bool) -> (titleSize: CGSize, metricsSize: CGSize, bubbleSize: CGSize) {
         let screenWidth = UIScreen.main.bounds.width
         let maxBubbleWidth = screenWidth - ChartViewConstants.collectionViewLeftRightPadding
         let maxTextWidth = maxBubbleWidth - ChartViewConstants.textViewContentInset.left - ChartViewConstants.textViewContentInset.right
@@ -103,7 +105,7 @@ struct CustomChartViewItem: ChartViewItem {
         let titleSize = calculateAttributedStringSize(for: titleAttributedString, maxWidth: maxTextWidth)
         
         let metricsSize = calculateMetricsSize(for: metrics, maxWidth: maxBubbleWidth)
-        let bubbleSize = calculateBubbleSize(titleHeight: titleSize.height, metricsHeight: metricsSize.height)
+        let bubbleSize = calculateBubbleSize(titleHeight: titleSize.height, metricsHeight: metricsSize.height, shouldShowChartInfo: shouldShowChartInfo)
         
         return (titleSize, metricsSize, bubbleSize)
     }
@@ -162,15 +164,19 @@ struct CustomChartViewItem: ChartViewItem {
         return contentRect.size
     }
     
-    private static func calculateBubbleSize(titleHeight: CGFloat, metricsHeight: CGFloat) -> CGSize {
+    private static func calculateBubbleSize(titleHeight: CGFloat, metricsHeight: CGFloat, shouldShowChartInfo: Bool) -> CGSize {
         let screenWidth = UIScreen.main.bounds.width
         let maxBubbleWidth = screenWidth - ChartViewConstants.collectionViewLeftRightPadding
+        let chartViewHeightLayout: CGFloat = 216
+        let chartInfoHeight: CGFloat = shouldShowChartInfo ? 52 : 0
         
         let totalHeight = titleHeight + 
             ChartViewConstants.textViewContentInset.top + 
             ChartViewConstants.textViewContentInset.bottom + 
             ChartViewConstants.lineHeight + 
-            (metricsHeight > 0 ? metricsHeight + 4 : 0)
+            (metricsHeight > 0 ? metricsHeight + 4 : 0) +
+            chartViewHeightLayout +
+            chartInfoHeight
         
         return CGSize(width: maxBubbleWidth, height: totalHeight)
     }

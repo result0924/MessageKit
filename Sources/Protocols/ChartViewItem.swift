@@ -21,6 +21,9 @@ public protocol ChartViewItem {
     /// The size of the metrics view
     var metricsViewSize: CGSize { get }
     
+    /// Whether to show the chart info view
+    var shouldShowChartInfo: Bool { get }
+    
     /// The size of the chart view
     var size: CGSize { get }
 }
