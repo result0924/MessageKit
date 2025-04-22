@@ -25,7 +25,7 @@ class ChartView: UIView {
     let separatorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
+        view.backgroundColor = UIColor(red: 0.914, green: 0.914, blue: 0.914, alpha: 1)
         return view
     }()
     
@@ -74,6 +74,21 @@ class ChartView: UIView {
         return stackView
     }()
     
+    private let messageSeparatorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(red: 0.914, green: 0.914, blue: 0.914, alpha: 1)
+        return view
+    }()
+    
+    let messageLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+    
     private var titleLabelWidthLayout: NSLayoutConstraint?
     private var titleLabelHeightLayout: NSLayoutConstraint?
     private var metricsStackViewHeightLayout: NSLayoutConstraint?
@@ -86,6 +101,10 @@ class ChartView: UIView {
     private var dietInfoTextLabelHeightLayout: NSLayoutConstraint?
     private var dietInfoImageStackViewTopAnchorConstraint: NSLayoutConstraint?
     private var dietInfoImageStackViewHeightLayout: NSLayoutConstraint?
+    private var messageSeparatorViewTopAnchorConstraint: NSLayoutConstraint?
+    private var messageSeparatorViewHeightLayout: NSLayoutConstraint?
+    private var messageLabelTopAnchorConstraint: NSLayoutConstraint?
+    private var messageLabelHeightLayout: NSLayoutConstraint?
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -140,7 +159,10 @@ class ChartView: UIView {
             chartInfoViewHeightLayout?.constant = 0
         }
         
+        var hasDiet = !item.dietInfoImages.isEmpty
+        
         if let dietTitle = item.dietInfoTitleAttributedString, !dietTitle.string.isEmpty {
+            hasDiet = true
             dietInfoTitleLabel.attributedText = dietTitle
             dietInfoTitleLabelTopAnchorConstraint?.constant = 4
             dietInfoTitleLabelHeightLayout?.constant = item.dietInfoTitleLabelSize.height
@@ -150,6 +172,7 @@ class ChartView: UIView {
         }
         
         if let dietText = item.dietInfoTextAttributedString, !dietText.string.isEmpty {
+            hasDiet = true
             dietInfoTextLabel.attributedText = dietText
             dietInfoTextLabelTopAnchorConstraint?.constant = 4
             dietInfoTextLabelHeightLayout?.constant = item.dietInfoTextLabelSize.height
@@ -159,6 +182,20 @@ class ChartView: UIView {
         }
         
         configureDietImageStackView(images: item.dietInfoImages, height: item.dietInfoImagesViewSize.height)
+        
+        if let messageAttributedString = item.messageAttributedString, !messageAttributedString.string.isEmpty {
+            let topConstraint: CGFloat = hasDiet ? 12 : 4
+            messageSeparatorViewTopAnchorConstraint?.constant = topConstraint
+            messageSeparatorViewHeightLayout?.constant = 1
+            messageLabelTopAnchorConstraint?.constant = 12
+            messageLabel.attributedText = item.messageAttributedString
+            messageLabelHeightLayout?.constant = item.messageLabelSize.height
+        } else {
+            messageSeparatorViewTopAnchorConstraint?.constant = 0
+            messageSeparatorViewHeightLayout?.constant = 0
+            messageLabelTopAnchorConstraint?.constant = 0
+            messageLabelHeightLayout?.constant = 0
+        }
     }
     
     func configureDietImageStackView(images: [URL], height: CGFloat) {
@@ -226,6 +263,7 @@ class ChartView: UIView {
         dietInfoTitleLabel.attributedText = nil
         dietInfoTextLabel.attributedText = nil
         dietInfoImageStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        messageLabel.attributedText = nil
     }
     
     // MARK: - Private Methods
@@ -239,7 +277,8 @@ class ChartView: UIView {
         addSubview(dietInfoTitleLabel)
         addSubview(dietInfoTextLabel)
         addSubview(dietInfoImageStackView)
-        
+        addSubview(messageSeparatorView)
+        addSubview(messageLabel)
         setupConstraints()
     }
     
@@ -280,6 +319,12 @@ class ChartView: UIView {
             dietInfoTextLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             
             dietInfoImageStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+
+            messageSeparatorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            messageSeparatorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            
+            messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
         ])
         metricsStackViewTopAnchorConstraint = metricsStackView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 0)
         metricsStackViewTopAnchorConstraint?.isActive = true
@@ -309,6 +354,18 @@ class ChartView: UIView {
 
         dietInfoImageStackViewHeightLayout = dietInfoImageStackView.heightAnchor.constraint(equalToConstant: 0)
         dietInfoImageStackViewHeightLayout?.isActive = true
+        
+        messageSeparatorViewTopAnchorConstraint = messageSeparatorView.topAnchor.constraint(equalTo: dietInfoImageStackView.bottomAnchor, constant: 0)
+        messageSeparatorViewTopAnchorConstraint?.isActive = true
+
+        messageSeparatorViewHeightLayout = messageSeparatorView.heightAnchor.constraint(equalToConstant: 0)
+        messageSeparatorViewHeightLayout?.isActive = true
+        
+        messageLabelTopAnchorConstraint = messageLabel.topAnchor.constraint(equalTo: messageSeparatorView.bottomAnchor, constant: 0)
+        messageLabelTopAnchorConstraint?.isActive = true
+
+        messageLabelHeightLayout = messageLabel.heightAnchor.constraint(equalToConstant: 0)
+        messageLabelHeightLayout?.isActive = true
     }
     
     private func createMetricsRowStackView() -> UIStackView {

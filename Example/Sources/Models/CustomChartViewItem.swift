@@ -23,6 +23,7 @@ struct CustomChartViewItem: ChartViewItem {
         static var unitFont: UIFont { labelFont }
         static var dietTitleFont: UIFont { .boldSystemFont(ofSize: labelFontSize) }
         static var dietTextFont: UIFont { .systemFont(ofSize: titleFontSize, weight: .regular) }
+        static var messageTextFont: UIFont { .systemFont(ofSize: titleFontSize, weight: .regular) }
 
         // Colors
         static let normalColor = UIColor(white: 0.267, alpha: 1)
@@ -59,6 +60,8 @@ struct CustomChartViewItem: ChartViewItem {
     var dietInfoImagesViewSize: CGSize
     var size: CGSize
     var chartInfoString: [NSAttributedString] = []
+    var messageContent: String?
+    var messageLabelSize: CGSize
 
     // MARK: - Computed
     var titleAttributedString: NSAttributedString {
@@ -84,22 +87,32 @@ struct CustomChartViewItem: ChartViewItem {
         ])
     }
 
+    var messageAttributedString: NSAttributedString? {
+        guard let messageContent, !messageContent.isEmpty else { return nil }
+        return NSAttributedString(string: messageContent, attributes: [
+            .font: Constants.messageTextFont,
+            .foregroundColor: Constants.normalColor
+        ])
+    }
+
     var metricsStackViewLeadingPadding: CGFloat { Constants.metricsLeading }
     var metricsStackViewTrailingPadding: CGFloat { Constants.metricsTrailing }
 
     // MARK: - Init
-    init(title: String, metrics: [ChartViewMetric], shouldShowChartInfo: Bool, dietInfoTitle: String?, dietInfoText: String?, dietInfoImages: [URL]) {
+    init(title: String, metrics: [ChartViewMetric], shouldShowChartInfo: Bool, dietInfoTitle: String?, dietInfoText: String?, dietInfoImages: [URL], messageContent: String?) {
         self.title = title
         self.metrics = metrics
         self.shouldShowChartInfo = shouldShowChartInfo
         self.dietInfoTitle = dietInfoTitle
         self.dietInfoText = dietInfoText
         self.dietInfoImages = dietInfoImages
+        self.messageContent = messageContent
 
         let screenWidth = UIScreen.main.bounds.width
         let maxBubbleWidth = screenWidth - Constants.collectionPadding
         let maxTextWidth = maxBubbleWidth - Constants.contentInset.left - Constants.contentInset.right
         let dietInfoWidth = maxBubbleWidth - 24
+        let messageWidth = maxBubbleWidth - 24
 
         // Title size
         titleViewSize = Self.sizeForText(title, font: Constants.titleFont, maxWidth: maxTextWidth)
@@ -111,6 +124,7 @@ struct CustomChartViewItem: ChartViewItem {
         dietInfoTitleLabelSize = Self.sizeForText(dietInfoTitle, font: Constants.dietTitleFont, maxWidth: dietInfoWidth, lines: 1)
         dietInfoTextLabelSize = Self.sizeForText(dietInfoText, font: Constants.dietTextFont, maxWidth: dietInfoWidth)
         dietInfoImagesViewSize = dietInfoImages.isEmpty ? .zero : CGSize(width: dietInfoWidth, height: Constants.dietImageHeight)
+        messageLabelSize = Self.sizeForText(messageContent, font: Constants.messageTextFont, maxWidth: messageWidth)
 
         size = Self.totalBubbleSize(
             titleHeight: titleViewSize.height,
@@ -119,6 +133,7 @@ struct CustomChartViewItem: ChartViewItem {
             dietTitleHeight: dietInfoTitleLabelSize.height,
             dietTextHeight: dietInfoTextLabelSize.height,
             dietImagesHeight: dietInfoImagesViewSize.height,
+            messageContentHeight: messageLabelSize.height,
             maxWidth: maxBubbleWidth
         )
     }
@@ -159,18 +174,54 @@ struct CustomChartViewItem: ChartViewItem {
         return CGSize(width: maxWidth, height: totalHeight)
     }
 
-    private static func totalBubbleSize(titleHeight: CGFloat, metricsHeight: CGFloat, shouldShowChartInfo: Bool, dietTitleHeight: CGFloat, dietTextHeight: CGFloat, dietImagesHeight: CGFloat, maxWidth: CGFloat) -> CGSize {
-        var height = titleHeight + Constants.contentInset.top + Constants.contentInset.bottom + Constants.lineHeight
-        if metricsHeight > 0 { height += metricsHeight + 4 }
-        height += Constants.chartViewHeight
-        if shouldShowChartInfo { height += Constants.chartInfoHeight }
+    private static func totalBubbleSize(
+        titleHeight: CGFloat,
+        metricsHeight: CGFloat,
+        shouldShowChartInfo: Bool,
+        dietTitleHeight: CGFloat,
+        dietTextHeight: CGFloat,
+        dietImagesHeight: CGFloat,
+        messageContentHeight: CGFloat,
+        maxWidth: CGFloat
+    ) -> CGSize {
+        
+        // Constants
+        let spacing4: CGFloat = 4
+        let spacing12: CGFloat = 12
+        let lineHeight = Constants.lineHeight
+        let contentInset = Constants.contentInset
+        var height = titleHeight + contentInset.top + contentInset.bottom + lineHeight
 
-        let dietHasContent = dietTitleHeight > 0 || dietTextHeight > 0 || dietImagesHeight > 0
-        if dietHasContent { height += 4 }
-        if dietTitleHeight > 0 { height += dietTitleHeight + 4 }
-        if dietTextHeight > 0 { height += dietTextHeight + 4 }
-        if dietImagesHeight > 0 { height += dietImagesHeight + 4 }
+        // Metrics
+        if metricsHeight > 0 {
+            height += metricsHeight + spacing4
+        }
+
+        // Chart
+        height += Constants.chartViewHeight
+
+        // Chart Info
+        if shouldShowChartInfo {
+            height += Constants.chartInfoHeight
+        }
+
+        // Diet Section
+        let hasDietContent = dietTitleHeight > 0 || dietTextHeight > 0 || dietImagesHeight > 0
+        if hasDietContent {
+            height += spacing4 // spacing before diet section
+            if dietTitleHeight > 0 { height += dietTitleHeight + spacing4 }
+            if dietTextHeight > 0 { height += dietTextHeight + spacing4 }
+            if dietImagesHeight > 0 { height += dietImagesHeight + spacing4 }
+        }
+
+        // Message Section
+        if messageContentHeight > 0 {
+            height += hasDietContent ? spacing12 : spacing4  // spacing before message line
+            height += lineHeight                             // message top separator line
+            height += spacing12 + messageContentHeight + spacing12 // message content with top/bottom padding
+        }
 
         return CGSize(width: maxWidth, height: height)
     }
+
 }

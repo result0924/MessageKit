@@ -360,6 +360,7 @@ final internal class SampleData {
             "早餐請選擇低GI值食物，例如全穀類或豆製品。",
             ""
         ]
+        let messageContents = ["📓 筆記本：對糖尿病前期或糖尿病高風險族群來說，維持血糖穩定及控制體重是預防糖尿病的關鍵", "對糖尿病前期或糖尿病高風險族群來說，維持血糖穩定及控制體重是預防糖尿病的關鍵；其中，飲食習慣更是影響血糖、體重的重要因素，建議養成定時進食的習慣，以少糖、少油、少鹽為原則。", ""]
         
         for _ in 0..<count {
             let uniqueID = UUID().uuidString
@@ -401,6 +402,7 @@ final internal class SampleData {
             } else {
                 dietInfoImages = []
             }
+            let messageElement = messageContents.randomElement()
             
             let chartViewItem = CustomChartViewItem(
                 title: title,
@@ -408,7 +410,8 @@ final internal class SampleData {
                 shouldShowChartInfo: false,
                 dietInfoTitle: dietInfoTitle,
                 dietInfoText: dietInfoText,
-                dietInfoImages: dietInfoImages
+                dietInfoImages: dietInfoImages,
+                messageContent: messageElement
             )
             let message = MockMessage(chartView: chartViewItem, user: sender, messageId: uniqueID, date: date)
             messages.append(message)

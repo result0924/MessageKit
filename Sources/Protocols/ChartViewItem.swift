@@ -44,6 +44,12 @@ public protocol ChartViewItem {
     
     /// The size of the diet info images view
     var dietInfoImagesViewSize: CGSize { get }
+
+    /// The size of the message label
+    var messageLabelSize: CGSize { get }
+
+    /// The attributed string for the message
+    var messageAttributedString: NSAttributedString? { get }
     
     /// The size of the chart view
     var size: CGSize { get }
