@@ -5,7 +5,7 @@
 //  Created by Justin Lai on 2025/4/17.
 //
 
-import Foundation
+import MessageKit
 import UIKit
 
 open class ChartViewCell: MessageContentCell {

@@ -597,7 +597,7 @@ extension CustomChatViewController: MessagesDisplayDelegate {
         case .diaryQuote:
             return .white
         default:
-            return isFromCurrentSender(message: message) ? .primaryColor : UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+            return isFromCurrentSender(message: message) ? UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1) : UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
         }
     }
 

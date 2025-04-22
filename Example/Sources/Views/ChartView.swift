@@ -5,6 +5,9 @@
 //  Created by Justin Lai on 2025/4/21.
 //
 
+import MessageKit
+import UIKit
+
 class ChartView: UIView {
     // MARK: - Properties
     let titleLabel: UILabel = {

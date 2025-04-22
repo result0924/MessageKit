@@ -44,6 +44,8 @@
 		63ECDABE24182A470016C349 /* MessageSubviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ECDABD24182A470016C349 /* MessageSubviewViewController.swift */; };
 		63ECDAC2241889630016C349 /* MessageSubviewContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ECDAC1241889630016C349 /* MessageSubviewContainerViewController.swift */; };
 		6C5C75292DB0D8B60030C3E4 /* CustomChartViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */; };
+		6C5C75342DB79BA50030C3E4 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75322DB79BA50030C3E4 /* ChartView.swift */; };
+		6C5C75352DB79BA50030C3E4 /* ChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */; };
 		744686D72D1BA5590020782C /* CustomReplyMessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */; };
 		882B5E811CF7D53600B6E160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E781CF7D53600B6E160 /* AppDelegate.swift */; };
 		882B5E901CF7D56000B6E160 /* ChatExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E8E1CF7D56000B6E160 /* ChatExampleUITests.swift */; };
@@ -123,6 +125,8 @@
 		63ECDABD24182A470016C349 /* MessageSubviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSubviewViewController.swift; sourceTree = "<group>"; };
 		63ECDAC1241889630016C349 /* MessageSubviewContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSubviewContainerViewController.swift; sourceTree = "<group>"; };
 		6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChartViewItem.swift; sourceTree = "<group>"; };
+		6C5C75322DB79BA50030C3E4 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewCell.swift; sourceTree = "<group>"; };
 		744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReplyMessageItem.swift; sourceTree = "<group>"; };
 		882B5E331CF7D4B900B6E160 /* ChatExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		882B5E491CF7D4B900B6E160 /* ChatExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +212,8 @@
 				032A15E125965E1100E00FE3 /* CameraInputBarAccessoryView.swift */,
 				9B49D541263DA6F9008804B5 /* CustomMessageContentCell.swift */,
 				9B49D546263DAA29008804B5 /* CustomTextMessageContentCell.swift */,
+				6C5C75322DB79BA50030C3E4 /* ChartView.swift */,
+				6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -676,6 +682,8 @@
 				9B49D528263C31FC008804B5 /* CustomLayoutExampleViewController.swift in Sources */,
 				032A15DD25965D9A00E00FE3 /* AlertService.swift in Sources */,
 				1A9CBCBD2AA58802004E9C11 /* CustomDiaryQuoteItem.swift in Sources */,
+				6C5C75342DB79BA50030C3E4 /* ChartView.swift in Sources */,
+				6C5C75352DB79BA50030C3E4 /* ChartViewCell.swift in Sources */,
 				385C2948211FF38F0010B4BA /* ChatViewController.swift in Sources */,
 				385C2944211FF38F0010B4BA /* MessageContainerController.swift in Sources */,
 				1AACF50D2AB0726C0093E53A /* CustomDiaryQuoteMessageCell.swift in Sources */,
