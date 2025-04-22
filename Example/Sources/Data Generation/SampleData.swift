@@ -354,6 +354,12 @@ final internal class SampleData {
         let titles = ["1/13 午餐 血糖波動", "1/14 晚餐 血糖波動", "1/15 早餐 血糖波動早餐 血糖波動"]
         let metricsLabels = ["Total Weight Change Total Weight Change", "Last Weight", "BMI", "Body Fat"]
         let units = ["kg", "kg", "", "%"]
+        let possibleDietTitles = ["營養建議", "飲食重點飲食重點飲食重點飲食重點飲食重點飲食重點飲食重點飲食重點", ""]
+        let possibleDietTexts = [
+            "建議多攝取高纖蔬菜、減少糖分攝取，有助穩定血糖波動。建議多攝取高纖蔬菜、減少糖分攝取，有助穩定血糖波動。建議多攝取高纖蔬菜、減少糖分攝取，有助穩定血糖波動。",
+            "早餐請選擇低GI值食物，例如全穀類或豆製品。",
+            ""
+        ]
         
         for _ in 0..<count {
             let uniqueID = UUID().uuidString
@@ -385,7 +391,25 @@ final internal class SampleData {
                 metrics.append(metric)
             }
             
-            let chartViewItem = CustomChartViewItem(title: title, metrics: metrics, shouldShowChartInfo: Bool.random())
+            let dietInfoTitle = possibleDietTitles.randomElement()
+            let dietInfoText = possibleDietTexts.randomElement()
+            
+            let dietInfoImages: [URL]
+            if Bool.random() {
+                let count = Int.random(in: 0...10)
+                dietInfoImages = Array(repeating: URL(string: "https://dev.health2sync.com/images/stickers/1/s_014.png")!, count: count)
+            } else {
+                dietInfoImages = []
+            }
+            
+            let chartViewItem = CustomChartViewItem(
+                title: title,
+                metrics: metrics,
+                shouldShowChartInfo: false,
+                dietInfoTitle: dietInfoTitle,
+                dietInfoText: dietInfoText,
+                dietInfoImages: dietInfoImages
+            )
             let message = MockMessage(chartView: chartViewItem, user: sender, messageId: uniqueID, date: date)
             messages.append(message)
         }

@@ -10,45 +10,38 @@ import UIKit
 import MessageKit
 
 struct CustomChartViewItem: ChartViewItem {
-    enum ChartViewConstants {
+
+    // MARK: - Constants
+    private enum Constants {
         // Font Sizes
         static let titleFontSize: CGFloat = 16
         static let labelFontSize: CGFloat = 14
-        static let valueFontSize: CGFloat = 18
-        static let unitFontSize: CGFloat = 14
-        
-        // Font Weights
-        static let titleFontWeight: UIFont.Weight = .medium
-        static let regularFontWeight: UIFont.Weight = .regular
-        
+
         // Fonts
-        static var titleFont: UIFont {
-            UIFont.systemFont(ofSize: titleFontSize, weight: titleFontWeight)
-        }
-        static var labelFont: UIFont {
-            UIFont.systemFont(ofSize: labelFontSize, weight: regularFontWeight)
-        }
-        static var valueFont: UIFont {
-            UIFont.systemFont(ofSize: valueFontSize, weight: regularFontWeight)
-        }
-        static var unitFont: UIFont {
-            UIFont.systemFont(ofSize: unitFontSize, weight: regularFontWeight)
-        }
-        
+        static var titleFont: UIFont { .systemFont(ofSize: titleFontSize, weight: .medium) }
+        static var labelFont: UIFont { .systemFont(ofSize: labelFontSize, weight: .regular) }
+        static var unitFont: UIFont { labelFont }
+        static var dietTitleFont: UIFont { .boldSystemFont(ofSize: labelFontSize) }
+        static var dietTextFont: UIFont { .systemFont(ofSize: titleFontSize, weight: .regular) }
+
         // Colors
-        static let normalColor = UIColor(red: 0.267, green: 0.267, blue: 0.267, alpha: 1)
-        static let unitColor = UIColor(red: 0.533, green: 0.533, blue: 0.533, alpha: 1)
-        
+        static let normalColor = UIColor(white: 0.267, alpha: 1)
+        static let unitColor = UIColor(white: 0.533, alpha: 1)
+        static let dietTextColor = UIColor(white: 0.376, alpha: 1)
+
         // Layout
-        static let metricsStackViewLeadingPadding: CGFloat = 12
-        static let metricsStackViewTrailingPadding: CGFloat = 12
-        static let metricsStackViewSpacing: CGFloat = 8
-        static let metricsLabelSpacing: CGFloat = 4
-        
-        // Other
-        static let lineHeight: CGFloat = 0.5
-        static let collectionViewLeftRightPadding: CGFloat = 95
-        static let textViewContentInset = UIEdgeInsets(top: 12, left: 12, bottom: 10, right: 36)
+        static let metricsLeading: CGFloat = 12
+        static let metricsTrailing: CGFloat = 12
+        static let metricsSpacing: CGFloat = 8
+        static let labelSpacing: CGFloat = 4
+
+        // Misc
+        static let lineHeight: CGFloat = 1
+        static let collectionPadding: CGFloat = 95
+        static let contentInset = UIEdgeInsets(top: 12, left: 12, bottom: 10, right: 36)
+        static let chartViewHeight: CGFloat = 216
+        static let chartInfoHeight: CGFloat = 52
+        static let dietImageHeight: CGFloat = 48
     }
 
     // MARK: - Properties
@@ -57,127 +50,127 @@ struct CustomChartViewItem: ChartViewItem {
     var metricsViewSize: CGSize
     var metrics: [ChartViewMetric]
     var shouldShowChartInfo: Bool
+    var dietInfoTitle: String?
+    var dietInfoText: String?
+    var dietInfoImages: [URL]
+    var chartInfoViewSize: CGSize = .zero
+    var dietInfoTitleLabelSize: CGSize
+    var dietInfoTextLabelSize: CGSize
+    var dietInfoImagesViewSize: CGSize
     var size: CGSize
-    
-    // MARK: - Initialization
-    init(title: String, metrics: [ChartViewMetric], shouldShowChartInfo: Bool) {
+    var chartInfoString: [NSAttributedString] = []
+
+    // MARK: - Computed
+    var titleAttributedString: NSAttributedString {
+        NSAttributedString(string: title, attributes: [
+            .font: Constants.titleFont,
+            .foregroundColor: Constants.normalColor
+        ])
+    }
+
+    var dietInfoTitleAttributedString: NSAttributedString? {
+        guard let title = dietInfoTitle else { return nil }
+        return NSAttributedString(string: title, attributes: [
+            .font: Constants.dietTitleFont,
+            .foregroundColor: Constants.dietTextColor
+        ])
+    }
+
+    var dietInfoTextAttributedString: NSAttributedString? {
+        guard let text = dietInfoText else { return nil }
+        return NSAttributedString(string: text, attributes: [
+            .font: Constants.dietTextFont,
+            .foregroundColor: Constants.dietTextColor
+        ])
+    }
+
+    var metricsStackViewLeadingPadding: CGFloat { Constants.metricsLeading }
+    var metricsStackViewTrailingPadding: CGFloat { Constants.metricsTrailing }
+
+    // MARK: - Init
+    init(title: String, metrics: [ChartViewMetric], shouldShowChartInfo: Bool, dietInfoTitle: String?, dietInfoText: String?, dietInfoImages: [URL]) {
         self.title = title
         self.metrics = metrics
-        let (titleSize, metricsSize, bubbleSize) = Self.calculateSizes(for: title, metrics: metrics, shouldShowChartInfo: shouldShowChartInfo)
-        self.titleViewSize = titleSize
-        self.metricsViewSize = metricsSize
         self.shouldShowChartInfo = shouldShowChartInfo
-        self.size = bubbleSize
-    }
-    
-    // MARK: - ChartViewItem
-    var titleAttributedString: NSAttributedString {
-        NSAttributedString(
-            string: title,
-            attributes: [
-                NSAttributedString.Key.font: ChartViewConstants.titleFont,
-                NSAttributedString.Key.foregroundColor: ChartViewConstants.normalColor
-            ]
-        )
-    }
-    
-    var metricsStackViewLeadingPadding: CGFloat {
-        ChartViewConstants.metricsStackViewLeadingPadding
-    }
-    
-    var metricsStackViewTrailingPadding: CGFloat {
-        ChartViewConstants.metricsStackViewTrailingPadding
-    }
-    
-    // MARK: - Private Methods
-    private static func calculateSizes(for title: String, metrics: [ChartViewMetric], shouldShowChartInfo: Bool) -> (titleSize: CGSize, metricsSize: CGSize, bubbleSize: CGSize) {
+        self.dietInfoTitle = dietInfoTitle
+        self.dietInfoText = dietInfoText
+        self.dietInfoImages = dietInfoImages
+
         let screenWidth = UIScreen.main.bounds.width
-        let maxBubbleWidth = screenWidth - ChartViewConstants.collectionViewLeftRightPadding
-        let maxTextWidth = maxBubbleWidth - ChartViewConstants.textViewContentInset.left - ChartViewConstants.textViewContentInset.right
-        
-        let titleAttributedString = NSAttributedString(
-            string: title,
-            attributes: [
-                NSAttributedString.Key.font: ChartViewConstants.titleFont,
-                NSAttributedString.Key.foregroundColor: ChartViewConstants.normalColor
-            ]
+        let maxBubbleWidth = screenWidth - Constants.collectionPadding
+        let maxTextWidth = maxBubbleWidth - Constants.contentInset.left - Constants.contentInset.right
+        let dietInfoWidth = maxBubbleWidth - 24
+
+        // Title size
+        titleViewSize = Self.sizeForText(title, font: Constants.titleFont, maxWidth: maxTextWidth)
+
+        // Metrics size
+        metricsViewSize = Self.metricsSize(for: metrics, maxWidth: maxBubbleWidth)
+
+        // Diet Info sizes
+        dietInfoTitleLabelSize = Self.sizeForText(dietInfoTitle, font: Constants.dietTitleFont, maxWidth: dietInfoWidth, lines: 1)
+        dietInfoTextLabelSize = Self.sizeForText(dietInfoText, font: Constants.dietTextFont, maxWidth: dietInfoWidth)
+        dietInfoImagesViewSize = dietInfoImages.isEmpty ? .zero : CGSize(width: dietInfoWidth, height: Constants.dietImageHeight)
+
+        size = Self.totalBubbleSize(
+            titleHeight: titleViewSize.height,
+            metricsHeight: metricsViewSize.height,
+            shouldShowChartInfo: shouldShowChartInfo,
+            dietTitleHeight: dietInfoTitleLabelSize.height,
+            dietTextHeight: dietInfoTextLabelSize.height,
+            dietImagesHeight: dietInfoImagesViewSize.height,
+            maxWidth: maxBubbleWidth
         )
-        let titleSize = calculateAttributedStringSize(for: titleAttributedString, maxWidth: maxTextWidth)
-        
-        let metricsSize = calculateMetricsSize(for: metrics, maxWidth: maxBubbleWidth)
-        let bubbleSize = calculateBubbleSize(titleHeight: titleSize.height, metricsHeight: metricsSize.height, shouldShowChartInfo: shouldShowChartInfo)
-        
-        return (titleSize, metricsSize, bubbleSize)
     }
-    
-    private static func calculateMetricsSize(for metrics: [ChartViewMetric], maxWidth: CGFloat) -> CGSize {
+
+    // MARK: - Size Helpers
+    private static func sizeForText(_ text: String?, font: UIFont, maxWidth: CGFloat, lines: Int = 0) -> CGSize {
+        guard let text = text, !text.isEmpty else { return .zero }
+        let attrString = NSAttributedString(string: text, attributes: [.font: font])
+        let maxSize = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+        var bounding = attrString.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
+        bounding.size.width = ceil(bounding.width)
+        bounding.size.height = ceil(bounding.height)
+        if lines > 0 {
+            bounding.size.height = min(bounding.height, font.lineHeight * CGFloat(lines))
+        }
+        return bounding.size
+    }
+
+    private static func metricsSize(for metrics: [ChartViewMetric], maxWidth: CGFloat) -> CGSize {
         guard !metrics.isEmpty else { return .zero }
-        let metricsStackViewPadding = ChartViewConstants.metricsStackViewLeadingPadding + ChartViewConstants.metricsStackViewTrailingPadding
-        
-        // 計算每個 metric 的高度
-        var metricHeights: [CGFloat] = []
+        let padding = Constants.metricsLeading + Constants.metricsTrailing
+        var heights: [CGFloat] = []
+
         for (index, metric) in metrics.enumerated() {
-            // 如果是奇數個 metrics 且是最後一個，使用整行寬度
-            let isLastOddMetric = index == metrics.count - 1 && metrics.count % 2 == 1
-            let metricWidth = isLastOddMetric ? 
-                (maxWidth - metricsStackViewPadding) : 
-                (maxWidth - metricsStackViewPadding - ChartViewConstants.metricsStackViewSpacing) / 2
-            
-            let labelSize = calculateAttributedStringSize(for: metric.labelAttributedString, maxWidth: metricWidth)
-            let valueUnitSize = calculateAttributedStringSize(for: metric.valueUnitAttributedString, maxWidth: metricWidth)
-            let totalHeight = labelSize.height + ChartViewConstants.metricsLabelSpacing + valueUnitSize.height
-            metricHeights.append(totalHeight)
+            let isOddLast = index == metrics.count - 1 && metrics.count % 2 == 1
+            let width = isOddLast ? (maxWidth - padding) : (maxWidth - padding - Constants.metricsSpacing) / 2
+            let labelHeight = metric.labelAttributedString.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).height
+            let valueHeight = metric.valueUnitAttributedString.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).height
+            heights.append(labelHeight + Constants.labelSpacing + valueHeight)
         }
-        
-        // 計算每一行的高度
-        var totalMetricsHeight: CGFloat = 0
-        for i in stride(from: 0, to: metricHeights.count, by: 2) {
-            let leftHeight = metricHeights[i]
-            let rightHeight = i + 1 < metricHeights.count ? metricHeights[i + 1] : 0
-            let rowHeight = max(leftHeight, rightHeight)
-            totalMetricsHeight += rowHeight
-            
-            totalMetricsHeight += ChartViewConstants.metricsStackViewSpacing
+
+        var totalHeight: CGFloat = 0
+        for i in stride(from: 0, to: heights.count, by: 2) {
+            let rowHeight = max(heights[i], i + 1 < heights.count ? heights[i + 1] : 0)
+            totalHeight += rowHeight + Constants.metricsSpacing
         }
-        
-        return CGSize(width: maxWidth, height: totalMetricsHeight)
+
+        return CGSize(width: maxWidth, height: totalHeight)
     }
-    
-    private static func calculateAttributedStringSize(for attributedString: NSAttributedString, maxWidth: CGFloat) -> CGSize {
-        let textSize = CGSize(width: maxWidth, height: CGFloat(Float.greatestFiniteMagnitude))
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .byWordWrapping
-        
-        let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
-        mutableAttributedString.addAttribute(
-            .paragraphStyle,
-            value: paragraphStyle,
-            range: NSRange(location: 0, length: mutableAttributedString.length)
-        )
-        
-        let contentRect = mutableAttributedString.boundingRect(
-            with: textSize,
-            options: [.usesLineFragmentOrigin, .usesFontLeading],
-            context: nil
-        )
-        
-        return contentRect.size
-    }
-    
-    private static func calculateBubbleSize(titleHeight: CGFloat, metricsHeight: CGFloat, shouldShowChartInfo: Bool) -> CGSize {
-        let screenWidth = UIScreen.main.bounds.width
-        let maxBubbleWidth = screenWidth - ChartViewConstants.collectionViewLeftRightPadding
-        let chartViewHeightLayout: CGFloat = 216
-        let chartInfoHeight: CGFloat = shouldShowChartInfo ? 52 : 0
-        
-        let totalHeight = titleHeight + 
-            ChartViewConstants.textViewContentInset.top + 
-            ChartViewConstants.textViewContentInset.bottom + 
-            ChartViewConstants.lineHeight + 
-            (metricsHeight > 0 ? metricsHeight + 4 : 0) +
-            chartViewHeightLayout +
-            chartInfoHeight
-        
-        return CGSize(width: maxBubbleWidth, height: totalHeight)
+
+    private static func totalBubbleSize(titleHeight: CGFloat, metricsHeight: CGFloat, shouldShowChartInfo: Bool, dietTitleHeight: CGFloat, dietTextHeight: CGFloat, dietImagesHeight: CGFloat, maxWidth: CGFloat) -> CGSize {
+        var height = titleHeight + Constants.contentInset.top + Constants.contentInset.bottom + Constants.lineHeight
+        if metricsHeight > 0 { height += metricsHeight + 4 }
+        height += Constants.chartViewHeight
+        if shouldShowChartInfo { height += Constants.chartInfoHeight }
+
+        let dietHasContent = dietTitleHeight > 0 || dietTextHeight > 0 || dietImagesHeight > 0
+        if dietHasContent { height += 4 }
+        if dietTitleHeight > 0 { height += dietTitleHeight + 4 }
+        if dietTextHeight > 0 { height += dietTextHeight + 4 }
+        if dietImagesHeight > 0 { height += dietImagesHeight + 4 }
+
+        return CGSize(width: maxWidth, height: height)
     }
 }

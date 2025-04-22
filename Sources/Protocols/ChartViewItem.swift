@@ -20,9 +20,30 @@ public protocol ChartViewItem {
     
     /// The size of the metrics view
     var metricsViewSize: CGSize { get }
+
+    /// The attributed strings for the chart info
+    var chartInfoString: [NSAttributedString] { get }
     
-    /// Whether to show the chart info view
-    var shouldShowChartInfo: Bool { get }
+    /// The size of the chart info view
+    var chartInfoViewSize: CGSize { get }
+    
+    /// The diet info title
+    var dietInfoTitleAttributedString: NSAttributedString? { get }
+
+    /// The size of the diet info title label
+    var dietInfoTitleLabelSize: CGSize { get }
+    
+    /// The diet info text
+    var dietInfoTextAttributedString: NSAttributedString? { get }
+    
+    /// The size of the diet info text label
+    var dietInfoTextLabelSize: CGSize { get }
+    
+    /// The diet info images
+    var dietInfoImages: [URL] { get }
+    
+    /// The size of the diet info images view
+    var dietInfoImagesViewSize: CGSize { get }
     
     /// The size of the chart view
     var size: CGSize { get }
