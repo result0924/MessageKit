@@ -84,12 +84,35 @@ class ChartView: UIView {
         return view
     }()
     
-    let messageLabel: UILabel = {
+    private let messageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
+    }()
+    
+    private let actionSeparatorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(red: 0.914, green: 0.914, blue: 0.914, alpha: 1)
+        return view
+    }()
+    
+    private let actionButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = false
+        button.titleLabel?.numberOfLines = 2
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.lineBreakMode = .byWordWrapping
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.layer.borderColor = UIColor(red: 45 / 255, green: 181 / 255, blue: 155 / 255, alpha: 1).cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        return button
     }()
     
     private var titleLabelWidthLayout: NSLayoutConstraint?
@@ -108,6 +131,10 @@ class ChartView: UIView {
     private var messageSeparatorViewHeightLayout: NSLayoutConstraint?
     private var messageLabelTopAnchorConstraint: NSLayoutConstraint?
     private var messageLabelHeightLayout: NSLayoutConstraint?
+    private var actionSeparatorViewTopAnchorConstraint: NSLayoutConstraint?
+    private var actionSeparatorViewHeightLayout: NSLayoutConstraint?
+    private var actionButtonTopAnchorConstraint: NSLayoutConstraint?
+    private var actionButtonHeightLayout: NSLayoutConstraint?
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -199,6 +226,24 @@ class ChartView: UIView {
             messageLabelTopAnchorConstraint?.constant = 0
             messageLabelHeightLayout?.constant = 0
         }
+        
+        if let actionAttributedString = item.actionAttributedString, !actionAttributedString.string.isEmpty {
+            actionButton.setAttributedTitle(actionAttributedString, for: .normal)
+            
+            actionSeparatorViewTopAnchorConstraint?.constant = 12
+            actionSeparatorViewHeightLayout?.constant = 1
+            
+            actionButtonTopAnchorConstraint?.constant = 12
+            actionButtonHeightLayout?.constant = item.actionButtonSize.height
+        } else {
+            actionButton.setAttributedTitle(nil, for: .normal)
+            
+            actionSeparatorViewTopAnchorConstraint?.constant = 0
+            actionSeparatorViewHeightLayout?.constant = 0
+            
+            actionButtonTopAnchorConstraint?.constant = 0
+            actionButtonHeightLayout?.constant = 0
+        }
     }
     
     func configureDietImageStackView(images: [URL], height: CGFloat) {
@@ -267,6 +312,7 @@ class ChartView: UIView {
         dietInfoTextLabel.attributedText = nil
         dietInfoImageStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         messageLabel.attributedText = nil
+        actionButton.setAttributedTitle(nil, for: .normal)
     }
     
     // MARK: - Private Methods
@@ -282,6 +328,8 @@ class ChartView: UIView {
         addSubview(dietInfoImageStackView)
         addSubview(messageSeparatorView)
         addSubview(messageLabel)
+        addSubview(actionSeparatorView)
+        addSubview(actionButton)
         setupConstraints()
     }
     
@@ -328,6 +376,12 @@ class ChartView: UIView {
             
             messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            
+            actionSeparatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            actionSeparatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            
+            actionButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            actionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
         ])
         metricsStackViewTopAnchorConstraint = metricsStackView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 0)
         metricsStackViewTopAnchorConstraint?.isActive = true
@@ -369,6 +423,18 @@ class ChartView: UIView {
 
         messageLabelHeightLayout = messageLabel.heightAnchor.constraint(equalToConstant: 0)
         messageLabelHeightLayout?.isActive = true
+        
+        actionSeparatorViewTopAnchorConstraint = actionSeparatorView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 0)
+        actionSeparatorViewTopAnchorConstraint?.isActive = true
+        
+        actionSeparatorViewHeightLayout = actionSeparatorView.heightAnchor.constraint(equalToConstant: 0)
+        actionSeparatorViewHeightLayout?.isActive = true
+        
+        actionButtonTopAnchorConstraint = actionButton.topAnchor.constraint(equalTo: actionSeparatorView.bottomAnchor, constant: 0)
+        actionButtonTopAnchorConstraint?.isActive = true
+        
+        actionButtonHeightLayout = actionButton.heightAnchor.constraint(equalToConstant: 0)
+        actionButtonHeightLayout?.isActive = true
     }
     
     private func createMetricsRowStackView() -> UIStackView {

@@ -51,6 +51,12 @@ public protocol ChartViewItem {
     /// The attributed string for the message
     var messageAttributedString: NSAttributedString? { get }
     
+    /// The attributed string for the action
+    var actionAttributedString: NSAttributedString? { get }
+    
+    /// The action view rect
+    var actionButtonSize: CGSize { get }
+    
     /// The size of the chart view
     var size: CGSize { get }
 }

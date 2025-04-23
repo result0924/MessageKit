@@ -402,7 +402,25 @@ final internal class SampleData {
             } else {
                 dietInfoImages = []
             }
-            let messageElement = messageContents.randomElement()
+            let font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            let textColor = UIColor(red: 0.267, green: 0.267, blue: 0.267, alpha: 1)
+
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: textColor
+            ]
+            let messageElement = NSMutableAttributedString(string: messageContents.randomElement() ?? titles[0], attributes: attributes)
+            let actionStrings = ["血糖波動", "1/14 晚餐 血糖波動 action string yoyoyo", ""]
+            
+            
+            let font2 = UIFont.systemFont(ofSize: 18, weight: .semibold)
+            let textColor2 = UIColor(red: 0.169, green: 0.71, blue: 0.608, alpha: 1)
+
+            let attributes2: [NSAttributedString.Key: Any] = [
+                .font: font2,
+                .foregroundColor: textColor2
+            ]
+            let actionAttributedString = NSMutableAttributedString(string: actionStrings.randomElement() ?? actionStrings[0], attributes: attributes2)
             
             let chartViewItem = CustomChartViewItem(
                 title: title,
@@ -411,7 +429,8 @@ final internal class SampleData {
                 dietInfoTitle: dietInfoTitle,
                 dietInfoText: dietInfoText,
                 dietInfoImages: dietInfoImages,
-                messageContent: messageElement
+                messageContent: messageElement,
+                actionAttributedString: actionAttributedString,
             )
             let message = MockMessage(chartView: chartViewItem, user: sender, messageId: uniqueID, date: date)
             messages.append(message)
