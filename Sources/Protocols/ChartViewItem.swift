@@ -22,7 +22,7 @@ public protocol ChartViewItem {
     var metricsViewSize: CGSize { get }
 
     /// The attributed strings for the chart info
-    var chartInfoString: [NSAttributedString] { get }
+    var chartInfos: [NSAttributedString] { get }
     
     /// The size of the chart info view
     var chartInfoViewSize: CGSize { get }

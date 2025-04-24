@@ -422,20 +422,114 @@ final internal class SampleData {
             ]
             let actionAttributedString = NSMutableAttributedString(string: actionStrings.randomElement() ?? actionStrings[0], attributes: attributes2)
             
+            // 建立隨機 0-4 個圖例
+            let legendCount = Int.random(in: 0...4)
+            var chartInfos: [NSAttributedString] = []
+            
+            let colors: [UIColor] = [
+                UIColor(red: 150.0/255.0, green: 118.0/255.0, blue: 214.0/255.0, alpha: 1),  // purple
+                UIColor(red: 252.0/255.0, green: 180.0/255.0, blue: 93.0/255.0, alpha: 1),   // orange
+                UIColor(red: 45.0/255.0, green: 181.0/255.0, blue: 155.0/255.0, alpha: 1),   // green
+                UIColor(red: 0.267, green: 0.267, blue: 0.267, alpha: 1)                      // gray
+            ]
+            
+            let lineStyles = ["solid", "dashed"]
+            let legendTexts = [
+                "飯前血糖值",
+                "飯後血糖值",
+                "目標區間目標區間 (70-180 mg/dL)",
+                "平均血糖"
+            ]
+            
+            // 確保不重複選擇相同的文字
+            var availableTexts = legendTexts
+            var usedColors = Set<UIColor>()
+            
+            for _ in 0..<legendCount {
+                guard !availableTexts.isEmpty else { break }
+                
+                let color = colors.first { !usedColors.contains($0) } ?? colors[0]
+                usedColors.insert(color)
+                
+                let lineStyle = lineStyles.randomElement() ?? lineStyles[0]
+                let textIndex = Int.random(in: 0..<availableTexts.count)
+                let text = availableTexts.remove(at: textIndex)
+                
+                let legendItem = createLegendItem(color: color, lineStyle: lineStyle, text: text)
+                chartInfos.append(legendItem)
+            }
+            
             let chartViewItem = CustomChartViewItem(
                 title: title,
                 metrics: metrics,
-                shouldShowChartInfo: false,
+                chartInfos: chartInfos,
                 dietInfoTitle: dietInfoTitle,
                 dietInfoText: dietInfoText,
                 dietInfoImages: dietInfoImages,
                 messageContent: messageElement,
-                actionAttributedString: actionAttributedString,
+                actionAttributedString: actionAttributedString
             )
             let message = MockMessage(chartView: chartViewItem, user: sender, messageId: uniqueID, date: date)
             messages.append(message)
         }
         completion(messages)
+    }
+    
+    func createLegendItem(color: UIColor, lineStyle: String, text: String) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        
+        // 設定文字樣式以獲取文字高度
+        let font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        let textHeight = font.lineHeight
+        
+        // 根據文字高度設定圖示大小
+        let lineWidth: CGFloat = 12
+        let lineThickness: CGFloat = 1.5
+        let size = CGSize(width: lineWidth, height: textHeight)
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        let context = UIGraphicsGetCurrentContext()!
+        
+        // 設定線條樣式
+        context.setLineWidth(lineThickness)
+        context.setStrokeColor(color.cgColor)
+        
+        // 將線條垂直置中
+        let yPosition = size.height / 2
+        
+        if lineStyle == "dashed" {
+            // 設定虛線樣式：3點空白-4點線條-3點空白
+            context.setLineDash(phase: 0, lengths: [3, 1])
+            context.move(to: CGPoint(x: 0, y: yPosition))
+            context.addLine(to: CGPoint(x: lineWidth, y: yPosition))
+        } else {
+            // 實線
+            context.move(to: CGPoint(x: 0, y: yPosition))
+            context.addLine(to: CGPoint(x: lineWidth, y: yPosition))
+        }
+        
+        context.strokePath()
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        attachment.image = image
+        // 調整圖示位置使其與文字中線對齊
+        let imageY = 0 - (textHeight / 4)
+        attachment.bounds = CGRect(x: 0, y: imageY, width: lineWidth, height: textHeight)
+        
+        let attributedString = NSMutableAttributedString(attachment: attachment)
+        
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: UIColor(red: 0.451, green: 0.451, blue: 0.451, alpha: 1)
+        ]
+        
+        // 使用固定的 4 點間距
+        let space = NSAttributedString(string: " ", attributes: textAttributes)
+        attributedString.append(space)
+        attributedString.append(NSAttributedString(string: text, attributes: textAttributes))
+        return attributedString
     }
 
     func getTemplateAudioMessages(count: Int, completion: ([MockMessage]) -> Void) {

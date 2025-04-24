@@ -16,6 +16,8 @@ protocol ChartViewDelegate: AnyObject {
 class ChartView: UIView {
     // MARK: - Properties
     weak var delegate: ChartViewDelegate?
+    
+    private var item: ChartViewItem?
 
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -55,11 +57,20 @@ class ChartView: UIView {
         return view
     }()
     
-    private let chartInfoView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .purple
-        return view
+    private let chartInfoView: UICollectionView = {
+        let layout = AlignedCollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 8
+        layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        layout.horizontalAlignment = .left
+        layout.verticalAlignment = .center
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .clear
+        collectionView.isScrollEnabled = false
+        return collectionView
     }()
     
     private let dietInfoTitleLabel: UILabel = {
@@ -156,6 +167,7 @@ class ChartView: UIView {
     
     // MARK: - Public Methods
     func configure(item: ChartViewItem) {
+        self.item = item
         titleLabel.attributedText = item.titleAttributedString
         titleLabelWidthLayout?.constant = item.titleViewSize.width
         titleLabelHeightLayout?.constant = item.titleViewSize.height
@@ -190,11 +202,8 @@ class ChartView: UIView {
         }
         
         // Configure chart info view
-        if !item.chartInfoString.isEmpty {
-            chartInfoViewHeightLayout?.constant = 52
-        } else {
-            chartInfoViewHeightLayout?.constant = 0
-        }
+        chartInfoView.reloadData()
+        chartInfoViewHeightLayout?.constant = item.chartInfoViewSize.height
         
         var hasDiet = !item.dietInfoImages.isEmpty
         
@@ -351,6 +360,11 @@ class ChartView: UIView {
         setupConstraints()
         
         actionButton.addTarget(self, action: #selector(handleActionButtonTap), for: .touchUpInside)
+        
+        // Setup collection view
+        chartInfoView.register(ChartInfoCell.self, forCellWithReuseIdentifier: "ChartInfoCell")
+        chartInfoView.delegate = self
+        chartInfoView.dataSource = self
     }
     
     @objc private func handleActionButtonTap() {
@@ -501,3 +515,161 @@ class ChartView: UIView {
         return containerView
     }
 }
+
+// MARK: - UICollectionViewDataSource & UICollectionViewDelegate
+extension ChartView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return item?.chartInfos.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChartInfoCell", for: indexPath) as! ChartInfoCell
+        if let attributedString = item?.chartInfos[indexPath.item] {
+            cell.configure(with: attributedString)
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let attributedString = item?.chartInfos[indexPath.item] else { return .zero }
+        
+        // 使用 attributed string 的 font 來計算
+        if let font = attributedString.attribute(.font, at: 0, effectiveRange: nil) as? UIFont {
+            let width = (attributedString.string as NSString).size(withAttributes: [.font: font]).width + 16 // 加上左右 padding
+            
+            // 如果寬度超過 collection view 的寬度，則使用 collection view 的寬度
+            let maxWidth = collectionView.bounds.width - 16 // 減去左右 padding
+            if width > maxWidth {
+                return CGSize(width: maxWidth, height: 24)
+            } else {
+                return CGSize(width: width, height: 24)
+            }
+        }
+        
+        // 如果沒有 font 屬性，使用預設的系統字型
+        let font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        let width = (attributedString.string as NSString).size(withAttributes: [.font: font]).width + 16
+        let maxWidth = collectionView.bounds.width - 16
+        if width > maxWidth {
+            return CGSize(width: maxWidth, height: 24)
+        }
+        return CGSize(width: width, height: 24)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+}
+
+// MARK: - ChartInfoCell
+class ChartInfoCell: UICollectionViewCell {
+    private let label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        contentView.addSubview(label)
+        label.numberOfLines = 1
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: contentView.topAnchor),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+    
+    func configure(with attributedString: NSAttributedString) {
+        label.attributedText = attributedString
+    }
+}
+
+// Add AlignedCollectionViewFlowLayout class at the end of the file
+class AlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    
+    enum HorizontalAlignment {
+        case left
+        case center
+        case right
+    }
+    
+    enum VerticalAlignment {
+        case top
+        case center
+        case bottom
+    }
+    
+    var horizontalAlignment: HorizontalAlignment = .left
+    var verticalAlignment: VerticalAlignment = .center
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let originalAttributes = super.layoutAttributesForElements(in: rect) else {
+            return nil
+        }
+        
+        guard let collectionView = collectionView else {
+            return originalAttributes
+        }
+
+        let attributesCopy = originalAttributes.map { $0.copy() as! UICollectionViewLayoutAttributes }
+        
+        var rowCollections: [[UICollectionViewLayoutAttributes]] = []
+        var currentRow: [UICollectionViewLayoutAttributes] = []
+        var currentY: CGFloat = -1
+        
+        for attribute in attributesCopy {
+            let frameY = round(attribute.frame.origin.y * 1000) / 1000
+            if abs(frameY - currentY) > 1.0 {
+                if !currentRow.isEmpty {
+                    rowCollections.append(currentRow)
+                }
+                currentRow = [attribute]
+                currentY = frameY
+            } else {
+                currentRow.append(attribute)
+            }
+        }
+        if !currentRow.isEmpty {
+            rowCollections.append(currentRow)
+        }
+        
+        for rowAttributes in rowCollections {
+            let totalWidth = rowAttributes.reduce(0) { $0 + $1.frame.width } +
+                CGFloat(rowAttributes.count - 1) * minimumInteritemSpacing
+            let contentWidth = collectionView.bounds.width
+            var xOffset: CGFloat = 0
+            
+            switch horizontalAlignment {
+            case .left:
+                xOffset = sectionInset.left
+            case .center:
+                xOffset = (contentWidth - totalWidth) / 2
+            case .right:
+                xOffset = contentWidth - totalWidth - sectionInset.right
+            }
+            
+            for attribute in rowAttributes {
+                attribute.frame.origin.x = xOffset
+                xOffset += attribute.frame.width + minimumInteritemSpacing
+            }
+        }
+        
+        return attributesCopy
+    }
+}
+
