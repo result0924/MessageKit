@@ -8,8 +8,14 @@
 import MessageKit
 import UIKit
 
+protocol ChartViewDelegate: AnyObject {
+    func didTapActionButton(in chartView: ChartView)
+}
+
 class ChartView: UIView {
     // MARK: - Properties
+    weak var delegate: ChartViewDelegate?
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -99,10 +105,10 @@ class ChartView: UIView {
         return view
     }()
     
-    private let actionButton: UIButton = {
+    let actionButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.isUserInteractionEnabled = false
+        button.isUserInteractionEnabled = true
         button.titleLabel?.numberOfLines = 2
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.lineBreakMode = .byWordWrapping
@@ -331,6 +337,12 @@ class ChartView: UIView {
         addSubview(actionSeparatorView)
         addSubview(actionButton)
         setupConstraints()
+        
+        actionButton.addTarget(self, action: #selector(handleActionButtonTap), for: .touchUpInside)
+    }
+    
+    @objc private func handleActionButtonTap() {
+        delegate?.didTapActionButton(in: self)
     }
     
     private func setupConstraints() {

@@ -35,6 +35,18 @@ open class ChartViewCell: MessageContentCell {
         }
     }
     
+    open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
+        let touchLocation = gesture.location(in: self)
+        let actionButtonTouchArea = chartView.actionButton.frame
+        let translateTouchLocation = convert(touchLocation, to: messageContainerView)
+        
+        if actionButtonTouchArea.contains(translateTouchLocation) {
+            print("didTapActionButton")
+        } else {
+            super.handleTapGesture(gesture)
+        }
+    }
+    
     // MARK: - Private Methods
     private func setupChartViewConstraints() {
         chartView.translatesAutoresizingMaskIntoConstraints = false
