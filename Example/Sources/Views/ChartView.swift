@@ -18,6 +18,7 @@ class ChartView: UIView {
     weak var delegate: ChartViewDelegate?
     
     private var item: ChartViewItem?
+    private var hasDiet = false
 
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -164,118 +165,132 @@ class ChartView: UIView {
         super.init(coder: coder)
         setupUI()
     }
-    
-    // MARK: - Public Methods
+
     func configure(item: ChartViewItem) {
         self.item = item
+        configureTitle(item)
+        configureMetrics(item)
+        configureChartInfo(item)
+        configureDietInfo(item)
+        configureMessage(item)
+        configureAction(item)
+    }
+
+    // MARK: - Configure Sections
+
+    private func configureTitle(_ item: ChartViewItem) {
         titleLabel.attributedText = item.titleAttributedString
         titleLabelWidthLayout?.constant = item.titleViewSize.width
         titleLabelHeightLayout?.constant = item.titleViewSize.height
-        
-        // Clear existing metrics views
+    }
+
+    private func configureMetrics(_ item: ChartViewItem) {
         metricsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        // Add metrics if they exist
-        if !item.metrics.isEmpty {
-            let metricsRowStackView = createMetricsRowStackView()
-            metricsStackView.addArrangedSubview(metricsRowStackView)
-            
-            for (index, metric) in item.metrics.enumerated() {
-                if index > 0 && index % 2 == 0 {
-                    let newRowStackView = createMetricsRowStackView()
-                    metricsStackView.addArrangedSubview(newRowStackView)
-                }
-                
-                let metricView = createMetricView(for: metric)
-                if let lastRow = metricsStackView.arrangedSubviews.last as? UIStackView {
-                    lastRow.addArrangedSubview(metricView)
-                }
-            }
-            
-            metricsStackViewTopAnchorConstraint?.constant = 8
-            metricsStackViewHeightLayout?.constant = item.metricsViewSize.height
-            chartViewTopAnchorConstraint?.constant = -4
-        } else {
+
+        guard !item.metrics.isEmpty else {
             metricsStackViewTopAnchorConstraint?.constant = 0
             metricsStackViewHeightLayout?.constant = 0
             chartViewTopAnchorConstraint?.constant = 0
+            return
         }
-        
-        // Configure chart info view
+
+        let metricsRowStackView = createMetricsRowStackView()
+        metricsStackView.addArrangedSubview(metricsRowStackView)
+
+        for (index, metric) in item.metrics.enumerated() {
+            if index > 0 && index % 2 == 0 {
+                let newRow = createMetricsRowStackView()
+                metricsStackView.addArrangedSubview(newRow)
+            }
+            let metricView = createMetricView(for: metric)
+            (metricsStackView.arrangedSubviews.last as? UIStackView)?.addArrangedSubview(metricView)
+        }
+
+        metricsStackViewTopAnchorConstraint?.constant = 8
+        metricsStackViewHeightLayout?.constant = item.metricsViewSize.height
+        chartViewTopAnchorConstraint?.constant = -4
+    }
+
+    private func configureChartInfo(_ item: ChartViewItem) {
         chartInfoView.reloadData()
         chartInfoViewHeightLayout?.constant = item.chartInfoViewSize.height
-        
-        var hasDiet = !item.dietInfoImages.isEmpty
-        
-        if let dietTitle = item.dietInfoTitleAttributedString, !dietTitle.string.isEmpty {
-            hasDiet = true
-            dietInfoTitleLabel.attributedText = dietTitle
+    }
+
+    private func configureDietInfo(_ item: ChartViewItem) {
+        hasDiet = false
+
+        if let title = item.dietInfoTitleAttributedString, !title.string.isEmpty {
+            dietInfoTitleLabel.attributedText = title
             dietInfoTitleLabelTopAnchorConstraint?.constant = 4
             dietInfoTitleLabelHeightLayout?.constant = item.dietInfoTitleLabelSize.height
+            hasDiet = true
         } else {
             dietInfoTitleLabelTopAnchorConstraint?.constant = 0
             dietInfoTitleLabelHeightLayout?.constant = 0
         }
-        
-        if let dietText = item.dietInfoTextAttributedString, !dietText.string.isEmpty {
-            hasDiet = true
-            dietInfoTextLabel.attributedText = dietText
+
+        if let text = item.dietInfoTextAttributedString, !text.string.isEmpty {
+            dietInfoTextLabel.attributedText = text
             dietInfoTextLabelTopAnchorConstraint?.constant = 4
             dietInfoTextLabelHeightLayout?.constant = item.dietInfoTextLabelSize.height
+            hasDiet = true
         } else {
             dietInfoTextLabelTopAnchorConstraint?.constant = 0
             dietInfoTextLabelHeightLayout?.constant = 0
         }
-        
+
         configureDietImageStackView(images: item.dietInfoImages, height: item.dietInfoImagesViewSize.height)
-        
-        if let messageAttributedString = item.messageAttributedString, !messageAttributedString.string.isEmpty {
-            let topConstraint: CGFloat = hasDiet ? 12 : 4
-            messageSeparatorViewTopAnchorConstraint?.constant = topConstraint
-            messageSeparatorViewHeightLayout?.constant = 1
-            messageLabelTopAnchorConstraint?.constant = 12
-            messageLabel.attributedText = item.messageAttributedString
-            messageLabelHeightLayout?.constant = item.messageLabelSize.height
-        } else {
+        if !item.dietInfoImages.isEmpty {
+            hasDiet = true
+        }
+    }
+
+    private func configureMessage(_ item: ChartViewItem) {
+        guard let message = item.messageAttributedString, !message.string.isEmpty else {
             messageSeparatorViewTopAnchorConstraint?.constant = 0
             messageSeparatorViewHeightLayout?.constant = 0
             messageLabelTopAnchorConstraint?.constant = 0
             messageLabelHeightLayout?.constant = 0
+            return
         }
-        
-        if let actionAttributedString = item.actionAttributedString, !actionAttributedString.string.isEmpty {
-            actionButton.setAttributedTitle(actionAttributedString, for: .normal)
-            
-            actionSeparatorViewTopAnchorConstraint?.constant = 12
-            actionSeparatorViewHeightLayout?.constant = 1
-            
-            actionButtonTopAnchorConstraint?.constant = 12
-            actionButtonHeightLayout?.constant = item.actionButtonSize.height
-        } else {
+
+        let top: CGFloat = hasDiet ? 12 : 4
+        messageSeparatorViewTopAnchorConstraint?.constant = top
+        messageSeparatorViewHeightLayout?.constant = 1
+        messageLabelTopAnchorConstraint?.constant = 12
+        messageLabel.attributedText = message
+        messageLabelHeightLayout?.constant = item.messageLabelSize.height
+    }
+
+    private func configureAction(_ item: ChartViewItem) {
+        guard let action = item.actionAttributedString, !action.string.isEmpty else {
             actionButton.setAttributedTitle(nil, for: .normal)
-            
             actionSeparatorViewTopAnchorConstraint?.constant = 0
             actionSeparatorViewHeightLayout?.constant = 0
-            
             actionButtonTopAnchorConstraint?.constant = 0
             actionButtonHeightLayout?.constant = 0
+            return
         }
+
+        actionButton.setAttributedTitle(action, for: .normal)
+        actionSeparatorViewTopAnchorConstraint?.constant = 12
+        actionSeparatorViewHeightLayout?.constant = 1
+        actionButtonTopAnchorConstraint?.constant = 12
+        actionButtonHeightLayout?.constant = item.actionButtonSize.height
     }
-    
+
     func configureDietImageStackView(images: [URL], height: CGFloat) {
-        // 先清空 stackView 內容
         dietInfoImageStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
+
         guard !images.isEmpty else {
             dietInfoImageStackViewTopAnchorConstraint?.constant = 0
             dietInfoImageStackViewHeightLayout?.constant = 0
             return
         }
-        
+
         dietInfoImageStackViewTopAnchorConstraint?.constant = 4
         dietInfoImageStackViewHeightLayout?.constant = height
 
-        // 最多只取前 4 張
         let maxDisplayCount = 4
         let totalCount = images.count
         let displayImages = Array(images.prefix(maxDisplayCount))
@@ -288,8 +303,7 @@ class ChartView: UIView {
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
-            
-            // 使用 Kingfisher 載入圖片
+
             imageView.kf.setImage(
                 with: imageURL,
                 placeholder: UIImage(named: "image_message_placeholder"),
@@ -301,7 +315,6 @@ class ChartView: UIView {
                 ]
             )
 
-            // 最後一張而且有超出時顯示 "+N"
             if index == maxDisplayCount - 1 && totalCount > maxDisplayCount {
                 let overlayView = UIView()
                 overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
@@ -331,7 +344,7 @@ class ChartView: UIView {
             dietInfoImageStackView.addArrangedSubview(imageView)
         }
     }
-    
+
     func resetAllSubviews() {
         titleLabel.attributedText = nil
         metricsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
