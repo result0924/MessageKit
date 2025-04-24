@@ -15,7 +15,7 @@ protocol ChartViewDelegate: AnyObject {
 class ChartView: UIView {
     // MARK: - Properties
     weak var delegate: ChartViewDelegate?
-    
+
     let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -90,8 +90,8 @@ class ChartView: UIView {
         return view
     }()
     
-    private let messageLabel: UILabel = {
-        let label = UILabel()
+    let messageLabel: MessageLabel = {
+        let label = MessageLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping

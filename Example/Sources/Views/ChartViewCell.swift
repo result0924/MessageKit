@@ -9,6 +9,13 @@ import MessageKit
 import UIKit
 
 open class ChartViewCell: MessageContentCell {
+    /// The `MessageCellDelegate` for the cell.
+    open override weak var delegate: MessageCellDelegate? {
+        didSet {
+            chartView.messageLabel.delegate = delegate
+        }
+    }
+    
     // MARK: - Properties
     private let chartView = ChartView()
     
@@ -26,12 +33,26 @@ open class ChartViewCell: MessageContentCell {
     
     open override func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
         super.configure(with: message, at: indexPath, and: messagesCollectionView)
+        
+        guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
+            fatalError("MessageKitError.nilMessagesDisplayDelegate")
+        }
 
         switch message.kind {
         case .chartView(let item):
             chartView.configure(item: item)
         default:
             break
+        }
+        
+        let enabledDetectors = displayDelegate.enabledDetectors(for: message, at: indexPath, in: messagesCollectionView)
+
+        chartView.messageLabel.configure {
+            chartView.messageLabel.enabledDetectors = enabledDetectors
+            for detector in enabledDetectors {
+                let attributes = displayDelegate.detectorAttributes(for: detector, and: message, at: indexPath)
+                chartView.messageLabel.setAttributes(attributes, detector: detector)
+            }
         }
     }
     
