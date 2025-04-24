@@ -5,6 +5,7 @@
 //  Created by Justin Lai on 2025/4/21.
 //
 
+import Kingfisher
 import MessageKit
 import UIKit
 
@@ -270,7 +271,7 @@ class ChartView: UIView {
         let totalCount = images.count
         let displayImages = Array(images.prefix(maxDisplayCount))
 
-        for (index, _) in displayImages.enumerated() {
+        for (index, imageURL) in displayImages.enumerated() {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
@@ -278,7 +279,18 @@ class ChartView: UIView {
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
-            imageView.image = UIImage(imageLiteralResourceName: "image_message_placeholder")
+            
+            // 使用 Kingfisher 載入圖片
+            imageView.kf.setImage(
+                with: imageURL,
+                placeholder: UIImage(named: "image_message_placeholder"),
+                options: [
+                    .transition(.fade(0.2)),
+                    .processor(DownsamplingImageProcessor(size: CGSize(width: 48, height: 48))),
+                    .scaleFactor(UIScreen.main.scale),
+                    .cacheOriginalImage
+                ]
+            )
 
             // 最後一張而且有超出時顯示 "+N"
             if index == maxDisplayCount - 1 && totalCount > maxDisplayCount {
