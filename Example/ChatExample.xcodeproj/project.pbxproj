@@ -43,14 +43,24 @@
 		5168957624F7AD560058C643 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5168957224F7AD560058C643 /* LaunchScreen.storyboard */; };
 		63ECDABE24182A470016C349 /* MessageSubviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ECDABD24182A470016C349 /* MessageSubviewViewController.swift */; };
 		63ECDAC2241889630016C349 /* MessageSubviewContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ECDAC1241889630016C349 /* MessageSubviewContainerViewController.swift */; };
+		6C1DD0CE2DBF6E0B00ED0A01 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1DD0CD2DBF6E0B00ED0A01 /* LineChartView.swift */; };
 		6C5C75292DB0D8B60030C3E4 /* CustomChartViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */; };
 		6C5C75342DB79BA50030C3E4 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75322DB79BA50030C3E4 /* ChartView.swift */; };
 		6C5C75352DB79BA50030C3E4 /* ChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */; };
+		6CE553CC2DBF7AB30038BC49 /* MessageChartGraphSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C82DBF7AB30038BC49 /* MessageChartGraphSeries.swift */; };
+		6CE553CD2DBF7AB30038BC49 /* MessageChartGraphData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C72DBF7AB30038BC49 /* MessageChartGraphData.swift */; };
+		6CE553CE2DBF7AB30038BC49 /* MessageChartGraphSeriesDataPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C92DBF7AB30038BC49 /* MessageChartGraphSeriesDataPoint.swift */; };
+		6CE553CF2DBF7AB30038BC49 /* MessageChartGraphSeriesGraphIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553CA2DBF7AB30038BC49 /* MessageChartGraphSeriesGraphIcon.swift */; };
+		6CE553D02DBF7AB30038BC49 /* MessageChartDataMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C62DBF7AB30038BC49 /* MessageChartDataMetric.swift */; };
+		6CE553D12DBF7AB30038BC49 /* MessageChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C52DBF7AB30038BC49 /* MessageChartData.swift */; };
+		6CE553D22DBF7AB30038BC49 /* MessageChartAxisProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C42DBF7AB30038BC49 /* MessageChartAxisProperties.swift */; };
+		6CE553D32DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553CB2DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift */; };
+		6CE553D52DBF7CCB0038BC49 /* MessageChartDietInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553D42DBF7CCB0038BC49 /* MessageChartDietInfo.swift */; };
 		744686D72D1BA5590020782C /* CustomReplyMessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */; };
 		882B5E811CF7D53600B6E160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E781CF7D53600B6E160 /* AppDelegate.swift */; };
 		882B5E901CF7D56000B6E160 /* ChatExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E8E1CF7D56000B6E160 /* ChatExampleUITests.swift */; };
 		882B5E951CF7D56E00B6E160 /* ChatExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E931CF7D56E00B6E160 /* ChatExampleTests.swift */; };
-		9961327FB4F9B96CFD84A126 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		9961327FB4F9B96CFD84A126 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		9B49D528263C31FC008804B5 /* CustomLayoutExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B49D527263C31FC008804B5 /* CustomLayoutExampleViewController.swift */; };
 		9B49D52D263C3E1F008804B5 /* CustomTextLayoutSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B49D52C263C3E1F008804B5 /* CustomTextLayoutSizeCalculator.swift */; };
 		9B49D53A263D9606008804B5 /* CustomLayoutSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B49D539263D9606008804B5 /* CustomLayoutSizeCalculator.swift */; };
@@ -124,9 +134,19 @@
 		5168957424F7AD560058C643 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63ECDABD24182A470016C349 /* MessageSubviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSubviewViewController.swift; sourceTree = "<group>"; };
 		63ECDAC1241889630016C349 /* MessageSubviewContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSubviewContainerViewController.swift; sourceTree = "<group>"; };
+		6C1DD0CD2DBF6E0B00ED0A01 /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
 		6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChartViewItem.swift; sourceTree = "<group>"; };
 		6C5C75322DB79BA50030C3E4 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewCell.swift; sourceTree = "<group>"; };
+		6CE553C42DBF7AB30038BC49 /* MessageChartAxisProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartAxisProperties.swift; sourceTree = "<group>"; };
+		6CE553C52DBF7AB30038BC49 /* MessageChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartData.swift; sourceTree = "<group>"; };
+		6CE553C62DBF7AB30038BC49 /* MessageChartDataMetric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartDataMetric.swift; sourceTree = "<group>"; };
+		6CE553C72DBF7AB30038BC49 /* MessageChartGraphData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartGraphData.swift; sourceTree = "<group>"; };
+		6CE553C82DBF7AB30038BC49 /* MessageChartGraphSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartGraphSeries.swift; sourceTree = "<group>"; };
+		6CE553C92DBF7AB30038BC49 /* MessageChartGraphSeriesDataPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartGraphSeriesDataPoint.swift; sourceTree = "<group>"; };
+		6CE553CA2DBF7AB30038BC49 /* MessageChartGraphSeriesGraphIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartGraphSeriesGraphIcon.swift; sourceTree = "<group>"; };
+		6CE553CB2DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartGraphSeriesMetadata.swift; sourceTree = "<group>"; };
+		6CE553D42DBF7CCB0038BC49 /* MessageChartDietInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartDietInfo.swift; sourceTree = "<group>"; };
 		744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReplyMessageItem.swift; sourceTree = "<group>"; };
 		882B5E331CF7D4B900B6E160 /* ChatExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		882B5E491CF7D4B900B6E160 /* ChatExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,7 +198,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9961327FB4F9B96CFD84A126 /* BuildFile in Frameworks */,
+				9961327FB4F9B96CFD84A126 /* (null) in Frameworks */,
 				ED531A52772F02EC0DB0B0FA /* Pods_ChatExampleUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,6 +234,7 @@
 				9B49D546263DAA29008804B5 /* CustomTextMessageContentCell.swift */,
 				6C5C75322DB79BA50030C3E4 /* ChartView.swift */,
 				6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */,
+				6C1DD0CD2DBF6E0B00ED0A01 /* LineChartView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -221,6 +242,15 @@
 		385C2929211FF33D0010B4BA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6CE553C42DBF7AB30038BC49 /* MessageChartAxisProperties.swift */,
+				6CE553C52DBF7AB30038BC49 /* MessageChartData.swift */,
+				6CE553C62DBF7AB30038BC49 /* MessageChartDataMetric.swift */,
+				6CE553C72DBF7AB30038BC49 /* MessageChartGraphData.swift */,
+				6CE553C82DBF7AB30038BC49 /* MessageChartGraphSeries.swift */,
+				6CE553C92DBF7AB30038BC49 /* MessageChartGraphSeriesDataPoint.swift */,
+				6CE553CA2DBF7AB30038BC49 /* MessageChartGraphSeriesGraphIcon.swift */,
+				6CE553CB2DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift */,
+				6CE553D42DBF7CCB0038BC49 /* MessageChartDietInfo.swift */,
 				385C2926211FF33B0010B4BA /* MockMessage.swift */,
 				385C2925211FF33A0010B4BA /* MockSocket.swift */,
 				383B9EB22172A1C4008AB91A /* MockUser.swift */,
@@ -686,11 +716,21 @@
 				6C5C75352DB79BA50030C3E4 /* ChartViewCell.swift in Sources */,
 				385C2948211FF38F0010B4BA /* ChatViewController.swift in Sources */,
 				385C2944211FF38F0010B4BA /* MessageContainerController.swift in Sources */,
+				6CE553D52DBF7CCB0038BC49 /* MessageChartDietInfo.swift in Sources */,
+				6CE553CC2DBF7AB30038BC49 /* MessageChartGraphSeries.swift in Sources */,
+				6CE553CD2DBF7AB30038BC49 /* MessageChartGraphData.swift in Sources */,
+				6CE553CE2DBF7AB30038BC49 /* MessageChartGraphSeriesDataPoint.swift in Sources */,
+				6CE553CF2DBF7AB30038BC49 /* MessageChartGraphSeriesGraphIcon.swift in Sources */,
+				6CE553D02DBF7AB30038BC49 /* MessageChartDataMetric.swift in Sources */,
+				6CE553D12DBF7AB30038BC49 /* MessageChartData.swift in Sources */,
+				6CE553D22DBF7AB30038BC49 /* MessageChartAxisProperties.swift in Sources */,
+				6CE553D32DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift in Sources */,
 				1AACF50D2AB0726C0093E53A /* CustomDiaryQuoteMessageCell.swift in Sources */,
 				383B9EB32172A1C4008AB91A /* MockUser.swift in Sources */,
 				D0C8388D2420A1AC00F3AC13 /* ExtraActionViewController.swift in Sources */,
 				385C2943211FF38F0010B4BA /* SettingsViewController.swift in Sources */,
 				D0C838912420B4BC00F3AC13 /* StickerViewController.swift in Sources */,
+				6C1DD0CE2DBF6E0B00ED0A01 /* LineChartView.swift in Sources */,
 				385C2927211FF33B0010B4BA /* MockSocket.swift in Sources */,
 				385C2947211FF38F0010B4BA /* BasicExampleViewController.swift in Sources */,
 				1C5433DD24C389C300A5383B /* MessagesView.swift in Sources */,
