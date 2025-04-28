@@ -7,6 +7,7 @@ target 'ChatExample' do
   pod 'MessageKit', :path => '../'
   pod 'InputBarAccessoryView', '~> 5.5.0'
   pod 'Kingfisher', '~> 7.0'
+  pod 'CorePlot', :git => 'ssh://git@github.com/Health2Sync/core-plot.git', :branch => 'main'
 
 target 'ChatExampleTests' do
   inherit! :search_paths
