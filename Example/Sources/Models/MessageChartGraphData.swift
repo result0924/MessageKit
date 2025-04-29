@@ -40,4 +40,16 @@ struct MessageChartGraphData: Codable {
         xAxisProperties = try container.decode(MessageChartAxisProperties.self, forKey: .xAxisProperties)
         series = try container.decode([MessageChartGraphSeries].self, forKey: .series)
     }
+    
+    init(
+        graphType: GraphType,
+        yAxisProperties: MessageChartAxisProperties,
+        xAxisProperties: MessageChartAxisProperties,
+        series: [MessageChartGraphSeries]
+    ) {
+        self.graphType = graphType
+        self.yAxisProperties = yAxisProperties
+        self.xAxisProperties = xAxisProperties
+        self.series = series
+    }
 }

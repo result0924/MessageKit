@@ -12,4 +12,14 @@ struct MessageChartGraphSeries: Codable {
     let metadata: MessageChartGraphSeriesMetadata
     let data: [MessageChartGraphSeriesDataPoint]
     let icons: [MessageChartGraphSeriesGraphIcon]
+    
+    init(
+        metadata: MessageChartGraphSeriesMetadata,
+        data: [MessageChartGraphSeriesDataPoint],
+        icons: [MessageChartGraphSeriesGraphIcon]
+    ) {
+        self.metadata = metadata
+        self.data = data
+        self.icons = icons
+    }
 }

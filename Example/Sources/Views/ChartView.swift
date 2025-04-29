@@ -51,9 +51,9 @@ class ChartView: UIView {
         return stackView
     }()
     
-    private let chartView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
+    private let chartView: LineChartView = {
+        let view = LineChartView()
+        view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

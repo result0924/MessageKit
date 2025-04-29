@@ -64,4 +64,24 @@ struct MessageChartAxisProperties: Codable {
         tickInterval = try container.decodeIfPresent(Double.self, forKey: .tickInterval)
         showGridlines = try container.decode(Bool.self, forKey: .showGridlines)
     }
+    
+    init(
+        label: String,
+        unit: String,
+        dataType: AxisDataType,
+        axisNumberFormat: AxisNumberFormat?,
+        min: Double?,
+        max: Double?,
+        tickInterval: Double?,
+        showGridlines: Bool
+    ) {
+        self.label = label
+        self.unit = unit
+        self.dataType = dataType
+        self.axisNumberFormat = axisNumberFormat
+        self.min = min
+        self.max = max
+        self.tickInterval = tickInterval
+        self.showGridlines = showGridlines
+    }
 }

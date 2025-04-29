@@ -52,4 +52,16 @@ struct MessageChartGraphSeriesGraphIcon: Codable {
         action = try container.decode(Action.self, forKey: .action)
         resourceId = try container.decode(String.self, forKey: .resourceId)
     }
+    
+    init(
+        xAxis: String,
+        iconType: IconType,
+        action: Action,
+        resourceId: String
+    ) {
+        self.xAxis = xAxis
+        self.iconType = iconType
+        self.action = action
+        self.resourceId = resourceId
+    }
 }

@@ -47,6 +47,7 @@
 		6C5C75292DB0D8B60030C3E4 /* CustomChartViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */; };
 		6C5C75342DB79BA50030C3E4 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75322DB79BA50030C3E4 /* ChartView.swift */; };
 		6C5C75352DB79BA50030C3E4 /* ChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */; };
+		6CCA156E2DC0CD0A00413C4D /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA156D2DC0CD0A00413C4D /* Date+Extension.swift */; };
 		6CE553CC2DBF7AB30038BC49 /* MessageChartGraphSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C82DBF7AB30038BC49 /* MessageChartGraphSeries.swift */; };
 		6CE553CD2DBF7AB30038BC49 /* MessageChartGraphData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C72DBF7AB30038BC49 /* MessageChartGraphData.swift */; };
 		6CE553CE2DBF7AB30038BC49 /* MessageChartGraphSeriesDataPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C92DBF7AB30038BC49 /* MessageChartGraphSeriesDataPoint.swift */; };
@@ -56,6 +57,8 @@
 		6CE553D22DBF7AB30038BC49 /* MessageChartAxisProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553C42DBF7AB30038BC49 /* MessageChartAxisProperties.swift */; };
 		6CE553D32DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553CB2DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift */; };
 		6CE553D52DBF7CCB0038BC49 /* MessageChartDietInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553D42DBF7CCB0038BC49 /* MessageChartDietInfo.swift */; };
+		6CE553D72DBF82990038BC49 /* H2SDateTransformerswift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553D62DBF82990038BC49 /* H2SDateTransformerswift.swift */; };
+		6CE553D92DBF84250038BC49 /* CorePlot+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE553D82DBF84250038BC49 /* CorePlot+Extension.swift */; };
 		744686D72D1BA5590020782C /* CustomReplyMessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */; };
 		882B5E811CF7D53600B6E160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E781CF7D53600B6E160 /* AppDelegate.swift */; };
 		882B5E901CF7D56000B6E160 /* ChatExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E8E1CF7D56000B6E160 /* ChatExampleUITests.swift */; };
@@ -138,6 +141,7 @@
 		6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChartViewItem.swift; sourceTree = "<group>"; };
 		6C5C75322DB79BA50030C3E4 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		6C5C75332DB79BA50030C3E4 /* ChartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewCell.swift; sourceTree = "<group>"; };
+		6CCA156D2DC0CD0A00413C4D /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		6CE553C42DBF7AB30038BC49 /* MessageChartAxisProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartAxisProperties.swift; sourceTree = "<group>"; };
 		6CE553C52DBF7AB30038BC49 /* MessageChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartData.swift; sourceTree = "<group>"; };
 		6CE553C62DBF7AB30038BC49 /* MessageChartDataMetric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartDataMetric.swift; sourceTree = "<group>"; };
@@ -147,6 +151,8 @@
 		6CE553CA2DBF7AB30038BC49 /* MessageChartGraphSeriesGraphIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartGraphSeriesGraphIcon.swift; sourceTree = "<group>"; };
 		6CE553CB2DBF7AB30038BC49 /* MessageChartGraphSeriesMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartGraphSeriesMetadata.swift; sourceTree = "<group>"; };
 		6CE553D42DBF7CCB0038BC49 /* MessageChartDietInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChartDietInfo.swift; sourceTree = "<group>"; };
+		6CE553D62DBF82990038BC49 /* H2SDateTransformerswift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H2SDateTransformerswift.swift; sourceTree = "<group>"; };
+		6CE553D82DBF84250038BC49 /* CorePlot+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CorePlot+Extension.swift"; sourceTree = "<group>"; };
 		744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReplyMessageItem.swift; sourceTree = "<group>"; };
 		882B5E331CF7D4B900B6E160 /* ChatExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		882B5E491CF7D4B900B6E160 /* ChatExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -260,6 +266,9 @@
 				1A9CBCBC2AA58802004E9C11 /* CustomDiaryQuoteItem.swift */,
 				744686D62D1BA5590020782C /* CustomReplyMessageItem.swift */,
 				6C5C75282DB0D8B60030C3E4 /* CustomChartViewItem.swift */,
+				6CE553D62DBF82990038BC49 /* H2SDateTransformerswift.swift */,
+				6CE553D82DBF84250038BC49 /* CorePlot+Extension.swift */,
+				6CCA156D2DC0CD0A00413C4D /* Date+Extension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -733,10 +742,13 @@
 				6C1DD0CE2DBF6E0B00ED0A01 /* LineChartView.swift in Sources */,
 				385C2927211FF33B0010B4BA /* MockSocket.swift in Sources */,
 				385C2947211FF38F0010B4BA /* BasicExampleViewController.swift in Sources */,
+				6CE553D72DBF82990038BC49 /* H2SDateTransformerswift.swift in Sources */,
+				6CE553D92DBF84250038BC49 /* CorePlot+Extension.swift in Sources */,
 				1C5433DD24C389C300A5383B /* MessagesView.swift in Sources */,
 				882B5E811CF7D53600B6E160 /* AppDelegate.swift in Sources */,
 				385C292D211FF3520010B4BA /* CustomMessageFlowLayout.swift in Sources */,
 				032A15E225965E1100E00FE3 /* CameraInputBarAccessoryView.swift in Sources */,
+				6CCA156E2DC0CD0A00413C4D /* Date+Extension.swift in Sources */,
 				38CCCC592258419300DD5482 /* AutocompleteExampleViewController.swift in Sources */,
 				63ECDAC2241889630016C349 /* MessageSubviewContainerViewController.swift in Sources */,
 			);

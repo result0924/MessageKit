@@ -18,4 +18,14 @@ struct MessageChartGraphSeriesDataPoint: Codable {
         case yAxis = "y"
         case showLabel = "show_label"
     }
+    
+    init(
+        xAxis: String,
+        yAxis: String,
+        showLabel: Bool
+    ) {
+        self.xAxis = xAxis
+        self.yAxis = yAxis
+        self.showLabel = showLabel
+    }
 }
