@@ -16,6 +16,7 @@ struct AxisScaleModel {
 
 class LineChartView: UIView {
     private let dateTransformer = H2SDateTransformer()
+    private let hostViewPaddingPercent = 0.01
     // swiftlint:disable implicitly_unwrapped_optional
     private var hostView: CPTGraphHostingView!
     // swiftlint:enable implicitly_unwrapped_optional
@@ -51,7 +52,7 @@ class LineChartView: UIView {
                     showYValueLabel: true
                 ),
                 data: [
-                    MessageChartGraphSeriesDataPoint(xAxis: "2024-07-01", yAxis: "77.8", showLabel: true),
+                    MessageChartGraphSeriesDataPoint(xAxis: "2024-12-01", yAxis: "77.8", showLabel: true),
                     MessageChartGraphSeriesDataPoint(xAxis: "2024-12-08", yAxis: "77.3", showLabel: true),
                     MessageChartGraphSeriesDataPoint(xAxis: "2024-12-15", yAxis: "76.5", showLabel: true),
                     MessageChartGraphSeriesDataPoint(xAxis: "2024-12-22", yAxis: "75.8", showLabel: true),
@@ -100,6 +101,7 @@ class LineChartView: UIView {
 
     func reloadCharts() {
         configureAxisLabels()
+        drawAnnotations()
         hostView.hostedGraph?.reloadData()
     }
 
@@ -239,7 +241,7 @@ class LineChartView: UIView {
         // configure x-axis
         let xMin: CGFloat = 0
         let xMax = hostView.bounds.size.width
-        let xPadding = xMax * 0.02 // 左右各留 1% 的空間
+        let xPadding = xMax * hostViewPaddingPercent
         space.globalXRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMin - xPadding), lengthDecimal: CPTDecimalFromCGFloat(xMax + xPadding * 2))
         space.xRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMin - xPadding), lengthDecimal: CPTDecimalFromCGFloat(xMax + xPadding * 2))
         
@@ -367,7 +369,7 @@ class LineChartView: UIView {
         let components = calendar.dateComponents([.day], from: firstDate, to: date)
         let days = CGFloat(components.day ?? 0)
         let totalDays = CGFloat(calendar.dateComponents([.day], from: firstDate, to: lastDate).day ?? 0)
-        let xPadding = hostViewWidth * 0.01 // 左右各留 1% 的空間
+        let xPadding = hostViewWidth * hostViewPaddingPercent
         let availableWidth = hostViewWidth - xPadding * 2
         return xPadding + (days / totalDays) * availableWidth
     }
@@ -412,6 +414,46 @@ class LineChartView: UIView {
         }
 
         return AxisScaleModel(min: finalMin, interval: 50)
+    }
+
+    private func drawAnnotations() {
+        guard let graph = hostView.hostedGraph,
+              let plotSpace = graph.defaultPlotSpace as? CPTXYPlotSpace,
+              let plotArea = graph.plotAreaFrame?.plotArea,
+              let series = viewModel.series.first else {
+            return
+        }
+
+        // 移除舊的標註
+        plotArea.removeAllAnnotations()
+
+        let textStyle = CPTMutableTextStyle()
+        textStyle.color = CPTColor(componentRed: 0.267, green: 0.451, blue: 0.443, alpha: 1.0) // #447371
+        textStyle.fontSize = 12.0
+        textStyle.textAlignment = .center
+
+        let backgroundFill = CPTFill(color: CPTColor(componentRed: 0.91, green: 0.91, blue: 0.91, alpha: 0.7)) // #E9E9E9B2
+
+        for point in series.data {
+            guard let date = try? dateTransformer.utcDate(from: point.xAxis, format: dateTransformer.dateFormat),
+                  let yValue = Float(point.yAxis) else {
+                continue
+            }
+
+            let xLocation = getXLocation(for: date)
+
+            let textLayer = CPTTextLayer(text: point.yAxis, style: textStyle)
+            textLayer.fill = backgroundFill
+            textLayer.cornerRadius = 4.0
+            textLayer.masksToBounds = true
+
+            let anchorPoint: [NSNumber] = [NSNumber(value: Float(xLocation)), NSNumber(value: yValue)]
+            let annotation = CPTPlotSpaceAnnotation(plotSpace: plotSpace, anchorPlotPoint: anchorPoint)
+            annotation.contentLayer = textLayer
+            annotation.displacement = CGPoint(x: 0, y: 15)
+
+            plotArea.addAnnotation(annotation)
+        }
     }
 
 }
